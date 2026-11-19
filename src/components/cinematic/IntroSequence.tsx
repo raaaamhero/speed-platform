@@ -73,17 +73,14 @@ export function IntroSequence({ onComplete }: Props) {
           role="dialog"
           aria-label="SPEED cinematic introduction"
         >
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(18,20,28,0.75),#000_72%)]" />
-          <LiveParticleField className="absolute inset-0 z-0 h-full w-full opacity-80" />
-          <ElasticStringField className="absolute inset-0 z-[1] h-full w-full" captureGestures interactive />
-
-          <div
-            className="pointer-events-none absolute left-[10%] top-0 z-[2] h-[70%] w-[12%] origin-top -rotate-6 bg-gradient-to-b from-white/18 to-transparent blur-2xl transition-opacity duration-700"
-            style={{ opacity: phase >= 1 ? 0.75 : 0.12 }}
-          />
-          <div
-            className="pointer-events-none absolute right-[14%] top-0 z-[2] h-[65%] w-[11%] origin-top rotate-7 bg-gradient-to-b from-[var(--speed-gold)]/25 to-transparent blur-2xl transition-opacity duration-700"
-            style={{ opacity: phase >= 1 ? 0.65 : 0.1 }}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(14,18,28,0.8),#000_70%)]" />
+          <div className="pointer-events-none absolute bottom-0 left-1/2 h-[45%] w-[65%] -translate-x-1/2 bg-[radial-gradient(ellipse_at_center,rgba(226,177,74,0.1),transparent_70%)] blur-2xl" />
+          <LiveParticleField className="absolute inset-0 z-0 h-full w-full opacity-40" density={55} />
+          <ElasticStringField
+            className="absolute inset-0 z-[1] h-full w-full"
+            variant="arena"
+            captureGestures
+            interactive
           />
 
           <div className="absolute right-4 top-4 z-20 flex gap-2 sm:right-5 sm:top-5">
@@ -123,7 +120,7 @@ export function IntroSequence({ onComplete }: Props) {
                     style={{ width: `${loadPct}%` }}
                   />
                 </div>
-                <p className="mt-3 text-[11px] text-white/45">Drag the strings · press for ripples</p>
+                <p className="mt-3 text-[11px] text-white/45">Pull a thread. Click to pluck it.</p>
               </motion.div>
             )}
 

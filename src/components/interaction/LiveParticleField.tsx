@@ -24,7 +24,8 @@ type Particle = {
 /**
  * Living particle dust — rests in composition, recoils from pointer, ripples on press.
  */
-export function LiveParticleField({ className = '', density }: Props) {
+export function LiveParticleField({ className = '', density: densityProp }: Props) {
+  const density = densityProp
   const reduced = useReducedMotion()
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
@@ -46,7 +47,7 @@ export function LiveParticleField({ className = '', density }: Props) {
     let particles: Particle[] = []
 
     const build = () => {
-      const n = density ?? (w < 768 ? 90 : 180)
+      const n = density ?? (w < 768 ? 55 : 90)
       particles = Array.from({ length: n }, (_, i) => {
         // Deliberate composition: denser mid-band + soft vignette edges
         const band = i % 5 === 0 ? 0.35 + Math.random() * 0.3 : Math.random()
