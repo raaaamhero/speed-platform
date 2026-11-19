@@ -1,46 +1,39 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import { clamp, dist, falloff } from '@/lib/interaction/spring'
 import { useReducedMotion } from '@/hooks/use-reduced-motion'
 
 type Props = {
   className?: string
-  count?: number
-  captureGestures?: boolean
-  interactive?: boolean
   /**
-   * editorial — sparse, evenly spaced, Sarvam-like restraint (hero)
-   * arena — denser intro field
+   * hero — large right-biased arches (ArenaHero)
+   * intro — full-width bottom arches (IntroSequence)
    */
-  variant?: 'editorial' | 'arena'
+  variant?: 'hero' | 'intro'
+  interactive?: boolean
 }
 
-type Point = { x: number; y: number; ox: number; oy: number; vx: number; vy: number }
-type StringModel = { points: Point[]; gold: boolean; width: number }
+type Strand = {
+  color: string
+  off: number
+  phase: number
+  tension: number
+  d: Float32Array
+  v: Float32Array
+  glow: number
+}
 
 /**
- * Elegant elastic filaments — physics without visual noise.
+ * Sarvam-style restraint: exactly three arched pluckable threads,
+ * soft ambient sway, pointer drag / click pluck — no filament forest.
  */
 export function ElasticStringField({
   className = '',
-  count,
-  captureGestures = true,
+  variant = 'hero',
   interactive = true,
-  variant = 'editorial',
 }: Props) {
   const reduced = useReducedMotion()
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const stringsRef = useRef<StringModel[]>([])
-  const pointer = useRef({
-    x: 0,
-    y: 0,
-    down: false,
-    inside: false,
-    grabString: -1,
-    grabPoint: -1,
-  })
-  const ripples = useRef<{ x: number; y: number; t: number }[]>([])
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -48,247 +41,215 @@ export function ElasticStringField({
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
+    const N = 96
+    const gap = variant === 'hero' ? 14 : 10
+    const colors =
+      variant === 'hero'
+        ? ['rgba(226,177,74,0.92)', 'rgba(255,255,255,0.72)', 'rgba(200,40,48,0.78)']
+        : ['rgba(226,177,74,0.88)', 'rgba(255,255,255,0.55)', 'rgba(200,40,48,0.7)']
+
     let raf = 0
     let running = true
     let w = 0
     let h = 0
-    let last = performance.now()
-    const dpr = Math.min(window.devicePixelRatio || 1, 2)
+    let dpr = 1
+    let scrollKick = 0
+    const base: { x: number; y: number }[] = Array.from({ length: N }, () => ({ x: 0, y: 0 }))
+    const strands: Strand[] = colors.map((color, j) => ({
+      color,
+      off: (j - (colors.length - 1) / 2) * gap,
+      phase: j * 0.9,
+      tension: 0.24 + j * 0.03,
+      d: new Float32Array(N),
+      v: new Float32Array(N),
+      glow: 0,
+    }))
+    const pointer = { x: 0, y: 0, inside: false, down: false }
 
-    const build = () => {
-      const mobile = w < 768
-      const n =
-        count ??
-        (variant === 'editorial'
-          ? mobile
-            ? 9
-            : 14
-          : mobile
-            ? 14
-            : 22)
-      const segs = mobile ? 12 : 18
-      const strings: StringModel[] = []
+    const sampleBase = () => {
+      // Cubic-ish arch in canvas space — open breathing curve, not a straight line
+      const y0 = variant === 'hero' ? h * 0.72 : h * 0.55
+      const yPeak = variant === 'hero' ? h * 0.28 : h * 0.32
+      const yEnd = variant === 'hero' ? h * 0.38 : h * 0.42
+      // Bias hero arches toward the open right so copy stays clear
+      const x0 = variant === 'hero' ? w * 0.42 : 0
+      const x1 = w
 
-      for (let i = 0; i < n; i++) {
-        const t = (i + 0.5) / n
-        // Editorial: biased to the right open space, even spacing
-        const xNorm =
-          variant === 'editorial' ? 0.48 + t * 0.46 : 0.08 + t * 0.84
-        const x = xNorm * w
-        const points: Point[] = []
-        for (let s = 0; s <= segs; s++) {
-          const y = (s / segs) * h
-          points.push({ x, y, ox: x, oy: y, vx: 0, vy: 0 })
-        }
-        strings.push({
-          points,
-          gold: i % 4 === 0,
-          width: i % 4 === 0 ? 1.15 : 0.75,
-        })
+      for (let i = 0; i < N; i++) {
+        const t = i / (N - 1)
+        const x = x0 + (x1 - x0) * t
+        // Smooth arch: rise then settle (ease via cosine envelope + cubic blend)
+        const arch = Math.sin(Math.PI * Math.min(1, t * 1.05))
+        const settle = t * t
+        const y = y0 + (yPeak - y0) * arch * (1 - settle * 0.35) + (yEnd - y0) * settle * 0.55
+        base[i].x = x
+        base[i].y = y
       }
-      stringsRef.current = strings
     }
 
     const resize = () => {
       w = canvas.clientWidth
       h = canvas.clientHeight
+      dpr = Math.min(window.devicePixelRatio || 1, 2)
       canvas.width = Math.floor(w * dpr)
       canvas.height = Math.floor(h * dpr)
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-      build()
+      sampleBase()
     }
 
-    const influenceRadius = () => Math.min(w, h) * (variant === 'editorial' ? 0.14 : 0.16)
-    const grabRadius = () => Math.min(w, h) * 0.04
-    const maxDisp = () => Math.min(w, h) * (variant === 'editorial' ? 0.14 : 0.2)
+    const metrics = () => {
+      const m = Math.min(w, h) || 1
+      return {
+        grab: variant === 'hero' ? m * 0.06 : m * 0.05,
+        reach: variant === 'hero' ? m * 0.14 : m * 0.12,
+        maxPull: variant === 'hero' ? m * 0.1 : m * 0.08,
+        ambient: variant === 'hero' ? 5 : 3.5,
+        strokeW: variant === 'hero' ? 1.8 : 1.5,
+      }
+    }
 
-    const step = (dt: number) => {
-      const strings = stringsRef.current
-      const p = pointer.current
-      const radius = influenceRadius()
-      const stiffness = variant === 'editorial' ? 210 : 180
-      const damping = variant === 'editorial' ? 0.9 : 0.88
-      const cap = maxDisp()
+    const toLocal = (cx: number, cy: number) => {
+      const r = canvas.getBoundingClientRect()
+      return { x: cx - r.left, y: cy - r.top }
+    }
 
-      for (let si = 0; si < strings.length; si++) {
-        const pts = strings[si].points
-        for (let i = 0; i < pts.length; i++) {
-          const pt = pts[i]
-          if (i === 0 || i === pts.length - 1) {
-            pt.x = pt.ox
-            pt.y = pt.oy
-            pt.vx = 0
-            pt.vy = 0
-            continue
-          }
+    const onMove = (e: PointerEvent) => {
+      if (!interactive) return
+      const p = toLocal(e.clientX, e.clientY)
+      pointer.x = p.x
+      pointer.y = p.y
+      const pad = metrics().grab * 2
+      const minX = base[0].x - pad
+      const maxX = base[N - 1].x + pad
+      pointer.inside = p.x >= minX && p.x <= maxX && p.y > -pad && p.y < h + pad
+    }
 
-          let targetX = pt.ox
-          let targetY = pt.oy
-
-          if (interactive && p.inside) {
-            const grabbed = p.down && p.grabString === si && p.grabPoint === i
-            if (grabbed) {
-              targetX = p.x
-              targetY = p.y
-            } else {
-              const d = dist(pt.x, pt.y, p.x, p.y)
-              const f = falloff(d, radius)
-              if (f > 0) {
-                const push = (p.down ? 0.95 : 0.55) * f
-                const dx = pt.ox - p.x
-                const dy = pt.oy - p.y
-                const len = Math.hypot(dx, dy) || 1
-                targetX = pt.ox + (dx / len) * cap * push
-                targetY = pt.oy + (dy / len) * cap * push * 0.45
-              }
-            }
-          }
-
-          for (const r of ripples.current) {
-            const age = (performance.now() - r.t) / 700
-            if (age > 1) continue
-            const d = dist(pt.ox, pt.oy, r.x, r.y)
-            const wave = falloff(d, radius * 1.3) * (1 - age) * Math.sin(age * Math.PI * 2.8)
-            const dx = pt.ox - r.x
-            const dy = pt.oy - r.y
-            const len = Math.hypot(dx, dy) || 1
-            targetX += (dx / len) * wave * cap * 0.4
-            targetY += (dy / len) * wave * cap * 0.25
-          }
-
-          const ax = (targetX - pt.x) * stiffness
-          const ay = (targetY - pt.y) * stiffness
-          pt.vx = (pt.vx + ax * dt) * damping
-          pt.vy = (pt.vy + ay * dt) * damping
-          pt.x += pt.vx * dt
-          pt.y += pt.vy * dt
-
-          const odx = pt.x - pt.ox
-          const ody = pt.y - pt.oy
-          const olen = Math.hypot(odx, ody)
-          if (olen > cap) {
-            pt.x = pt.ox + (odx / olen) * cap
-            pt.y = pt.oy + (ody / olen) * cap
-          }
-        }
-
-        for (let pass = 0; pass < 2; pass++) {
-          for (let i = 1; i < pts.length - 1; i++) {
-            const prev = pts[i - 1]
-            const next = pts[i + 1]
-            pts[i].x = lerp(pts[i].x, (prev.x + next.x) * 0.5, 0.2)
-            pts[i].y = lerp(pts[i].y, (prev.y + next.y) * 0.5, 0.2)
-          }
+    const onDown = (e: PointerEvent) => {
+      if (!interactive) return
+      const p = toLocal(e.clientX, e.clientY)
+      pointer.x = p.x
+      pointer.y = p.y
+      pointer.down = true
+      pointer.inside = true
+      const at = Math.round(
+        Math.max(0, Math.min(1, (p.x - base[0].x) / Math.max(1, base[N - 1].x - base[0].x))) *
+          (N - 1),
+      )
+      let nearest = strands[0]
+      for (const s of strands) {
+        const dy = Math.abs(p.y - (base[at].y + s.off + s.d[at]))
+        const ndy = Math.abs(p.y - (base[at].y + nearest.off + nearest.d[at]))
+        if (dy < ndy) nearest = s
+        for (let i = 1; i < N - 1; i++) {
+          const dx = base[i].x - p.x
+          s.v[i] += (p.y < base[i].y + s.off ? -1 : 1) * 7 * Math.exp(-(dx * dx) / (2 * 60 * 60))
         }
       }
-
-      ripples.current = ripples.current.filter((r) => performance.now() - r.t < 700)
+      nearest.glow = 90
     }
 
-    const draw = () => {
-      ctx.clearRect(0, 0, w, h)
-      for (const str of stringsRef.current) {
-        const pts = str.points
-        ctx.beginPath()
-        ctx.moveTo(pts[0].x, pts[0].y)
-        for (let i = 1; i < pts.length - 1; i++) {
-          const c = pts[i]
-          const n = pts[i + 1]
-          ctx.quadraticCurveTo(c.x, c.y, (c.x + n.x) * 0.5, (c.y + n.y) * 0.5)
-        }
-        ctx.lineTo(pts[pts.length - 1].x, pts[pts.length - 1].y)
-        ctx.strokeStyle = str.gold
-          ? variant === 'editorial'
-            ? 'rgba(226,177,74,0.42)'
-            : 'rgba(226,177,74,0.55)'
-          : variant === 'editorial'
-            ? 'rgba(255,255,255,0.16)'
-            : 'rgba(255,255,255,0.26)'
-        ctx.lineWidth = str.width
-        ctx.lineCap = 'round'
-        ctx.stroke()
+    const onUp = () => {
+      pointer.down = false
+    }
 
-        // Soft bead only when deformed
-        let best = pts[Math.floor(pts.length / 2)]
-        let bestD = 0
-        for (const pt of pts) {
-          const d = Math.hypot(pt.x - pt.ox, pt.y - pt.oy)
-          if (d > bestD) {
-            bestD = d
-            best = pt
+    const onLeave = () => {
+      if (!pointer.down) pointer.inside = false
+    }
+
+    const onScroll = () => {
+      scrollKick = 1
+    }
+
+    const step = () => {
+      const { grab, reach, maxPull } = metrics()
+      scrollKick *= 0.92
+      for (const s of strands) {
+        const { d, v } = s
+        let held = false
+        for (let i = 1; i < N - 1; i++) {
+          let force = s.tension * (d[i - 1] + d[i + 1] - 2 * d[i]) - 0.004 * d[i] - 0.035 * v[i]
+          if (interactive && pointer.inside) {
+            const dx = base[i].x - pointer.x
+            const pull = pointer.y - (base[i].y + s.off)
+            if (Math.abs(pull - d[i]) < grab && Math.abs(pull) < maxPull) {
+              const wgt = Math.exp(-(dx * dx) / (2 * reach * reach))
+              force += (pull - d[i]) * 0.14 * wgt
+              if (wgt > 0.6) held = true
+            }
           }
+          force += scrollKick * Math.sin((Math.PI * i) / (N - 1)) * 0.25
+          v[i] += force
         }
-        if (bestD > 2) {
-          ctx.beginPath()
-          ctx.arc(best.x, best.y, str.gold ? 2.2 : 1.6, 0, Math.PI * 2)
-          ctx.fillStyle = str.gold ? 'rgba(226,177,74,0.85)' : 'rgba(255,255,255,0.55)'
-          ctx.fill()
+        for (let i = 1; i < N - 1; i++) d[i] += v[i]
+        for (let i = 1; i < N - 1; i++) {
+          if (d[i] > maxPull) d[i] = maxPull
+          if (d[i] < -maxPull) d[i] = -maxPull
         }
+        s.glow = held ? 45 : Math.max(0, s.glow - 1)
+      }
+    }
+
+    const draw = (t: number) => {
+      const { ambient, strokeW } = metrics()
+      ctx.clearRect(0, 0, w, h)
+
+      const midX = (base[0].x + base[N - 1].x) * 0.5
+      const floorY = Math.max(...base.map((b) => b.y)) + gap * 2
+      const glow = ctx.createRadialGradient(midX, floorY, 0, midX, floorY, w * 0.35)
+      glow.addColorStop(0, 'rgba(226,177,74,0.14)')
+      glow.addColorStop(0.45, 'rgba(180,90,40,0.06)')
+      glow.addColorStop(1, 'rgba(0,0,0,0)')
+      ctx.fillStyle = glow
+      ctx.fillRect(0, 0, w, h)
+
+      ctx.beginPath()
+      ctx.moveTo(base[0].x, floorY + 8)
+      ctx.lineTo(base[N - 1].x, floorY + 8)
+      ctx.strokeStyle = 'rgba(241,237,230,0.14)'
+      ctx.lineWidth = 1
+      ctx.stroke()
+
+      for (const s of strands) {
+        ctx.beginPath()
+        let px = 0
+        let py = 0
+        for (let i = 0; i < N; i++) {
+          const env = Math.sin((Math.PI * i) / (N - 1))
+          const x = base[i].x
+          const y =
+            base[i].y +
+            s.off +
+            s.d[i] +
+            ambient * env * Math.sin(x * 0.006 + t * 0.0012 + s.phase)
+          if (i === 0) {
+            ctx.moveTo(x, y)
+          } else {
+            ctx.quadraticCurveTo(px, py, (px + x) * 0.5, (py + y) * 0.5)
+          }
+          px = x
+          py = y
+        }
+        ctx.lineTo(px, py)
+        ctx.strokeStyle = s.color
+        ctx.lineWidth = strokeW + (s.glow > 0 ? 0.4 : 0)
+        ctx.lineCap = 'round'
+        ctx.lineJoin = 'round'
+        ctx.globalAlpha = s.glow > 0 ? 1 : 0.92
+        ctx.stroke()
+        ctx.globalAlpha = 1
       }
     }
 
     const loop = (now: number) => {
       if (!running) return
-      const dt = clamp((now - last) / 1000, 0.001, 0.033)
-      last = now
-      step(dt)
-      draw()
+      step()
+      draw(now)
       raf = requestAnimationFrame(loop)
-    }
-
-    const findGrab = (x: number, y: number) => {
-      let bestS = -1
-      let bestP = -1
-      let bestD = grabRadius()
-      stringsRef.current.forEach((str, si) => {
-        str.points.forEach((pt, pi) => {
-          if (pi === 0 || pi === str.points.length - 1) return
-          const d = dist(pt.x, pt.y, x, y)
-          if (d < bestD) {
-            bestD = d
-            bestS = si
-            bestP = pi
-          }
-        })
-      })
-      return { bestS, bestP }
-    }
-
-    const onMove = (e: PointerEvent) => {
-      const rect = canvas.getBoundingClientRect()
-      pointer.current.x = e.clientX - rect.left
-      pointer.current.y = e.clientY - rect.top
-      pointer.current.inside = true
-    }
-    const onDown = (e: PointerEvent) => {
-      if (!interactive) return
-      if (captureGestures) {
-        e.preventDefault()
-        canvas.setPointerCapture(e.pointerId)
-      }
-      const rect = canvas.getBoundingClientRect()
-      const x = e.clientX - rect.left
-      const y = e.clientY - rect.top
-      pointer.current.x = x
-      pointer.current.y = y
-      pointer.current.down = true
-      pointer.current.inside = true
-      const { bestS, bestP } = findGrab(x, y)
-      pointer.current.grabString = bestS
-      pointer.current.grabPoint = bestP
-      ripples.current.push({ x, y, t: performance.now() })
-    }
-    const onUp = () => {
-      pointer.current.down = false
-      pointer.current.grabString = -1
-      pointer.current.grabPoint = -1
-    }
-    const onLeave = () => {
-      if (!pointer.current.down) pointer.current.inside = false
     }
 
     resize()
     window.addEventListener('resize', resize)
+    window.addEventListener('scroll', onScroll, { passive: true })
     canvas.addEventListener('pointermove', onMove)
     canvas.addEventListener('pointerdown', onDown)
     canvas.addEventListener('pointerup', onUp)
@@ -300,13 +261,14 @@ export function ElasticStringField({
       running = false
       cancelAnimationFrame(raf)
       window.removeEventListener('resize', resize)
+      window.removeEventListener('scroll', onScroll)
       canvas.removeEventListener('pointermove', onMove)
       canvas.removeEventListener('pointerdown', onDown)
       canvas.removeEventListener('pointerup', onUp)
       canvas.removeEventListener('pointercancel', onUp)
       canvas.removeEventListener('pointerleave', onLeave)
     }
-  }, [captureGestures, count, interactive, reduced, variant])
+  }, [interactive, reduced, variant])
 
   if (reduced) {
     return (
@@ -314,8 +276,8 @@ export function ElasticStringField({
         className={className}
         aria-hidden
         style={{
-          backgroundImage:
-            'repeating-linear-gradient(90deg, transparent, transparent 48px, rgba(255,255,255,0.04) 48px, rgba(255,255,255,0.04) 49px)',
+          background:
+            'radial-gradient(ellipse at 70% 75%, rgba(226,177,74,0.1), transparent 60%)',
         }}
       />
     )
@@ -324,13 +286,9 @@ export function ElasticStringField({
   return (
     <canvas
       ref={canvasRef}
-      className={`${captureGestures ? 'touch-none' : ''} ${className}`}
+      className={className}
       aria-hidden
-      style={{ touchAction: captureGestures ? 'none' : 'pan-y' }}
+      style={{ touchAction: 'pan-y' }}
     />
   )
-}
-
-function lerp(a: number, b: number, t: number) {
-  return a + (b - a) * t
 }

@@ -8,43 +8,31 @@ import { LiveParticleField } from '@/components/interaction/LiveParticleField'
 import { useReducedMotion } from '@/hooks/use-reduced-motion'
 
 /**
- * Hero art direction (inspired by Sarvam portfolio restraint):
- * one soft atmosphere, sparse dust, elegant interactive threads on the open right —
- * no stacked bubbles/fire clutter.
+ * Hero art direction — Sarvam restraint:
+ * left copy, right three pluckable arches, soft floor glow, almost no dust.
  */
 export function ArenaHero() {
   const ref = useRef<HTMLElement>(null)
   const reduced = useReducedMotion()
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] })
-  const y = useTransform(scrollYProgress, [0, 1], [0, reduced ? 0 : 80])
-  const opacity = useTransform(scrollYProgress, [0, 0.85], [1, 0.35])
+  const y = useTransform(scrollYProgress, [0, 1], [0, reduced ? 0 : 60])
+  const opacity = useTransform(scrollYProgress, [0, 0.85], [1, 0.4])
 
   return (
     <section ref={ref} className="relative isolate min-h-[100svh] overflow-hidden bg-[#07080b]">
       <motion.div style={{ y }} className="pointer-events-none absolute inset-0 z-0">
-        {/* Controlled atmosphere — one glow language */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_10%,rgba(30,40,70,0.45),transparent_50%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_70%_85%,rgba(180,90,40,0.22),transparent_55%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_0%,rgba(200,30,44,0.18),transparent_45%)]" />
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_50%,rgba(0,0,0,0.75)_100%)]" />
-        {/* Soft floor glow like Sarvam */}
-        <div className="absolute bottom-0 left-1/2 h-[40%] w-[70%] -translate-x-1/2 bg-[radial-gradient(ellipse_at_center,rgba(226,177,74,0.12),transparent_70%)] blur-2xl" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_18%_8%,rgba(28,36,58,0.5),transparent_55%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_55%,rgba(0,0,0,0.7)_100%)]" />
       </motion.div>
 
-      {/* Sparse dust only */}
-      <LiveParticleField className="absolute inset-0 z-[1] h-full w-full opacity-50" density={70} />
+      <LiveParticleField className="absolute inset-0 z-[1] h-full w-full opacity-30" density={36} />
 
-      {/* Editorial threads — right side open field */}
-      <ElasticStringField
-        className="absolute inset-0 z-[2] h-full w-full"
-        variant="editorial"
-        captureGestures={false}
-        interactive
-      />
+      {/* Three arches — the one interactive idea */}
+      <ElasticStringField className="absolute inset-0 z-[2] h-full w-full" variant="hero" interactive />
 
       <motion.div
         style={{ opacity }}
-        className="pointer-events-none relative z-10 mx-auto flex min-h-[100svh] max-w-6xl flex-col justify-center px-5 pb-24 pt-28 sm:px-8"
+        className="pointer-events-none relative z-10 mx-auto flex min-h-[100svh] max-w-6xl flex-col justify-center px-5 pb-28 pt-28 sm:px-8"
       >
         <div className="pointer-events-auto max-w-xl lg:max-w-2xl">
           <motion.p

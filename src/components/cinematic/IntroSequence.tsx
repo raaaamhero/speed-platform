@@ -73,13 +73,11 @@ export function IntroSequence({ onComplete }: Props) {
           role="dialog"
           aria-label="SPEED cinematic introduction"
         >
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(14,18,28,0.8),#000_70%)]" />
-          <div className="pointer-events-none absolute bottom-0 left-1/2 h-[45%] w-[65%] -translate-x-1/2 bg-[radial-gradient(ellipse_at_center,rgba(226,177,74,0.1),transparent_70%)] blur-2xl" />
-          <LiveParticleField className="absolute inset-0 z-0 h-full w-full opacity-40" density={55} />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(14,18,28,0.85),#000_72%)]" />
+          <LiveParticleField className="absolute inset-0 z-0 h-full w-full opacity-25" density={28} />
           <ElasticStringField
             className="absolute inset-0 z-[1] h-full w-full"
-            variant="arena"
-            captureGestures
+            variant="intro"
             interactive
           />
 
