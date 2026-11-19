@@ -39,21 +39,21 @@ export async function POST(req: Request) {
     const errors: { row: number; message: string }[] = []
     let upserted = 0
 
-    const sections = await client.query<{ id: string; code: string }>(
-      `select id, code from public.speed_sections`,
-    )
-    const sectionByCode = new Map(
-      sections.rows.map((s: { id: string; code: string }) => [String(s.code).toUpperCase(), s.id]),
-    )
+    const sections = await client.query(`select id, code from public.speed_sections`)
+    const sectionByCode = new Map<string, string>()
+    for (const s of sections.rows as { id: string; code: string }[]) {
+      sectionByCode.set(String(s.code).toUpperCase(), s.id)
+    }
 
-    const teamSections = await client.query<{ section_id: string; team_id: string }>(`
+    const teamSections = await client.query(`
       select ts.section_id, t.id as team_id
       from public.speed_team_sections ts
       join public.speed_teams t on t.id = ts.team_id
     `)
-    const teamBySection = new Map(
-      teamSections.rows.map((r: { section_id: string; team_id: string }) => [r.section_id, r.team_id]),
-    )
+    const teamBySection = new Map<string, string>()
+    for (const r of teamSections.rows as { section_id: string; team_id: string }[]) {
+      teamBySection.set(r.section_id, r.team_id)
+    }
 
     await client.query('begin')
     try {

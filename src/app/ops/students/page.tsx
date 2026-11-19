@@ -34,6 +34,8 @@ export default function OpsStudentsPage() {
 
   useEffect(() => {
     void load('')
+    // initial load only
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   function openEdit(s: Student) {
