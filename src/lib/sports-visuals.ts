@@ -14,12 +14,12 @@ export type SportVisual = {
   venue: string
 }
 
-/** Local sport plates + SPEED 2026–27 venue copy. */
+/** Local sport plates + exact SPEED 2026–27 venue copy. */
 export const SPORT_VISUALS: SportVisual[] = [
   {
     slug: 'cricket',
     name: 'Cricket',
-    tagline: 'Endpoint. Leather. Fifteen overs.',
+    tagline: '15-over leather-ball tournament.',
     accent: '#e2b14a',
     secondary: '#0b1208',
     glow: 'rgba(226,177,74,0.45)',
@@ -28,26 +28,26 @@ export const SPORT_VISUALS: SportVisual[] = [
     motif: 'pitch',
     venue: 'Endpoint',
     detail:
-      'Fierce competition at Endpoint — leather ball, proper equipment, full rules. A 15-over tournament where every over counts.',
+      'Cricket takes centre stage at Endpoint with a 15-over leather-ball tournament. With proper cricketing equipment and teams ready to compete, expect some exciting matches and plenty of action on the field.',
   },
   {
     slug: 'football',
     name: 'Football',
-    tagline: 'Floodlights. International standard.',
+    tagline: 'Floodlights, skills, and teamwork.',
     accent: '#4ade80',
     secondary: '#04110a',
     glow: 'rgba(74,222,128,0.4)',
     image: '/sports/football.jpg',
     imageAlt: 'Football on the pitch inside a full stadium',
     motif: 'pitch',
-    venue: 'MIT Sports Park · Endpoint',
+    venue: 'MIT Sports Park & Endpoint',
     detail:
-      'Under the floodlights at MIT Sports Park to international standards — and also at Endpoint. The arena breathes with every pass.',
+      'Football action heads to MIT Sports Park and Endpoint. With matches under the floodlights, teams will take to the field for some competitive football, showcasing their skills, teamwork and love for the game.',
   },
   {
     slug: 'volleyball',
     name: 'Volleyball',
-    tagline: 'TAPMI ground lights up.',
+    tagline: 'Serves, spikes, and rallies.',
     accent: '#fb923c',
     secondary: '#140a02',
     glow: 'rgba(251,146,60,0.4)',
@@ -56,26 +56,26 @@ export const SPORT_VISUALS: SportVisual[] = [
     motif: 'net',
     venue: 'TAPMI Ground',
     detail:
-      'TAPMI ground comes alive as the volleyball court lights up — spike lines, net tension, and airborne finishes.',
+      'The TAPMI Ground gets ready for some volleyball action. As the court lights up, teams will battle it out through powerful serves, well-timed spikes and exciting rallies.',
   },
   {
     slug: 'basketball',
     name: 'Basketball',
-    tagline: 'Newly painted. Contest of the year.',
+    tagline: 'Newly painted. Ready for action.',
     accent: '#ff6a00',
     secondary: '#1a0a00',
     glow: 'rgba(255,106,0,0.45)',
     image: '/sports/basketball.jpg',
     imageAlt: 'Basketball dropping through the hoop in an arena',
     motif: 'court',
-    venue: 'Basketball court',
+    venue: 'TAPMI Basketball Court',
     detail:
-      'On the newly painted court, basketball feels like the contest of the year — hardwood heat, elevation, instant momentum.',
+      'The newly painted basketball court is ready for action. Expect competitive games, quick plays and some great basketball as teams take to the court to fight for the title.',
   },
   {
     slug: 'table-tennis',
     name: 'Table Tennis',
-    tagline: 'Student Centre. Stadium energy.',
+    tagline: 'Quick rallies. Sharp reflexes.',
     accent: '#f87171',
     secondary: '#140505',
     glow: 'rgba(248,113,113,0.4)',
@@ -84,26 +84,26 @@ export const SPORT_VISUALS: SportVisual[] = [
     motif: 'table',
     venue: 'Student Centre',
     detail:
-      'The Student Centre becomes a stadium as teams fight for the table tennis champion title — spin, pace, and milliseconds.',
+      'The Student Centre turns into the hub of table tennis action. With quick rallies, sharp reflexes and some close contests, teams will compete for the table tennis championship.',
   },
   {
     slug: 'throwball',
     name: 'Throwball',
-    tagline: 'Girls take the field.',
+    tagline: 'Girls take the court.',
     accent: '#f472b6',
     secondary: '#1a0612',
     glow: 'rgba(244,114,182,0.4)',
     image: '/sports/throwball.jpg',
     imageAlt: 'Athlete ready on the court for throwball',
     motif: 'court',
-    venue: 'Court',
+    venue: 'TAPMI Ground',
     detail:
-      'Girls are ready to take the field and show how it’s done — force, timing, and full court control.',
+      "It's time for the girls to take the court! Throwball will bring together teamwork, coordination and competitive spirit as the teams battle it out for the title.",
   },
   {
     slug: 'badminton',
     name: 'Badminton',
-    tagline: 'Marena. World-class indoors.',
+    tagline: 'Indoor courts. Marena.',
     accent: '#7dd3fc',
     secondary: '#02131f',
     glow: 'rgba(125,211,252,0.4)',
@@ -112,12 +112,12 @@ export const SPORT_VISUALS: SportVisual[] = [
     motif: 'shuttle',
     venue: 'Marena',
     detail:
-      'Now to Marena — world-class indoor badminton courts and amenities. SportsCom has you covered.',
+      "We're heading to Marena for badminton! With its indoor courts and excellent sporting facilities, it's the perfect setting for some exciting matches. SportsCom has the arrangements covered.",
   },
   {
     slug: 'athletics-relays',
     name: 'Athletics Relays',
-    tagline: 'International tracks. Pure speed.',
+    tagline: 'Speed, coordination, teamwork.',
     accent: '#facc15',
     secondary: '#121000',
     glow: 'rgba(250,204,21,0.4)',
@@ -126,12 +126,12 @@ export const SPORT_VISUALS: SportVisual[] = [
     motif: 'track',
     venue: 'MIT Sports Park',
     detail:
-      'Run on international-standard tracks at MIT Sports Park. Exempt from the three-sport cap — baton, lanes, inheritance of speed.',
+      'The action moves to the tracks at MIT Sports Park, where participants will compete in the athletics relays. It’s all about speed, coordination and teamwork as teams race towards the finish line.',
   },
   {
     slug: 'swimming-relays',
     name: 'Swimming Relays',
-    tagline: 'Marena opens the lanes.',
+    tagline: 'Speed, stamina, teamwork.',
     accent: '#22d3ee',
     secondary: '#021018',
     glow: 'rgba(34,211,238,0.4)',
@@ -140,7 +140,7 @@ export const SPORT_VISUALS: SportVisual[] = [
     motif: 'pool',
     venue: 'Marena',
     detail:
-      'Marena enters again — your chance to race in the pool. Exempt from the three-sport cap. Water, rhythm, handovers.',
+      'Marena is back as the venue for swimming events. Participants will take to the pool to compete in the swimming relays, putting their speed, stamina and teamwork to the test.',
   },
 ]
 

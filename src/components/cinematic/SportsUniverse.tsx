@@ -62,15 +62,15 @@ export function SportsUniverse() {
   return (
     <section id="sports" className="relative scroll-mt-20 border-t border-white/10 bg-black py-20 sm:py-28">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
-        <p className="speed-kicker">NINE SPORTS. ONE BATTLEFIELD.</p>
+        <p className="speed-kicker">THE NINE SPORTS AT SPEED</p>
         <h2 className="mt-3 font-display text-4xl tracking-[0.06em] text-white sm:text-6xl">
           Nine sports.
           <br />
-          Nine worlds.
+          Nine venues.
         </h2>
         <p className="mt-4 max-w-xl text-[var(--speed-muted)]">
-          Each discipline has its own atmosphere. Tap a sport for detail — then register for up to
-          three counted sports (relays exempt).
+          Tap a sport for the full brief — then register for up to three counted sports (relays
+          exempt).
         </p>
       </div>
 
