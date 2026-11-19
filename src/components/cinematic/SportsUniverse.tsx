@@ -122,7 +122,7 @@ export function SportsUniverse() {
                 }`}
               >
                 <p className="font-display text-[10px] tracking-[0.35em]" style={{ color: sport.accent }}>
-                  {String(i + 1).padStart(2, '0')} · DISCIPLINE
+                  {String(i + 1).padStart(2, '0')} · {sport.venue.toUpperCase()}
                 </p>
                 <h3 className="mt-2 font-display text-5xl tracking-[0.05em] text-white sm:text-7xl">
                   {sport.name}
@@ -134,7 +134,7 @@ export function SportsUniverse() {
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: 'auto' }}
                       exit={{ opacity: 0, height: 0 }}
-                      className="pointer-events-none mt-4 max-w-md text-sm text-white/85"
+                      className="pointer-events-none mt-4 max-w-md text-sm leading-relaxed text-white/85"
                     >
                       {sport.detail}
                     </motion.p>

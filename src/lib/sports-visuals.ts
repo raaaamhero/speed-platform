@@ -11,126 +11,136 @@ export type SportVisual = {
   imageAlt: string
   motif: 'court' | 'pitch' | 'track' | 'pool' | 'indoor' | 'net' | 'shuttle' | 'table'
   detail: string
+  venue: string
 }
 
-/** Curated sport-specific Unsplash plates (distinct per discipline). */
+/** Local sport plates + SPEED 2026–27 venue copy. */
 export const SPORT_VISUALS: SportVisual[] = [
   {
     slug: 'cricket',
     name: 'Cricket',
-    tagline: 'Night pitch. Floodlit rivalry.',
+    tagline: 'Endpoint. Leather. Fifteen overs.',
     accent: '#e2b14a',
     secondary: '#0b1208',
     glow: 'rgba(226,177,74,0.45)',
-    image:
-      'https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=1600&q=75',
-    imageAlt: 'Cricket bat and ball on the pitch',
+    image: '/sports/cricket.jpg',
+    imageAlt: 'Floodlit cricket stadium packed for a night match',
     motif: 'pitch',
-    detail: 'Night-match energy. Floodlights. Leather and willow.',
+    venue: 'Endpoint',
+    detail:
+      'Fierce competition at Endpoint — leather ball, proper equipment, full rules. A 15-over tournament where every over counts.',
   },
   {
     slug: 'football',
     name: 'Football',
-    tagline: 'The arena breathes with every pass.',
+    tagline: 'Floodlights. International standard.',
     accent: '#4ade80',
     secondary: '#04110a',
     glow: 'rgba(74,222,128,0.4)',
-    image:
-      'https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?auto=format&fit=crop&w=1600&q=75',
-    imageAlt: 'Football stadium packed with fans under lights',
+    image: '/sports/football.jpg',
+    imageAlt: 'Football on the pitch inside a full stadium',
     motif: 'pitch',
-    detail: 'Cinematic pitch. Crowds. Sudden turns of fortune.',
-  },
-  {
-    slug: 'basketball',
-    name: 'Basketball',
-    tagline: 'Hardwood. Floodlights. Elevation.',
-    accent: '#ff6a00',
-    secondary: '#1a0a00',
-    glow: 'rgba(255,106,0,0.45)',
-    image:
-      'https://images.unsplash.com/photo-1519861531473-9200262188bf?auto=format&fit=crop&w=1600&q=75',
-    imageAlt: 'Basketball going through the hoop',
-    motif: 'court',
-    detail: 'Indoor heat. Vertical drama. Instant momentum.',
-  },
-  {
-    slug: 'badminton',
-    name: 'Badminton',
-    tagline: 'Shuttle. Speed. Precision.',
-    accent: '#7dd3fc',
-    secondary: '#02131f',
-    glow: 'rgba(125,211,252,0.4)',
-    image:
-      'https://images.unsplash.com/photo-1599394022918-6c277653560a?auto=format&fit=crop&w=1600&q=75',
-    imageAlt: 'Badminton shuttlecock in play',
-    motif: 'shuttle',
-    detail: 'Motion trails. Court geometry. Split-second reads.',
+    venue: 'MIT Sports Park · Endpoint',
+    detail:
+      'Under the floodlights at MIT Sports Park to international standards — and also at Endpoint. The arena breathes with every pass.',
   },
   {
     slug: 'volleyball',
     name: 'Volleyball',
-    tagline: 'Above the net. Into the lights.',
+    tagline: 'TAPMI ground lights up.',
     accent: '#fb923c',
     secondary: '#140a02',
     glow: 'rgba(251,146,60,0.4)',
-    image:
-      'https://images.unsplash.com/photo-1612872087720-bb876e2e67d1?auto=format&fit=crop&w=1600&q=75',
-    imageAlt: 'Volleyball spike over the net',
+    image: '/sports/volleyball.jpg',
+    imageAlt: 'Players silhouetted at the net as the court lights up',
     motif: 'net',
-    detail: 'Spike lines. Net tension. Airborne finish.',
+    venue: 'TAPMI Ground',
+    detail:
+      'TAPMI ground comes alive as the volleyball court lights up — spike lines, net tension, and airborne finishes.',
   },
   {
-    slug: 'throwball',
-    name: 'Throwball',
-    tagline: 'Court lines. Sudden force.',
-    accent: '#f472b6',
-    secondary: '#1a0612',
-    glow: 'rgba(244,114,182,0.4)',
-    image:
-      'https://images.unsplash.com/photo-1575361204480-aadea25e6e68?auto=format&fit=crop&w=1600&q=75',
-    imageAlt: 'Athletes competing with a ball on court',
+    slug: 'basketball',
+    name: 'Basketball',
+    tagline: 'Newly painted. Contest of the year.',
+    accent: '#ff6a00',
+    secondary: '#1a0a00',
+    glow: 'rgba(255,106,0,0.45)',
+    image: '/sports/basketball.jpg',
+    imageAlt: 'Basketball dropping through the hoop in an arena',
     motif: 'court',
-    detail: 'Distinct from volleyball — force, timing, court control.',
+    venue: 'Basketball court',
+    detail:
+      'On the newly painted court, basketball feels like the contest of the year — hardwood heat, elevation, instant momentum.',
   },
   {
     slug: 'table-tennis',
     name: 'Table Tennis',
-    tagline: 'Milliseconds. Motion trails.',
+    tagline: 'Student Centre. Stadium energy.',
     accent: '#f87171',
     secondary: '#140505',
     glow: 'rgba(248,113,113,0.4)',
-    image:
-      'https://images.unsplash.com/photo-1534158914592-062992fbe900?auto=format&fit=crop&w=1600&q=75',
-    imageAlt: 'Table tennis paddle and ball on table',
+    image: '/sports/table-tennis.jpg',
+    imageAlt: 'Table tennis paddle and ball on a blue table',
     motif: 'table',
-    detail: 'Precision. Spin. Relentless pace.',
+    venue: 'Student Centre',
+    detail:
+      'The Student Centre becomes a stadium as teams fight for the table tennis champion title — spin, pace, and milliseconds.',
+  },
+  {
+    slug: 'throwball',
+    name: 'Throwball',
+    tagline: 'Girls take the field.',
+    accent: '#f472b6',
+    secondary: '#1a0612',
+    glow: 'rgba(244,114,182,0.4)',
+    image: '/sports/throwball.jpg',
+    imageAlt: 'Athlete ready on the court for throwball',
+    motif: 'court',
+    venue: 'Court',
+    detail:
+      'Girls are ready to take the field and show how it’s done — force, timing, and full court control.',
+  },
+  {
+    slug: 'badminton',
+    name: 'Badminton',
+    tagline: 'Marena. World-class indoors.',
+    accent: '#7dd3fc',
+    secondary: '#02131f',
+    glow: 'rgba(125,211,252,0.4)',
+    image: '/sports/badminton.jpg',
+    imageAlt: 'Indoor badminton rackets and shuttlecocks on a green court',
+    motif: 'shuttle',
+    venue: 'Marena',
+    detail:
+      'Now to Marena — world-class indoor badminton courts and amenities. SportsCom has you covered.',
   },
   {
     slug: 'athletics-relays',
     name: 'Athletics Relays',
-    tagline: 'Baton. Lanes. Inheritance of speed.',
+    tagline: 'International tracks. Pure speed.',
     accent: '#facc15',
     secondary: '#121000',
     glow: 'rgba(250,204,21,0.4)',
-    image:
-      'https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=1600&q=75',
-    imageAlt: 'Sprinters racing on athletics track',
+    image: '/sports/athletics.jpg',
+    imageAlt: 'Sprinters racing on an international athletics track',
     motif: 'track',
-    detail: 'Exempt from the three-sport cap. Pure relay theatre.',
+    venue: 'MIT Sports Park',
+    detail:
+      'Run on international-standard tracks at MIT Sports Park. Exempt from the three-sport cap — baton, lanes, inheritance of speed.',
   },
   {
     slug: 'swimming-relays',
     name: 'Swimming Relays',
-    tagline: 'Lanes of light beneath the surface.',
+    tagline: 'Marena opens the lanes.',
     accent: '#22d3ee',
     secondary: '#021018',
     glow: 'rgba(34,211,238,0.4)',
-    image:
-      'https://images.unsplash.com/photo-1519315901367-f34ff915448b?auto=format&fit=crop&w=1600&q=75',
-    imageAlt: 'Swimmer underwater in a lit pool lane',
+    image: '/sports/swimming.jpg',
+    imageAlt: 'Competitive swimmer powering through a lit pool lane',
     motif: 'pool',
-    detail: 'Exempt from the three-sport cap. Water, rhythm, handovers.',
+    venue: 'Marena',
+    detail:
+      'Marena enters again — your chance to race in the pool. Exempt from the three-sport cap. Water, rhythm, handovers.',
   },
 ]
 

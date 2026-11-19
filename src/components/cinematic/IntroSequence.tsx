@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import { ElasticStringField } from '@/components/interaction/ElasticStringField'
 import { InteractiveTitle } from '@/components/interaction/InteractiveTitle'
 import { LiveParticleField } from '@/components/interaction/LiveParticleField'
@@ -13,6 +13,73 @@ const SKIP_KEY = 'speed-intro-skipped'
 
 type Props = {
   onComplete: () => void
+}
+
+/** Pointer-reactive SportsCom crest for the heroic brand beat. */
+function HeroicCrest() {
+  const ref = useRef<HTMLDivElement>(null)
+  const mx = useMotionValue(0)
+  const my = useMotionValue(0)
+  const sx = useSpring(mx, { stiffness: 120, damping: 18 })
+  const sy = useSpring(my, { stiffness: 120, damping: 18 })
+  const rotateX = useTransform(sy, [-40, 40], [10, -10])
+  const rotateY = useTransform(sx, [-40, 40], [-12, 12])
+
+  return (
+    <motion.div
+      ref={ref}
+      style={{ rotateX, rotateY, transformPerspective: 700 }}
+      onPointerMove={(e) => {
+        const el = ref.current
+        if (!el) return
+        const r = el.getBoundingClientRect()
+        mx.set(e.clientX - (r.left + r.width / 2))
+        my.set(e.clientY - (r.top + r.height / 2))
+      }}
+      onPointerLeave={() => {
+        mx.set(0)
+        my.set(0)
+      }}
+      className="relative mb-8 cursor-crosshair"
+      initial={{ opacity: 0, scale: 0.55, filter: 'blur(16px)' }}
+      animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+      transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+    >
+      {/* Expanding gold shockwaves */}
+      {[0, 1, 2].map((i) => (
+        <motion.span
+          key={i}
+          className="pointer-events-none absolute left-1/2 top-1/2 h-24 w-24 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[var(--speed-gold)]/40 sm:h-28 sm:w-28"
+          initial={{ scale: 0.6, opacity: 0.55 }}
+          animate={{ scale: [0.7, 2.4 + i * 0.35], opacity: [0.5, 0] }}
+          transition={{
+            duration: 2.4,
+            delay: 0.35 + i * 0.35,
+            repeat: Infinity,
+            repeatDelay: 1.2,
+            ease: 'easeOut',
+          }}
+        />
+      ))}
+      <div className="relative mx-auto h-24 w-24 overflow-hidden rounded-full border border-[var(--speed-gold)]/50 shadow-[0_0_60px_rgba(226,177,74,0.55)] sm:h-28 sm:w-28">
+        <Image
+          src="/brand/sportscom-logo.jpg"
+          alt="SportsCom"
+          fill
+          className="object-cover"
+          priority
+        />
+        <motion.div
+          className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-transparent via-white/25 to-transparent"
+          animate={{ x: ['-120%', '120%'] }}
+          transition={{ duration: 2.8, delay: 0.6, repeat: Infinity, repeatDelay: 2.2, ease: 'easeInOut' }}
+        />
+      </div>
+      <p className="mt-4 text-center font-display text-[10px] tracking-[0.45em] text-[var(--speed-gold)]/80">
+        MOVE OVER THE CREST
+      </p>
+    </motion.div>
+  )
 }
 
 export function IntroSequence({ onComplete }: Props) {
@@ -33,21 +100,22 @@ export function IntroSequence({ onComplete }: Props) {
       return
     }
 
+    // Longer brand beat — crest → SPORTSCOM → PRESENTS → SPEED
     const timers = [
-      window.setTimeout(() => setPhase(1), 400),
-      window.setTimeout(() => setPhase(2), 2200),
-      window.setTimeout(() => setPhase(3), 4200),
-      window.setTimeout(() => setPhase(4), 6000),
-      window.setTimeout(() => setPhase(5), 7600),
+      window.setTimeout(() => setPhase(1), 350),
+      window.setTimeout(() => setPhase(2), 2400),
+      window.setTimeout(() => setPhase(3), 5200),
+      window.setTimeout(() => setPhase(4), 7600),
+      window.setTimeout(() => setPhase(5), 9400),
       window.setTimeout(() => {
         sessionStorage.setItem(SKIP_KEY, '1')
         setVisible(false)
         done.current()
-      }, 11000),
+      }, 13000),
     ]
 
     const loadTimer = window.setInterval(() => {
-      setLoadPct((p) => Math.min(100, p + (p < 70 ? 3 : 2)))
+      setLoadPct((p) => Math.min(100, p + (p < 70 ? 2.5 : 1.5)))
     }, 140)
 
     return () => {
@@ -69,12 +137,27 @@ export function IntroSequence({ onComplete }: Props) {
           className="fixed inset-0 z-[80] overflow-hidden bg-black"
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
           role="dialog"
           aria-label="SPEED cinematic introduction"
         >
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(14,18,28,0.85),#000_72%)]" />
-          <LiveParticleField className="absolute inset-0 z-0 h-full w-full opacity-25" density={28} />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(18,22,36,0.9),#000_68%)]" />
+          {/* Heroic vignette that breathes with the brand beat */}
+          <motion.div
+            className="pointer-events-none absolute inset-0"
+            animate={{
+              background:
+                phase >= 2
+                  ? [
+                      'radial-gradient(ellipse at 50% 42%, rgba(226,177,74,0.14), transparent 55%)',
+                      'radial-gradient(ellipse at 50% 42%, rgba(226,177,74,0.22), transparent 58%)',
+                      'radial-gradient(ellipse at 50% 42%, rgba(226,177,74,0.12), transparent 55%)',
+                    ]
+                  : 'radial-gradient(ellipse at 50% 70%, rgba(226,177,74,0.08), transparent 60%)',
+            }}
+            transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
+          />
+          <LiveParticleField className="absolute inset-0 z-0 h-full w-full opacity-30" density={phase >= 2 ? 42 : 28} />
           <ElasticStringField
             className="absolute inset-0 z-[1] h-full w-full"
             variant="intro"
@@ -98,7 +181,6 @@ export function IntroSequence({ onComplete }: Props) {
             </button>
           </div>
 
-          {/* Center stage — single stacked column, nothing absolute overlapping copy */}
           <div className="relative z-10 flex h-full w-full flex-col items-center justify-center px-5">
             {phase < 2 && (
               <motion.div
@@ -128,35 +210,41 @@ export function IntroSequence({ onComplete }: Props) {
                   key="sportscom"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.5 }}
-                  className="flex w-full max-w-3xl flex-col items-center text-center"
+                  exit={{ opacity: 0, scale: 0.94, filter: 'blur(8px)' }}
+                  transition={{ duration: 0.55 }}
+                  className="flex w-full max-w-4xl flex-col items-center text-center"
                 >
-                  <div className="relative mb-7 h-16 w-16 overflow-hidden rounded-full border border-white/30 shadow-[0_0_40px_rgba(226,177,74,0.35)] sm:h-20 sm:w-20">
-                    <Image
-                      src="/brand/sportscom-logo.jpg"
-                      alt="SportsCom"
-                      fill
-                      className="object-cover"
-                      priority
-                    />
-                  </div>
+                  <HeroicCrest />
                   <LetterReveal
                     text="SPORTSCOM"
                     as="h1"
                     firstFromFar
-                    delay={0.05}
-                    stagger={0.07}
-                    className="w-full justify-center text-[clamp(2.4rem,9vw,4.5rem)] font-extrabold leading-none tracking-[0.06em] text-white"
+                    delay={0.15}
+                    stagger={0.08}
+                    className="w-full justify-center text-[clamp(2.8rem,11vw,5.5rem)] font-extrabold leading-none tracking-[0.06em] text-white drop-shadow-[0_0_40px_rgba(226,177,74,0.25)]"
                     style={{ fontFamily: 'var(--font-outfit), system-ui, sans-serif' }}
+                  />
+                  <motion.div
+                    initial={{ scaleX: 0, opacity: 0 }}
+                    animate={{ scaleX: 1, opacity: 1 }}
+                    transition={{ delay: 1.15, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                    className="mt-5 h-px w-40 origin-center bg-gradient-to-r from-transparent via-[var(--speed-gold)] to-transparent sm:w-56"
                   />
                   <LetterReveal
                     text="PRESENTS"
                     as="p"
-                    delay={0.85}
-                    stagger={0.05}
-                    className="mt-4 w-full justify-center font-display text-[clamp(1.1rem,3.5vw,1.75rem)] tracking-[0.4em] text-[var(--speed-gold)]"
+                    delay={1.25}
+                    stagger={0.06}
+                    className="mt-4 w-full justify-center font-display text-[clamp(1.25rem,4vw,2rem)] tracking-[0.42em] text-[var(--speed-gold)]"
                   />
+                  <motion.p
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 2.1, duration: 0.55 }}
+                    className="mt-6 max-w-sm text-xs tracking-[0.18em] text-white/45"
+                  >
+                    THE SPORTS COMMITTEE · TAPMI
+                  </motion.p>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -164,12 +252,12 @@ export function IntroSequence({ onComplete }: Props) {
             {phase >= 4 && (
               <motion.div
                 key="speed"
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7 }}
+                initial={{ opacity: 0, y: 20, scale: 0.96 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
                 className="flex w-full max-w-4xl flex-col items-center text-center"
               >
-                <InteractiveTitle className="mx-auto block text-[clamp(3.8rem,15vw,7.5rem)]" />
+                <InteractiveTitle className="mx-auto block text-[clamp(4rem,16vw,8rem)]" />
 
                 <p className="mt-3 font-display text-xl tracking-[0.32em] text-white/75 sm:text-2xl">
                   2026–27
@@ -182,8 +270,9 @@ export function IntroSequence({ onComplete }: Props) {
                 {phase >= 5 && (
                   <motion.button
                     type="button"
-                    initial={{ opacity: 0, y: 12 }}
+                    initial={{ opacity: 0, y: 14 }}
                     animate={{ opacity: 1, y: 0 }}
+                    whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.97 }}
                     onClick={skip}
                     className="speed-cta speed-cta-sweep mt-10"
