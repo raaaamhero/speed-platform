@@ -14,13 +14,14 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
 }
 
 body {
   background: var(--speed-bg);
   color: var(--speed-ink);
   font-family: var(--font-outfit), system-ui, sans-serif;
+  overflow-x: hidden;
 }
 
 .font-display {
@@ -53,14 +54,28 @@ body {
   color: #120e06;
   font-family: var(--font-bebas), sans-serif;
   letter-spacing: 0.14em;
-  padding: 0.85rem 1.4rem;
-  font-size: 1.05rem;
-  transition: transform 0.2s ease, filter 0.2s ease;
+  padding: 0.9rem 1.5rem;
+  font-size: 1.08rem;
+  transition: transform 0.25s ease, filter 0.25s ease;
+  position: relative;
 }
 
 .speed-cta:hover {
   filter: brightness(1.06);
   transform: translateY(-1px);
+}
+
+.speed-cta-sweep::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, 0.45) 50%, transparent 65%);
+  transform: translateX(-120%);
+  transition: transform 0.55s ease;
+}
+
+.speed-cta-sweep:hover::after {
+  transform: translateX(120%);
 }
 
 .speed-ghost {
@@ -71,14 +86,15 @@ body {
   color: var(--speed-ink);
   font-family: var(--font-bebas), sans-serif;
   letter-spacing: 0.14em;
-  padding: 0.85rem 1.35rem;
-  font-size: 1.05rem;
-  transition: border-color 0.2s ease, color 0.2s ease;
+  padding: 0.9rem 1.4rem;
+  font-size: 1.08rem;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
 }
 
 .speed-ghost:hover {
   border-color: var(--speed-gold);
   color: var(--speed-gold);
+  background: rgba(226, 177, 74, 0.06);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -87,7 +103,9 @@ body {
   }
 
   .speed-cta:hover,
-  .speed-ghost:hover {
+  .speed-ghost:hover,
+  .speed-cta-sweep::after {
     transform: none;
+    transition: none;
   }
 }
