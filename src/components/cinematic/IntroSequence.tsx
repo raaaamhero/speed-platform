@@ -24,7 +24,9 @@ export function IntroSequence({ onComplete }: Props) {
 
   useEffect(() => {
     if (typeof window === 'undefined') return
-    if (sessionStorage.getItem(SKIP_KEY) === '1' || reduced) {
+    const forceReplay = new URLSearchParams(window.location.search).has('intro')
+    if (forceReplay) sessionStorage.removeItem(SKIP_KEY)
+    if ((!forceReplay && sessionStorage.getItem(SKIP_KEY) === '1') || reduced) {
       setVisible(false)
       done.current()
       return
