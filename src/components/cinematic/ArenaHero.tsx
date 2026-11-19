@@ -34,11 +34,11 @@ export function ArenaHero() {
           initial={reduced ? false : { opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1, duration: 0.7 }}
-          className="text-sm font-extrabold tracking-[0.28em] text-white sm:text-base"
+          className="text-base font-extrabold tracking-[0.18em] text-white sm:text-xl"
           style={{ fontFamily: 'var(--font-outfit), system-ui, sans-serif' }}
         >
-          <span className="text-white">SPORTSCOM</span>{' '}
-          <span className="font-medium tracking-[0.35em] text-[var(--speed-gold)]">PRESENTS</span>
+          <span className="font-extrabold text-white">SPORTSCOM</span>{' '}
+          <span className="font-semibold tracking-[0.32em] text-[var(--speed-gold)]">PRESENTS</span>
         </motion.p>
 
         <motion.p
