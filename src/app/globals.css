@@ -9,6 +9,9 @@
   --speed-gold: #e2b14a;
   --speed-crimson: #c81e2c;
   --speed-arena-mid: #12151c;
+  --speed-line: rgba(244, 241, 234, 0.12);
+  --speed-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --speed-duration: 0.55s;
   --background: var(--speed-bg);
   --foreground: var(--speed-ink);
 }
@@ -22,6 +25,16 @@ body {
   color: var(--speed-ink);
   font-family: var(--font-outfit), system-ui, sans-serif;
   overflow-x: hidden;
+}
+
+::selection {
+  background: rgba(226, 177, 74, 0.35);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 2px solid var(--speed-gold);
+  outline-offset: 3px;
 }
 
 .font-display {
@@ -46,23 +59,43 @@ body {
   pointer-events: none;
 }
 
+.speed-panel {
+  border: 1px solid var(--speed-line);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.01));
+}
+
+.speed-kicker {
+  font-family: var(--font-bebas), sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.4em;
+  color: var(--speed-gold);
+}
+
 .speed-cta {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  min-height: 2.75rem;
   background: var(--speed-gold);
   color: #120e06;
   font-family: var(--font-bebas), sans-serif;
   letter-spacing: 0.14em;
   padding: 0.9rem 1.5rem;
   font-size: 1.08rem;
-  transition: transform 0.25s ease, filter 0.25s ease;
+  transition: transform var(--speed-duration) var(--speed-ease), filter 0.25s ease;
   position: relative;
 }
 
 .speed-cta:hover {
   filter: brightness(1.06);
   transform: translateY(-1px);
+}
+
+.speed-cta:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+  filter: none;
 }
 
 .speed-cta-sweep::after {
@@ -82,6 +115,7 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  min-height: 2.75rem;
   border: 1px solid rgba(244, 241, 234, 0.28);
   color: var(--speed-ink);
   font-family: var(--font-bebas), sans-serif;
@@ -97,6 +131,77 @@ body {
   background: rgba(226, 177, 74, 0.06);
 }
 
+.speed-input {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(0, 0, 0, 0.5);
+  padding: 0.85rem 1rem;
+  color: var(--speed-ink);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.speed-input:focus {
+  border-color: var(--speed-gold);
+}
+
+.speed-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-bebas), sans-serif;
+  letter-spacing: 0.2em;
+  font-size: 0.7rem;
+  padding: 0.35rem 0.65rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.speed-status-live {
+  border-color: rgba(200, 30, 44, 0.5);
+  color: #ff6b6b;
+  background: rgba(200, 30, 44, 0.12);
+}
+
+.speed-status-upcoming {
+  border-color: rgba(226, 177, 74, 0.45);
+  color: var(--speed-gold);
+  background: rgba(226, 177, 74, 0.08);
+}
+
+.speed-status-done {
+  border-color: rgba(255, 255, 255, 0.2);
+  color: var(--speed-muted);
+}
+
+@keyframes speed-flood {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.75;
+  }
+}
+
+.speed-flood {
+  animation: speed-flood 4.5s ease-in-out infinite;
+}
+
+@keyframes speed-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.speed-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent);
+  background-size: 200% 100%;
+  animation: speed-shimmer 2.4s linear infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -104,8 +209,11 @@ body {
 
   .speed-cta:hover,
   .speed-ghost:hover,
-  .speed-cta-sweep::after {
+  .speed-cta-sweep::after,
+  .speed-flood,
+  .speed-shimmer {
     transform: none;
     transition: none;
+    animation: none;
   }
 }

@@ -5,18 +5,30 @@ import Link from 'next/link'
 import { useState } from 'react'
 
 const links = [
+  { href: '/#about', label: 'About' },
   { href: '/#sports', label: 'Sports' },
   { href: '/#teams', label: 'Teams' },
   { href: '/standings', label: 'Standings' },
   { href: '/fixtures', label: 'Fixtures' },
 ]
 
-export function SiteHeader() {
+type Props = {
+  variant?: 'overlay' | 'solid'
+}
+
+export function SiteHeader({ variant = 'overlay' }: Props) {
   const [open, setOpen] = useState(false)
+  const solid = variant === 'solid'
 
   return (
-    <header className="absolute inset-x-0 top-0 z-40">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-5 sm:px-8">
+    <header
+      className={`${
+        solid
+          ? 'fixed inset-x-0 top-0 z-40 border-b border-white/10 bg-[#07080b]/92 backdrop-blur-md'
+          : 'absolute inset-x-0 top-0 z-40'
+      }`}
+    >
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4 sm:px-8 sm:py-5">
         <Link href="/" className="group flex items-center gap-3">
           <span className="relative h-10 w-10 overflow-hidden rounded-full border border-white/20">
             <Image src="/brand/sportscom-logo.jpg" alt="SportsCom" fill className="object-cover" />
@@ -29,7 +41,7 @@ export function SiteHeader() {
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-7 md:flex">
+        <nav className="hidden items-center gap-6 lg:flex" aria-label="Primary">
           {links.map((l) => (
             <Link
               key={l.href}
@@ -47,8 +59,9 @@ export function SiteHeader() {
           </Link>
           <button
             type="button"
-            className="border border-white/20 px-2 py-2 text-xs text-white md:hidden"
-            aria-label="Menu"
+            className="border border-white/20 px-2.5 py-2 text-xs text-white lg:hidden"
+            aria-label="Open menu"
+            aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
           >
             MENU
@@ -57,8 +70,8 @@ export function SiteHeader() {
       </div>
 
       {open && (
-        <div className="border-t border-white/10 bg-black/90 px-5 py-4 md:hidden">
-          <nav className="flex flex-col gap-3">
+        <div className="border-t border-white/10 bg-black/95 px-5 py-4 lg:hidden">
+          <nav className="flex flex-col gap-3" aria-label="Mobile">
             {links.map((l) => (
               <Link
                 key={l.href}

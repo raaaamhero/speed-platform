@@ -37,7 +37,13 @@ export function OpsDashboard() {
   }, [])
 
   if (error) return <p className="text-[var(--speed-crimson)]">{error}</p>
-  if (!data) return <p className="text-[var(--speed-muted)]">Loading command centre…</p>
+  if (!data) {
+    return (
+      <div className="speed-panel speed-shimmer h-40 w-full" aria-busy="true">
+        <p className="p-6 text-[var(--speed-muted)]">Loading command centre…</p>
+      </div>
+    )
+  }
 
   const pct =
     data.stats.students > 0 ? Math.round((data.stats.registered / data.stats.students) * 100) : 0
@@ -46,7 +52,8 @@ export function OpsDashboard() {
     <div className="space-y-10">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h2 className="font-display text-3xl tracking-[0.08em]">Overview</h2>
+          <p className="speed-kicker">CONTROL ROOM</p>
+          <h2 className="mt-2 font-display text-3xl tracking-[0.08em]">Overview</h2>
           <p className="mt-2 text-sm text-[var(--speed-muted)]">
             Registration {data.stats.registration_open ? 'OPEN' : 'CLOSED'} · {pct}% complete
           </p>
@@ -61,6 +68,14 @@ export function OpsDashboard() {
         </div>
       </div>
 
+      <div className="h-2 w-full overflow-hidden border border-white/10 bg-black/40">
+        <div
+          className="h-full bg-[var(--speed-gold)] transition-all duration-700"
+          style={{ width: `${pct}%` }}
+          aria-label={`${pct}% registered`}
+        />
+      </div>
+
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {[
           ['Students loaded', data.stats.students],
@@ -68,7 +83,7 @@ export function OpsDashboard() {
           ['Fixtures', data.stats.fixtures],
           ['Pending results', data.stats.pending_results],
         ].map(([label, value]) => (
-          <div key={String(label)} className="border border-white/10 bg-white/[0.03] px-5 py-5">
+          <div key={String(label)} className="speed-panel px-5 py-5">
             <p className="font-display text-xs tracking-[0.2em] text-[var(--speed-muted)]">{label}</p>
             <p className="mt-2 font-display text-4xl tracking-[0.06em]">{value}</p>
           </div>

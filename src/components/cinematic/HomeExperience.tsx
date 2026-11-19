@@ -7,6 +7,8 @@ import { SiteHeader } from '@/components/site-header'
 import { ArenaHero } from './ArenaHero'
 import { AudioToggle } from './AudioToggle'
 import { IntroSequence } from './IntroSequence'
+import { ManifestoSection } from './ManifestoSection'
+import { RoadSection } from './RoadSection'
 import { SmoothScroll } from './SmoothScroll'
 import { SportsComBrand } from './SportsComBrand'
 import { StatsBand } from './StatsBand'
@@ -38,11 +40,13 @@ export function HomeExperience() {
         <main>
           <ArenaHero />
           <StatsBand />
+          <ManifestoSection />
           <SportsUniverse />
           <TeamsShowcase />
+          <RoadSection />
           <SportsComBrand />
           <section className="border-t border-white/10 bg-black py-20 text-center">
-            <p className="font-display text-xs tracking-[0.4em] text-[var(--speed-gold)]">THE CALL</p>
+            <p className="speed-kicker">THE CALL</p>
             <h2 className="mt-4 font-display text-4xl tracking-[0.06em] text-white sm:text-6xl">
               Step into SPEED.
             </h2>
