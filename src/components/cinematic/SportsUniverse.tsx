@@ -85,7 +85,7 @@ export function SportsUniverse() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-10%' }}
               transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
-              className="group relative min-h-[52vh] overflow-hidden border border-white/10 sm:min-h-[58vh]"
+              className="group relative min-h-[42vh] overflow-hidden border border-white/10 sm:min-h-[58vh]"
             >
               <button
                 type="button"
@@ -100,7 +100,7 @@ export function SportsUniverse() {
                   alt={sport.imageAlt}
                   fill
                   sizes="(max-width: 768px) 100vw, 90vw"
-                  className="object-cover transition duration-700 group-hover:scale-[1.045]"
+                  className="object-cover transition duration-500 ease-out group-hover:scale-[1.04] motion-reduce:transition-none"
                   loading={i < 2 ? 'eager' : 'lazy'}
                 />
                 <div
@@ -117,7 +117,7 @@ export function SportsUniverse() {
               </div>
 
               <div
-                className={`relative z-20 pointer-events-none flex h-full min-h-[52vh] flex-col justify-end p-6 sm:min-h-[58vh] sm:p-10 ${
+                className={`relative z-20 pointer-events-none flex h-full min-h-[42vh] flex-col justify-end p-5 sm:min-h-[58vh] sm:p-10 ${
                   reverse ? 'sm:items-end sm:text-right' : ''
                 }`}
               >

@@ -34,8 +34,12 @@ export function SiteHeader({ variant = 'overlay' }: Props) {
             <Image src="/brand/sportscom-logo.jpg" alt="SportsCom" fill className="object-cover" />
           </span>
           <span className="flex flex-col leading-none">
-            <span className="font-display text-[10px] tracking-[0.35em] text-[var(--speed-muted)] transition group-hover:text-[var(--speed-gold)]">
-              SPORTSCOM PRESENTS
+            <span
+              className="text-[10px] tracking-[0.2em] text-[var(--speed-muted)] transition group-hover:text-white"
+              style={{ fontFamily: 'var(--font-outfit), system-ui, sans-serif' }}
+            >
+              <span className="font-extrabold text-white/90">SPORTSCOM</span>{' '}
+              <span className="font-medium tracking-[0.28em] text-[var(--speed-gold)]">PRESENTS</span>
             </span>
             <span className="font-display text-2xl tracking-[0.12em] text-[var(--speed-ink)]">SPEED</span>
           </span>

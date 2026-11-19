@@ -4,6 +4,8 @@ import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useReducedMotion } from '@/hooks/use-reduced-motion'
+import { InteractiveStrings } from './InteractiveStrings'
+import { LetterReveal } from './LetterReveal'
 import { ParticleField } from './ParticleField'
 
 const SKIP_KEY = 'speed-intro-skipped'
@@ -16,6 +18,7 @@ export function IntroSequence({ onComplete }: Props) {
   const reduced = useReducedMotion()
   const [phase, setPhase] = useState(0)
   const [visible, setVisible] = useState(true)
+  const [loadPct, setLoadPct] = useState(0)
   const done = useRef(onComplete)
   done.current = onComplete
 
@@ -28,18 +31,26 @@ export function IntroSequence({ onComplete }: Props) {
     }
 
     const timers = [
-      window.setTimeout(() => setPhase(1), 600),
-      window.setTimeout(() => setPhase(2), 2200),
-      window.setTimeout(() => setPhase(3), 4000),
-      window.setTimeout(() => setPhase(4), 5800),
-      window.setTimeout(() => setPhase(5), 7800),
+      window.setTimeout(() => setPhase(1), 400),
+      window.setTimeout(() => setPhase(2), 1600),
+      window.setTimeout(() => setPhase(3), 3800),
+      window.setTimeout(() => setPhase(4), 5600),
+      window.setTimeout(() => setPhase(5), 7200),
       window.setTimeout(() => {
         sessionStorage.setItem(SKIP_KEY, '1')
         setVisible(false)
         done.current()
-      }, 10500),
+      }, 9800),
     ]
-    return () => timers.forEach(clearTimeout)
+
+    const loadTimer = window.setInterval(() => {
+      setLoadPct((p) => Math.min(100, p + (p < 70 ? 4 : 2)))
+    }, 120)
+
+    return () => {
+      timers.forEach(clearTimeout)
+      clearInterval(loadTimer)
+    }
   }, [reduced])
 
   function skip() {
@@ -54,40 +65,28 @@ export function IntroSequence({ onComplete }: Props) {
         <motion.div
           className="fixed inset-0 z-[80] overflow-hidden bg-black"
           initial={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
+          exit={{ opacity: 0, scale: 1.02 }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           role="dialog"
           aria-label="SPEED cinematic introduction"
         >
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(20,24,36,0.55),#000_70%)]" />
-          <ParticleField className="absolute inset-0 h-full w-full" density={40} />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(18,20,28,0.7),#000_72%)]" />
+          <ParticleField className="absolute inset-0 h-full w-full opacity-70" density={28} />
+          <InteractiveStrings className="absolute inset-0 z-[1] h-full w-full" />
 
-          {/* floodlights awaken in sequence */}
           <div
-            className="pointer-events-none absolute left-[8%] top-0 h-[75%] w-[14%] origin-top -rotate-6 bg-gradient-to-b from-white/25 to-transparent blur-2xl transition-opacity duration-1000"
-            style={{ opacity: phase >= 1 ? 0.85 : 0 }}
+            className="pointer-events-none absolute left-[10%] top-0 h-[70%] w-[12%] origin-top -rotate-6 bg-gradient-to-b from-white/20 to-transparent blur-2xl transition-opacity duration-700"
+            style={{ opacity: phase >= 1 ? 0.8 : 0.15 }}
           />
           <div
-            className="pointer-events-none absolute right-[12%] top-0 h-[70%] w-[12%] origin-top rotate-8 bg-gradient-to-b from-[var(--speed-gold)]/30 to-transparent blur-2xl transition-opacity duration-1000"
-            style={{ opacity: phase >= 1 ? 0.7 : 0 }}
-          />
-          <div
-            className="pointer-events-none absolute left-1/2 top-0 h-[60%] w-[18%] -translate-x-1/2 bg-gradient-to-b from-[var(--speed-crimson)]/25 to-transparent blur-3xl transition-opacity duration-1000"
-            style={{ opacity: phase >= 2 ? 0.65 : 0 }}
-          />
-          <div
-            className="pointer-events-none absolute -left-20 top-10 h-64 w-64 rounded-full bg-[var(--speed-crimson)]/25 blur-[90px] transition-opacity duration-1000"
-            style={{ opacity: phase >= 2 ? 0.7 : 0.1 }}
-          />
-          <div
-            className="pointer-events-none absolute -right-10 bottom-0 h-80 w-80 rounded-full bg-[var(--speed-gold)]/20 blur-[100px] transition-opacity duration-1000"
-            style={{ opacity: phase >= 3 ? 0.85 : 0.1 }}
+            className="pointer-events-none absolute right-[14%] top-0 h-[65%] w-[11%] origin-top rotate-7 bg-gradient-to-b from-[var(--speed-gold)]/28 to-transparent blur-2xl transition-opacity duration-700"
+            style={{ opacity: phase >= 1 ? 0.7 : 0.1 }}
           />
 
-          <div className="absolute right-5 top-5 z-10 flex gap-2">
+          <div className="absolute right-4 top-4 z-20 flex gap-2 sm:right-5 sm:top-5">
             <a
               href="/register"
-              className="border border-white/20 px-3 py-1.5 font-display text-[11px] tracking-[0.25em] text-white/70 hover:text-white"
+              className="min-h-10 border border-white/25 px-3 py-2 font-display text-[11px] tracking-[0.22em] text-white/80 hover:text-white"
               onClick={skip}
             >
               REGISTER
@@ -95,24 +94,48 @@ export function IntroSequence({ onComplete }: Props) {
             <button
               type="button"
               onClick={skip}
-              className="border border-white/20 px-3 py-1.5 font-display text-[11px] tracking-[0.25em] text-white/70 hover:text-white"
+              className="min-h-10 border border-white/25 px-3 py-2 font-display text-[11px] tracking-[0.22em] text-white/80 hover:text-white"
             >
-              SKIP INTRO
+              SKIP
             </button>
           </div>
 
-          <div className="relative flex h-full flex-col items-center justify-center px-6 text-center">
+          <div className="relative z-10 flex h-full flex-col items-center justify-center px-5 text-center">
+            {phase < 2 && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="absolute bottom-16 left-0 right-0 px-6"
+              >
+                <p
+                  className="text-xs font-semibold tracking-[0.35em] text-white/55"
+                  style={{ fontFamily: 'var(--font-outfit), system-ui, sans-serif' }}
+                >
+                  TUNING THE ARENA
+                </p>
+                <div className="mx-auto mt-3 h-[2px] max-w-xs overflow-hidden bg-white/10">
+                  <div className="h-full bg-[var(--speed-gold)] transition-[width] duration-150" style={{ width: `${loadPct}%` }} />
+                </div>
+                <p className="mt-3 text-[11px] text-white/40">Drag or tap the light strings</p>
+              </motion.div>
+            )}
+
             <AnimatePresence mode="wait">
               {phase >= 2 && phase < 4 && (
                 <motion.div
-                  key="logo"
-                  initial={{ opacity: 0, scale: 0.92, filter: 'blur(8px)' }}
-                  animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 1.05, ease: [0.22, 1, 0.36, 1] }}
+                  key="sportscom"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0, y: -24, filter: 'blur(6px)' }}
+                  transition={{ duration: 0.55 }}
                   className="flex flex-col items-center"
                 >
-                  <div className="relative h-20 w-20 overflow-hidden rounded-full border border-white/25 bg-black/40 shadow-[0_0_50px_rgba(226,177,74,0.35)] sm:h-28 sm:w-28">
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.85 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.7 }}
+                    className="relative mb-7 h-16 w-16 overflow-hidden rounded-full border border-white/30 shadow-[0_0_40px_rgba(226,177,74,0.35)] sm:h-20 sm:w-20"
+                  >
                     <Image
                       src="/brand/sportscom-logo.jpg"
                       alt="SportsCom"
@@ -120,41 +143,66 @@ export function IntroSequence({ onComplete }: Props) {
                       className="object-cover"
                       priority
                     />
-                  </div>
-                  <p className="mt-6 font-display text-sm tracking-[0.45em] text-[var(--speed-gold)] sm:text-base">
-                    SPORTSCOM PRESENTS
-                  </p>
+                  </motion.div>
+
+                  <LetterReveal
+                    text="SPORTSCOM"
+                    as="h1"
+                    firstFromFar
+                    delay={0.05}
+                    stagger={0.07}
+                    className="text-[clamp(2.6rem,10vw,4.75rem)] font-extrabold leading-none tracking-[0.06em] text-white"
+                    style={{ fontFamily: 'var(--font-outfit), system-ui, sans-serif' }}
+                  />
+
+                  <LetterReveal
+                    text="PRESENTS"
+                    as="p"
+                    delay={0.85}
+                    stagger={0.05}
+                    className="mt-4 font-display text-[clamp(1.15rem,4vw,1.85rem)] tracking-[0.4em] text-[var(--speed-gold)]"
+                  />
                 </motion.div>
               )}
             </AnimatePresence>
 
             {phase >= 4 && (
-              <motion.div
-                initial={{ opacity: 0, y: 28 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                className="relative"
-              >
-                <div className="pointer-events-none absolute inset-x-[-20%] top-1/2 h-px -translate-y-1/2 bg-gradient-to-r from-transparent via-[var(--speed-gold)] to-transparent opacity-80" />
-                <h1 className="font-display text-[clamp(4.5rem,18vw,9rem)] leading-none tracking-[0.06em] text-white">
-                  SPEED
-                </h1>
-                <p className="mt-2 font-display text-xl tracking-[0.35em] text-white/70 sm:text-2xl">
-                  2026–27
-                </p>
-                <p className="mt-5 font-display text-[clamp(1.15rem,3.5vw,2rem)] tracking-[0.12em] text-[var(--speed-ink)]">
-                  WHERE RIVALRIES ARE BORN.
-                </p>
+              <motion.div key="speed" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="relative">
+                <div className="pointer-events-none absolute inset-x-[-18%] top-1/2 h-px -translate-y-1/2 bg-gradient-to-r from-transparent via-[var(--speed-gold)] to-transparent opacity-70" />
+                <LetterReveal
+                  text="SPEED"
+                  as="h1"
+                  firstFromFar
+                  delay={0}
+                  stagger={0.09}
+                  className="font-display text-[clamp(4.2rem,17vw,8.5rem)] leading-none tracking-[0.06em] text-white"
+                />
+                <LetterReveal
+                  text="2026–27"
+                  as="p"
+                  delay={0.45}
+                  stagger={0.04}
+                  className="mt-3 font-display text-xl tracking-[0.32em] text-white/75 sm:text-2xl"
+                />
+                <LetterReveal
+                  text="WHERE RIVALRIES ARE BORN"
+                  as="p"
+                  delay={0.75}
+                  stagger={0.025}
+                  className="mt-5 font-display text-[clamp(1rem,3.2vw,1.7rem)] tracking-[0.1em] text-[var(--speed-ink)]"
+                />
               </motion.div>
             )}
 
             {phase >= 5 && (
               <motion.button
                 type="button"
-                initial={{ opacity: 0, y: 12 }}
+                initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
                 onClick={skip}
-                className="speed-cta speed-cta-sweep absolute bottom-14"
+                className="speed-cta speed-cta-sweep absolute bottom-12 sm:bottom-14"
               >
                 ENTER THE ARENA
               </motion.button>
