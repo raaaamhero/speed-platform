@@ -20,7 +20,7 @@ const SportsUniverse = dynamic(
     ssr: false,
     loading: () => (
       <div className="border-t border-white/10 bg-black px-5 py-24 text-center text-[var(--speed-muted)]">
-        Loading the arena…
+        Loading sports…
       </div>
     ),
   },
@@ -46,12 +46,12 @@ export function HomeExperience() {
           <RoadSection />
           <SportsComBrand />
           <section className="border-t border-white/10 bg-black py-20 text-center">
-            <p className="speed-kicker">THE CALL</p>
+            <p className="speed-kicker">REGISTER</p>
             <h2 className="mt-4 font-display text-4xl tracking-[0.06em] text-white sm:text-6xl">
-              Step into SPEED.
+              Register for SPEED now.
             </h2>
             <p className="mx-auto mt-4 max-w-md text-[var(--speed-muted)]">
-              Registration is open for eligible students. Claim your Player ID and pick your sports.
+              Your SPEED journey begins with registration.
             </p>
             <a href="/register" className="speed-cta speed-cta-sweep mt-8 inline-flex">
               REGISTER FOR SPEED

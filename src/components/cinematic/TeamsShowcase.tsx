@@ -24,15 +24,10 @@ export function TeamsShowcase() {
   return (
     <section id="teams" className="relative scroll-mt-20 border-t border-white/10 bg-[#07080b] py-16 sm:py-28">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
-        <p className="speed-kicker">THE CONTENDERS</p>
+        <p className="speed-kicker">TEAMS</p>
         <h2 className="mt-3 font-display text-4xl tracking-[0.06em] text-white sm:text-6xl">
           12 teams.
-          <br />
-          One title.
         </h2>
-        <p className="mt-4 max-w-xl text-[var(--speed-muted)]">
-          Official SPEED 2026–27 formations from the rulebook.
-        </p>
 
         <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {TEAMS.map((team, i) => (

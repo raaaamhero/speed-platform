@@ -13,13 +13,12 @@ export default function RegisterPage() {
       <SiteHeader variant="solid" />
       <main className="speed-arena min-h-[100svh] pt-28 pb-20">
         <div className="relative mx-auto max-w-3xl px-5 sm:px-8">
-          <p className="speed-kicker">PLAYER DRAFT</p>
+          <p className="speed-kicker">REGISTER</p>
           <h1 className="mt-3 font-display text-5xl tracking-[0.06em] text-[var(--speed-ink)] sm:text-6xl">
-            Join SPEED.
+            Register for SPEED.
           </h1>
           <p className="mt-4 max-w-xl text-[var(--speed-muted)]">
-            Express interest. Claim your Player ID. This is not a final match squad — SportsCom handles
-            match-day selection separately.
+            Your SPEED journey begins with registration. Register for SPEED now.
           </p>
           <div className="mt-10">
             <RegisterForm />

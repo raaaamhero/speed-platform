@@ -49,21 +49,15 @@ export function FixturesBoard({ fixtures }: { fixtures: FixtureRow[] }) {
 
   return (
     <div>
-      <p className="speed-kicker">LEAGUE SCHEDULE</p>
+      <p className="speed-kicker">FIXTURES</p>
       <h1 className="mt-3 font-display text-5xl tracking-[0.06em] text-[var(--speed-ink)] sm:text-6xl">
         Fixtures
       </h1>
-      <p className="mt-4 max-w-xl text-[var(--speed-muted)]">
-        Published matches from SportsCom. Filter by sport, team, or status.
-      </p>
 
       {fixtures.length === 0 ? (
         <div className="mt-12 border border-dashed border-white/15 px-6 py-16 text-center">
           <p className="font-display text-2xl tracking-[0.08em] text-[var(--speed-muted)]">
-            No fixtures published yet
-          </p>
-          <p className="mt-3 text-sm text-[var(--speed-muted)]">
-            The schedule appears here once SportsCom publishes matches.
+            No fixtures yet
           </p>
         </div>
       ) : (

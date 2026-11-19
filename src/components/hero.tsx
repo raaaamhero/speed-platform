@@ -37,7 +37,7 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.75, delay: 0.45 }}
         >
-          WHERE RIVALRIES ARE BORN.
+          REGISTER FOR SPEED.
         </motion.p>
 
         <motion.p
@@ -46,7 +46,7 @@ export function Hero() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.7, delay: 0.65 }}
         >
-          12 Teams. One Champion. No Looking Back.
+          Your SPEED journey begins with registration.
         </motion.p>
 
         <motion.div

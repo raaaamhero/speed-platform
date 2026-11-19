@@ -120,7 +120,7 @@ export function RegisterForm() {
             ))}
           </div>
         )}
-        <p className="speed-kicker relative">WELCOME TO THE ARENA</p>
+        <p className="speed-kicker relative">YOU&apos;RE REGISTERED</p>
         <h2 className="relative mt-4 font-display text-3xl tracking-[0.08em] text-white sm:text-4xl">
           {lookup?.student?.full_name || 'Athlete'}
         </h2>
@@ -136,7 +136,7 @@ export function RegisterForm() {
           </p>
         </div>
         <p className="relative mt-6 text-sm text-[var(--speed-muted)]">
-          Your SPEED journey is locked in. Only SportsCom can change sports after this.
+          Registration complete. Contact SportsCom to change sports later.
         </p>
         <ul className="relative mt-6 flex flex-wrap justify-center gap-2">
           {selected.map((s) => {
@@ -195,10 +195,10 @@ export function RegisterForm() {
             >
               <div>
                 <h2 className="font-display text-3xl tracking-[0.06em] text-[var(--speed-ink)]">
-                  Enter the draft
+                  Enter your roll number
                 </h2>
                 <p className="mt-2 text-sm text-[var(--speed-muted)]">
-                  Your SPEED journey begins with verification against the SportsCom master list.
+                  Your SPEED journey begins with registration.
                 </p>
               </div>
               <label className="block">
@@ -240,16 +240,12 @@ export function RegisterForm() {
               className="space-y-6"
             >
               <div className="border border-[var(--speed-gold)]/30 bg-[var(--speed-gold)]/[0.06] px-5 py-5">
-                <p className="speed-kicker">WELCOME TO THE ARENA</p>
-                <p className="mt-2 font-display text-3xl tracking-[0.06em] text-white">
+                <p className="mt-0 font-display text-3xl tracking-[0.06em] text-white">
                   {lookup.student.full_name}
                 </p>
                 <p className="mt-2 text-sm text-[var(--speed-muted)]">
                   {lookup.student.roll_number} · {lookup.student.section_name} ·{' '}
                   {lookup.student.team_name}
-                </p>
-                <p className="mt-3 text-xs tracking-wide text-white/60">
-                  YOUR SPEED JOURNEY BEGINS HERE.
                 </p>
               </div>
 
@@ -259,8 +255,7 @@ export function RegisterForm() {
                     Choose your sports
                   </h2>
                   <p className="mt-2 max-w-md text-sm text-[var(--speed-muted)]">
-                    Maximum three counted sports. Athletics Relays and Swimming Relays are exempt and
-                    do not count toward the cap.
+                    Up to 3 counted sports. Athletics and swimming relays are exempt.
                   </p>
                 </div>
                 <p
@@ -346,8 +341,7 @@ export function RegisterForm() {
                 Confirm registration
               </h2>
               <p className="text-sm text-[var(--speed-muted)]">
-                {lookup?.student?.full_name} · {roll} · {lookup?.student?.team_name}. This expresses
-                interest — it does not guarantee match-day selection.
+                {lookup?.student?.full_name} · {roll} · {lookup?.student?.team_name}
               </p>
               <ul className="space-y-2 border border-white/10 p-4">
                 {selected.map((s) => {
@@ -377,7 +371,7 @@ export function RegisterForm() {
                   disabled={busy}
                   className="speed-cta speed-cta-sweep"
                 >
-                  {busy ? 'Submitting…' : 'Lock in Player ID'}
+                  {busy ? 'Submitting…' : 'Submit registration'}
                 </button>
               </div>
             </motion.div>

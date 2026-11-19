@@ -264,7 +264,7 @@ export function IntroSequence({ onComplete }: Props) {
                 </p>
 
                 <p className="mt-5 max-w-[95vw] font-display text-[clamp(0.95rem,3vw,1.65rem)] tracking-[0.12em] text-[var(--speed-ink)]">
-                  WHERE RIVALRIES ARE BORN.
+                  REGISTER FOR SPEED.
                 </p>
 
                 {phase >= 5 && (

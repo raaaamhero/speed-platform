@@ -65,12 +65,9 @@ export function SportsUniverse() {
         <p className="speed-kicker">THE NINE SPORTS AT SPEED</p>
         <h2 className="mt-3 font-display text-4xl tracking-[0.06em] text-white sm:text-6xl">
           Nine sports.
-          <br />
-          Nine venues.
         </h2>
         <p className="mt-4 max-w-xl text-[var(--speed-muted)]">
-          Tap a sport for the full brief — then register for up to three counted sports (relays
-          exempt).
+          Tap a sport for details. Register for up to three counted sports (relays exempt).
         </p>
       </div>
 

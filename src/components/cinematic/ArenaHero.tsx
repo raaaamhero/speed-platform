@@ -61,9 +61,9 @@ export function ArenaHero() {
             transition={{ delay: 0.24, duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
             className="mt-5 font-display text-[clamp(2.8rem,9vw,5.8rem)] leading-[0.92] tracking-[0.04em] text-[var(--speed-ink)]"
           >
-            WHERE RIVALRIES
+            REGISTER
             <br />
-            ARE BORN.
+            FOR SPEED.
           </motion.h1>
 
           <motion.p
@@ -72,7 +72,7 @@ export function ArenaHero() {
             transition={{ delay: 0.45, duration: 0.6 }}
             className="mt-6 max-w-md text-base leading-relaxed text-[var(--speed-muted)]"
           >
-            12 teams. 9 sports. One champion. Pull a thread — feel the arena respond.
+            Your SPEED journey begins with registration.
           </motion.p>
 
           <motion.div
@@ -85,7 +85,7 @@ export function ArenaHero() {
               REGISTER FOR SPEED
             </Link>
             <a href="#sports" className="speed-ghost">
-              EXPLORE THE ARENA
+              VIEW SPORTS
             </a>
           </motion.div>
         </div>

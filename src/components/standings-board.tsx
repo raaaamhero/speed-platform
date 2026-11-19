@@ -20,23 +20,18 @@ export function StandingsBoard({ rows, loadedAt }: { rows: StandingRow[]; loaded
     <div>
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="speed-kicker">CHAMPIONSHIP TABLE</p>
+          <p className="speed-kicker">STANDINGS</p>
           <h1 className="mt-3 font-display text-5xl tracking-[0.06em] text-[var(--speed-ink)] sm:text-6xl">
             Standings
           </h1>
-          <p className="mt-4 text-[var(--speed-muted)]">
-            Live points from approved SportsCom results. Updated {loadedAt}.
-          </p>
+          <p className="mt-4 text-[var(--speed-muted)]">Updated {loadedAt}.</p>
         </div>
       </div>
 
       {rows.length === 0 ? (
         <div className="mt-12 border border-dashed border-white/15 px-6 py-16 text-center">
           <p className="font-display text-2xl tracking-[0.08em] text-[var(--speed-muted)]">
-            The table awaits the first results
-          </p>
-          <p className="mt-3 text-sm text-[var(--speed-muted)]">
-            Points appear here once SportsCom approves match outcomes.
+            No results yet
           </p>
         </div>
       ) : (
