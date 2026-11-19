@@ -24,8 +24,8 @@ type Strand = {
 }
 
 /**
- * Sarvam-style restraint: exactly three arched pluckable threads,
- * soft ambient sway, pointer drag / click pluck — no filament forest.
+ * Sarvam-style arches: six orange/white pluckable threads,
+ * soft ambient sway, pointer drag / click pluck.
  */
 export function ElasticStringField({
   className = '',
@@ -42,12 +42,26 @@ export function ElasticStringField({
     if (!ctx) return
 
     const N = 96
-    const gap = variant === 'hero' ? 14 : 10
-    // SportsCom crest: vivid orange + white (no gold / crimson)
+    const gap = variant === 'hero' ? 11 : 9
+    // SportsCom crest: 6 orange + white strands
     const colors =
       variant === 'hero'
-        ? ['rgba(242,116,33,0.95)', 'rgba(255,255,255,0.88)', 'rgba(242,116,33,0.72)']
-        : ['rgba(242,116,33,0.92)', 'rgba(255,255,255,0.78)', 'rgba(242,116,33,0.65)']
+        ? [
+            'rgba(242,116,33,0.95)',
+            'rgba(255,255,255,0.88)',
+            'rgba(242,116,33,0.82)',
+            'rgba(255,255,255,0.72)',
+            'rgba(242,116,33,0.7)',
+            'rgba(255,255,255,0.58)',
+          ]
+        : [
+            'rgba(242,116,33,0.92)',
+            'rgba(255,255,255,0.8)',
+            'rgba(242,116,33,0.78)',
+            'rgba(255,255,255,0.65)',
+            'rgba(242,116,33,0.65)',
+            'rgba(255,255,255,0.5)',
+          ]
 
     let raf = 0
     let running = true
