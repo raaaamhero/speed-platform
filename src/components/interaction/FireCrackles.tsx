@@ -39,7 +39,7 @@ export function FireCrackles({ className = '' }: Props) {
     let h = 0
     let last = performance.now()
     const dpr = Math.min(window.devicePixelRatio || 1, 2)
-    let embers: Ember[] = []
+    const embers: Ember[] = []
 
     const spawn = (x: number, y: number, burst = false) => {
       const n = burst ? (w < 768 ? 18 : 28) : 1
