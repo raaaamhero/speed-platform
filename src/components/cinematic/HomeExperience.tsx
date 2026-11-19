@@ -4,6 +4,8 @@ import dynamic from 'next/dynamic'
 import { useCallback, useState } from 'react'
 import { SiteFooter } from '@/components/site-footer'
 import { SiteHeader } from '@/components/site-header'
+import { StadiumReveal } from '@/components/interaction/StadiumReveal'
+import { TrophyInteraction } from '@/components/interaction/TrophyInteraction'
 import { ArenaHero } from './ArenaHero'
 import { AudioToggle } from './AudioToggle'
 import { IntroSequence } from './IntroSequence'
@@ -41,7 +43,9 @@ export function HomeExperience() {
           <ArenaHero />
           <StatsBand />
           <ManifestoSection />
+          <StadiumReveal />
           <SportsUniverse />
+          <TrophyInteraction />
           <TeamsShowcase />
           <RoadSection />
           <SportsComBrand />
