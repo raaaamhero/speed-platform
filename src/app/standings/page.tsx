@@ -1,12 +1,23 @@
 import { SiteFooter } from '@/components/site-footer'
 import { SiteHeader } from '@/components/site-header'
-import { TEAMS } from '@/lib/rules/teams'
+import { createClient } from '@/lib/supabase/server'
 
 export const metadata = {
   title: 'Standings | SPEED 2026–27',
 }
 
-export default function StandingsPage() {
+export const dynamic = 'force-dynamic'
+
+export default async function StandingsPage() {
+  const supabase = await createClient()
+  const { data: standings } = await supabase
+    .from('speed_team_standings')
+    .select('number, code, name, points, scoring_events')
+    .order('points', { ascending: false })
+    .order('number', { ascending: true })
+
+  const rows = standings || []
+
   return (
     <>
       <SiteHeader />
@@ -17,8 +28,7 @@ export default function StandingsPage() {
             Standings
           </h1>
           <p className="mt-4 text-[var(--speed-muted)]">
-            Live points appear here once SportsCom approves results. Until then, the twelve teams are
-            listed in starting order.
+            Live points from approved results. Last load: {new Date().toLocaleString()}.
           </p>
 
           <div className="mt-10 overflow-hidden border border-white/10">
@@ -31,7 +41,7 @@ export default function StandingsPage() {
                 </tr>
               </thead>
               <tbody>
-                {TEAMS.map((team, i) => (
+                {rows.map((team, i) => (
                   <tr key={team.code} className="border-b border-white/5">
                     <td className="px-4 py-4 font-display text-lg text-[var(--speed-muted)]">
                       {String(i + 1).padStart(2, '0')}
@@ -42,7 +52,9 @@ export default function StandingsPage() {
                       </span>
                       <span className="ml-3 text-xs text-[var(--speed-muted)]">{team.code}</span>
                     </td>
-                    <td className="px-4 py-4 text-right font-mono text-[var(--speed-ink)]">0</td>
+                    <td className="px-4 py-4 text-right font-mono text-[var(--speed-ink)]">
+                      {Number(team.points)}
+                    </td>
                   </tr>
                 ))}
               </tbody>
