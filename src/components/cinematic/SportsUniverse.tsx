@@ -118,7 +118,13 @@ export function SportsUniverse() {
                   reverse ? 'sm:items-end sm:text-right' : ''
                 }`}
               >
-                <p className="font-display text-[10px] tracking-[0.35em]" style={{ color: sport.accent }}>
+                <p
+                  className="text-sm font-extrabold tracking-[0.12em] sm:text-base"
+                  style={{
+                    color: sport.accent,
+                    fontFamily: 'var(--font-outfit), system-ui, sans-serif',
+                  }}
+                >
                   {String(i + 1).padStart(2, '0')} · {sport.venue.toUpperCase()}
                 </p>
                 <h3 className="mt-2 font-display text-5xl tracking-[0.05em] text-white sm:text-7xl">
