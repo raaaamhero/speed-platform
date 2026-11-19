@@ -59,7 +59,7 @@ export function InteractiveTitle({ text = 'SPEED', className = '' }: Props) {
   return (
     <h1
       ref={wrapRef}
-      className={`relative inline-block select-none font-display leading-none tracking-[0.06em] text-white ${className}`}
+      className={`relative mx-auto block w-fit select-none text-center font-display leading-none tracking-[0.06em] text-white ${className}`}
       onClick={() => {
         if (reduced) return
         setScatter(true)
@@ -67,18 +67,18 @@ export function InteractiveTitle({ text = 'SPEED', className = '' }: Props) {
       }}
       aria-label={text}
     >
-      <span className="relative z-[1] inline-flex">
+      <span className="relative z-[1] flex justify-center">
         {letters.map((ch, i) => (
           <motion.span
             key={`${ch}-${i}`}
             className="inline-block"
             animate={
               scatter
-                ? { y: (i % 2 === 0 ? -18 : 16), x: (i - letters.length / 2) * 8, rotate: (i % 2 ? 8 : -8) }
-                : { y: 0, x: 0, rotate: 0 }
+                ? { y: i % 2 === 0 ? -14 : 12, rotate: i % 2 ? 6 : -6 }
+                : { y: 0, rotate: 0 }
             }
             transition={{ type: 'spring', stiffness: 320, damping: 18, delay: i * 0.02 }}
-            whileHover={reduced ? undefined : { y: -4, color: '#e2b14a' }}
+            whileHover={reduced ? undefined : { y: -3, color: '#e2b14a' }}
           >
             {ch}
           </motion.span>

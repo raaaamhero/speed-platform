@@ -26,22 +26,25 @@ export function LetterReveal({
   const chars = text.split('')
 
   return (
-    <Tag className={`inline-flex flex-wrap justify-center ${className}`} style={style} aria-label={text}>
+    <Tag
+      className={`flex flex-nowrap items-center justify-center overflow-visible ${className}`}
+      style={style}
+      aria-label={text}
+    >
       {chars.map((ch, i) => {
         const isSpace = ch === ' '
         const far = firstFromFar && i === 0
         return (
           <motion.span
             key={`${ch}-${i}`}
-            className={`inline-block ${isSpace ? 'w-[0.35em]' : ''}`}
+            className={`inline-block will-change-transform ${isSpace ? 'w-[0.35em]' : ''}`}
             aria-hidden
             initial={{
               opacity: 0,
-              y: far ? 0 : 36,
-              x: far ? -180 : i % 2 === 0 ? -18 : 18,
-              scale: far ? 3.2 : 0.6,
-              filter: far ? 'blur(14px)' : 'blur(6px)',
-              rotate: far ? -18 : i % 3 === 0 ? -8 : 6,
+              y: far ? 0 : 28,
+              x: far ? -120 : 0,
+              scale: far ? 2.4 : 0.85,
+              filter: far ? 'blur(12px)' : 'blur(4px)',
             }}
             animate={{
               opacity: 1,
@@ -49,31 +52,12 @@ export function LetterReveal({
               x: 0,
               scale: 1,
               filter: 'blur(0px)',
-              rotate: 0,
             }}
             transition={{
-              delay: delay + i * stagger + (far ? 0 : 0.02),
-              duration: far ? 1.15 : 0.55,
+              delay: delay + i * stagger,
+              duration: far ? 1.05 : 0.5,
               ease: [0.16, 1, 0.3, 1],
             }}
-            whileHover={
-              isSpace
-                ? undefined
-                : {
-                    y: -6,
-                    scale: 1.12,
-                    color: '#e2b14a',
-                    transition: { type: 'spring', stiffness: 420, damping: 18 },
-                  }
-            }
-            whileTap={
-              isSpace
-                ? undefined
-                : {
-                    scale: 0.92,
-                    color: '#e2b14a',
-                  }
-            }
           >
             {isSpace ? '\u00A0' : ch}
           </motion.span>
