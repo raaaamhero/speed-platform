@@ -7,46 +7,44 @@ import { BubbleField } from '@/components/interaction/BubbleField'
 import { ElasticStringField } from '@/components/interaction/ElasticStringField'
 import { FireCrackles } from '@/components/interaction/FireCrackles'
 import { LiveParticleField } from '@/components/interaction/LiveParticleField'
-import { SpotlightReveal } from '@/components/interaction/SpotlightReveal'
 import { useReducedMotion } from '@/hooks/use-reduced-motion'
 
 export function ArenaHero() {
   const ref = useRef<HTMLElement>(null)
   const reduced = useReducedMotion()
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] })
-  const y = useTransform(scrollYProgress, [0, 1], [0, reduced ? 0 : 120])
-  const opacity = useTransform(scrollYProgress, [0, 0.75], [1, 0.2])
+  const y = useTransform(scrollYProgress, [0, 1], [0, reduced ? 0 : 100])
+  const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0.25])
 
   return (
-    <section ref={ref} className="relative isolate min-h-[100svh] overflow-hidden">
-      {/* Interactive layer — full bleed, under copy */}
-      <SpotlightReveal className="absolute inset-0 z-0" radius={340}>
-        <motion.div style={{ y }} className="absolute inset-0">
-          <div className="absolute inset-0 bg-[#050608]" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_15%,rgba(200,30,44,0.38),transparent_55%)]" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_85%_70%,rgba(226,177,74,0.2),transparent_48%)]" />
-          <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_35%,rgba(0,0,0,0.88)_100%)]" />
-          <div className="speed-flood pointer-events-none absolute left-[10%] top-0 h-[72%] w-[16%] origin-top -rotate-6 bg-gradient-to-b from-white/18 to-transparent blur-2xl" />
-          <div className="speed-flood pointer-events-none absolute right-[14%] top-0 h-[68%] w-[18%] origin-top rotate-6 bg-gradient-to-b from-[var(--speed-gold)]/28 to-transparent blur-2xl [animation-delay:1.1s]" />
+    <section ref={ref} className="relative isolate min-h-[100svh] overflow-hidden bg-[#050608]">
+      {/* Background atmosphere */}
+      <motion.div style={{ y }} className="pointer-events-none absolute inset-0 z-0">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_45%_15%,rgba(200,30,44,0.4),transparent_55%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_88%_65%,rgba(226,177,74,0.22),transparent_48%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_30%,rgba(0,0,0,0.9)_100%)]" />
+        <div className="speed-flood absolute left-[8%] top-0 h-[75%] w-[16%] origin-top -rotate-6 bg-gradient-to-b from-white/20 to-transparent blur-2xl" />
+        <div className="speed-flood absolute right-[12%] top-0 h-[70%] w-[20%] origin-top rotate-6 bg-gradient-to-b from-[var(--speed-gold)]/30 to-transparent blur-2xl [animation-delay:1.1s]" />
+        <div className="absolute bottom-[-18%] left-1/2 h-[52%] w-[140%] -translate-x-1/2 rounded-[100%] border border-white/10 bg-[radial-gradient(ellipse_at_center,rgba(226,177,74,0.12),transparent_60%)]" />
+      </motion.div>
 
-          {/* Dust */}
-          <LiveParticleField className="absolute inset-0 h-full w-full opacity-90" />
-          {/* Bubbles — especially on the empty right side */}
-          <BubbleField className="absolute inset-0 h-full w-full" biasRight />
-          {/* Fire crackles / embers */}
-          <FireCrackles className="absolute inset-0 h-full w-full" />
-          {/* Interactive strings — clearly visible */}
-          <ElasticStringField
-            className="absolute inset-0 h-full w-full opacity-80"
-            captureGestures={false}
-            interactive
-          />
+      {/* Interactive FX — full viewport, clearly visible */}
+      <LiveParticleField className="absolute inset-0 z-[1] h-full w-full" />
+      <BubbleField className="absolute inset-0 z-[2] h-full w-full" biasRight />
+      <FireCrackles className="absolute inset-0 z-[3] h-full w-full" />
+      <ElasticStringField
+        className="absolute inset-0 z-[4] h-full w-full"
+        captureGestures={false}
+        interactive
+      />
 
-          <div className="pointer-events-none absolute bottom-[-18%] left-1/2 h-[52%] w-[140%] -translate-x-1/2 rounded-[100%] border border-white/10 bg-[radial-gradient(ellipse_at_center,rgba(226,177,74,0.1),transparent_60%)]" />
-        </motion.div>
-      </SpotlightReveal>
+      {/* Soft spotlight follow via CSS — doesn't clip FX */}
+      <div
+        className="pointer-events-none absolute inset-0 z-[5] bg-[radial-gradient(circle_at_70%_40%,rgba(255,255,255,0.06),transparent_42%)]"
+        aria-hidden
+      />
 
-      {/* Copy sits above interactions so buttons stay clickable */}
+      {/* Copy */}
       <motion.div
         style={{ opacity }}
         className="pointer-events-none relative z-10 mx-auto flex min-h-[100svh] max-w-6xl flex-col justify-center px-5 pb-20 pt-28 sm:px-8"
@@ -109,8 +107,8 @@ export function ArenaHero() {
             </Link>
           </motion.div>
 
-          <p className="mt-6 text-[11px] tracking-wide text-white/35 sm:text-xs">
-            Move · drag strings · tap for fire
+          <p className="mt-6 text-[11px] tracking-wide text-white/40 sm:text-xs">
+            Move · drag strings · tap for fire crackles
           </p>
         </div>
       </motion.div>
