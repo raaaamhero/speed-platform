@@ -1,36 +1,50 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SPEED 2026–27 Platform
 
-## Getting Started
+SportsCom presents **SPEED** — *Where Rivalries Are Born.*
 
-First, run the development server:
+Public registration + tournament portal, and a SportsCom Command Centre. Built from the Master Project Blueprint and the official SPEED 2026–27 Rulebook.
+
+## Stack
+
+- Next.js 15 (App Router) + TypeScript + Tailwind CSS 4
+- Framer Motion (reduced-motion aware)
+- Supabase (Postgres + Auth + RLS) — tables prefixed `speed_`
+- Vitest for rulebook logic tests
+
+## Local development
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm test          # cap + points engine
+npm run build     # production build
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Environment
 
-## Learn More
+Copy `.env.example` → `.env.local` (already set for the default SportsCom Supabase project).
 
-To learn more about Next.js, take a look at the following resources:
+## Database
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Apply [`supabase/migrations/20261119000100_speed_foundation.sql`](supabase/migrations/20261119000100_speed_foundation.sql) in the Supabase SQL editor for project `niaexyzfpuzidgrzjhlo`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+This creates `speed_*` tables alongside the existing TPL Auction schema without colliding.
 
-## Deploy on Vercel
+## Routes
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+| Path | Purpose |
+|------|---------|
+| `/` | Cinematic landing |
+| `/register` | Student registration (demo UI; live submit next) |
+| `/standings` | Overall points table |
+| `/fixtures` | Published schedule |
+| `/ops` | SportsCom Command Centre shell |
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Important product boundary
+
+Registration is an **expression of interest**, not a final match squad. Match-day selection stays with SportsCom / tools like CricHeroes.
