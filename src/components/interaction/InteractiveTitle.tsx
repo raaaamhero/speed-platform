@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { lerp } from '@/lib/interaction/spring'
 import { useReducedMotion } from '@/hooks/use-reduced-motion'
@@ -11,15 +11,14 @@ type Props = {
 }
 
 /**
- * Oversized SPEED title with pointer-driven light sweep and subtle letter response.
+ * Oversized SPEED title — clean centered letters with a soft pointer light sweep.
  */
 export function InteractiveTitle({ text = 'SPEED', className = '' }: Props) {
   const reduced = useReducedMotion()
   const wrapRef = useRef<HTMLHeadingElement>(null)
   const shineRef = useRef<HTMLSpanElement>(null)
-  const [scatter, setScatter] = useState(false)
-  const target = useRef(0.35)
-  const current = useRef(0.35)
+  const target = useRef(0.4)
+  const current = useRef(0.4)
 
   useEffect(() => {
     if (reduced) return
@@ -32,14 +31,14 @@ export function InteractiveTitle({ text = 'SPEED', className = '' }: Props) {
 
     const onMove = (e: PointerEvent) => {
       const rect = wrap.getBoundingClientRect()
-      target.current = (e.clientX - rect.left) / rect.width
+      target.current = (e.clientX - rect.left) / Math.max(rect.width, 1)
     }
 
     const loop = () => {
       if (!running) return
       current.current = lerp(current.current, target.current, 0.1)
       const x = current.current * 100
-      shine.style.background = `linear-gradient(105deg, transparent ${x - 14}%, rgba(255,255,255,0.55) ${x}%, transparent ${x + 14}%)`
+      shine.style.backgroundPosition = `${x}% 50%`
       raf = requestAnimationFrame(loop)
     }
 
@@ -59,12 +58,7 @@ export function InteractiveTitle({ text = 'SPEED', className = '' }: Props) {
   return (
     <h1
       ref={wrapRef}
-      className={`relative mx-auto block w-fit select-none text-center font-display leading-none tracking-[0.06em] text-white ${className}`}
-      onClick={() => {
-        if (reduced) return
-        setScatter(true)
-        window.setTimeout(() => setScatter(false), 700)
-      }}
+      className={`relative mx-auto block w-fit select-none text-center font-display leading-none tracking-[0.08em] text-white ${className}`}
       aria-label={text}
     >
       <span className="relative z-[1] flex justify-center">
@@ -72,26 +66,28 @@ export function InteractiveTitle({ text = 'SPEED', className = '' }: Props) {
           <motion.span
             key={`${ch}-${i}`}
             className="inline-block"
-            animate={
-              scatter
-                ? { y: i % 2 === 0 ? -14 : 12, rotate: i % 2 ? 6 : -6 }
-                : { y: 0, rotate: 0 }
-            }
-            transition={{ type: 'spring', stiffness: 320, damping: 18, delay: i * 0.02 }}
-            whileHover={reduced ? undefined : { y: -3, color: '#e2b14a' }}
+            initial={reduced ? false : { opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.06, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
           >
             {ch}
           </motion.span>
         ))}
       </span>
-      <span
-        ref={shineRef}
-        className="pointer-events-none absolute inset-0 z-[2] mix-blend-overlay"
-        aria-hidden
-        style={{
-          background: 'linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.4) 45%, transparent 60%)',
-        }}
-      />
+      {!reduced && (
+        <span
+          ref={shineRef}
+          className="pointer-events-none absolute inset-y-0 left-0 right-0 z-[2] opacity-50"
+          aria-hidden
+          style={{
+            backgroundImage:
+              'linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.35) 50%, transparent 60%)',
+            backgroundSize: '200% 100%',
+            backgroundRepeat: 'no-repeat',
+            mixBlendMode: 'soft-light',
+          }}
+        />
+      )}
     </h1>
   )
 }
