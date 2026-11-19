@@ -43,10 +43,11 @@ export function ElasticStringField({
 
     const N = 96
     const gap = variant === 'hero' ? 14 : 10
+    // SportsCom crest: vivid orange + white (no gold / crimson)
     const colors =
       variant === 'hero'
-        ? ['rgba(226,177,74,0.92)', 'rgba(255,255,255,0.72)', 'rgba(200,40,48,0.78)']
-        : ['rgba(226,177,74,0.88)', 'rgba(255,255,255,0.55)', 'rgba(200,40,48,0.7)']
+        ? ['rgba(242,116,33,0.95)', 'rgba(255,255,255,0.88)', 'rgba(242,116,33,0.72)']
+        : ['rgba(242,116,33,0.92)', 'rgba(255,255,255,0.78)', 'rgba(242,116,33,0.65)']
 
     let raf = 0
     let running = true
@@ -196,8 +197,8 @@ export function ElasticStringField({
       const midX = (base[0].x + base[N - 1].x) * 0.5
       const floorY = Math.max(...base.map((b) => b.y)) + gap * 2
       const glow = ctx.createRadialGradient(midX, floorY, 0, midX, floorY, w * 0.35)
-      glow.addColorStop(0, 'rgba(226,177,74,0.14)')
-      glow.addColorStop(0.45, 'rgba(180,90,40,0.06)')
+      glow.addColorStop(0, 'rgba(242,116,33,0.16)')
+      glow.addColorStop(0.45, 'rgba(242,116,33,0.06)')
       glow.addColorStop(1, 'rgba(0,0,0,0)')
       ctx.fillStyle = glow
       ctx.fillRect(0, 0, w, h)
@@ -277,7 +278,7 @@ export function ElasticStringField({
         aria-hidden
         style={{
           background:
-            'radial-gradient(ellipse at 70% 75%, rgba(226,177,74,0.1), transparent 60%)',
+            'radial-gradient(ellipse at 70% 75%, rgba(242,116,33,0.12), transparent 60%)',
         }}
       />
     )
