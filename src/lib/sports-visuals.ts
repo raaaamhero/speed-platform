@@ -94,7 +94,7 @@ export const SPORT_VISUALS: SportVisual[] = [
     secondary: '#1a0612',
     glow: 'rgba(244,114,182,0.4)',
     image: '/sports/throwball.jpg',
-    imageAlt: 'Athlete ready on the court for throwball',
+    imageAlt: 'Girls playing throwball on the court',
     motif: 'court',
     venue: 'TAPMI Ground',
     detail:
