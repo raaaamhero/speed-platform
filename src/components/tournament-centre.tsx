@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
 
 type Competition = {
@@ -31,9 +32,14 @@ type Fixture = {
   venue: string | null
   starts_at: string | null
   status: string
-  team_a: { name: string } | null
-  team_b: { name: string } | null
-  result: { winner_team_id: string | null; is_draw: boolean } | null
+  team_a: { name: string; id?: string } | null
+  team_b: { name: string; id?: string } | null
+  result: {
+    winner_team_id: string | null
+    is_draw: boolean
+    score_a?: number | null
+    score_b?: number | null
+  } | null
 }
 
 type Detail = {
@@ -235,24 +241,39 @@ export function TournamentCentre() {
                 <li className="text-sm text-[var(--speed-muted)]">No published group fixtures yet.</li>
               )}
               {detail.fixtures.map((f) => (
-                <li key={f.id} className="border border-white/10 px-4 py-3 text-sm">
-                  <p className="font-display text-lg tracking-[0.04em] text-white">
-                    {f.team_a?.name || 'TBD'} <span className="text-white/35">VS</span>{' '}
-                    {f.team_b?.name || 'TBD'}
-                  </p>
-                  <p className="mt-1 text-[var(--speed-muted)]">
-                    {f.venue || 'Venue TBA'}
-                    {f.starts_at
-                      ? ` · ${new Date(f.starts_at).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}`
-                      : ' · Time TBA'}
-                    {' · '}
-                    {f.status}
-                    {f.result?.is_draw
-                      ? ' · Draw'
-                      : f.result
-                        ? ' · Result in'
-                        : ''}
-                  </p>
+                <li key={f.id}>
+                  <Link
+                    href={`/matches/${f.id}`}
+                    className="block border border-white/10 px-4 py-3 text-sm transition hover:border-white/25"
+                  >
+                    <p className="font-display text-lg tracking-[0.04em] text-white">
+                      {f.team_a?.name || 'TBD'} <span className="text-white/35">VS</span>{' '}
+                      {f.team_b?.name || 'TBD'}
+                    </p>
+                    <p className="mt-1 text-[var(--speed-muted)]">
+                      {f.venue || 'Venue TBA'}
+                      {f.starts_at
+                        ? ` · ${new Date(f.starts_at).toLocaleString('en-IN', {
+                            timeZone: 'Asia/Kolkata',
+                          })}`
+                        : ' · Time TBA'}
+                      {' · '}
+                      {f.status}
+                      {f.result?.is_draw
+                        ? ` · Draw${
+                            f.result.score_a != null
+                              ? ` ${f.result.score_a}–${f.result.score_b}`
+                              : ''
+                          }`
+                        : f.result
+                          ? ` · ${
+                              f.result.score_a != null
+                                ? `${f.result.score_a}–${f.result.score_b}`
+                                : 'Result'
+                            }`
+                          : ''}
+                    </p>
+                  </Link>
                 </li>
               ))}
             </ul>

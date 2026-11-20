@@ -6,7 +6,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 
 type AnnouncementItem = {
   id: string
-  kind: 'fixture' | 'result'
+  kind: 'fixture' | 'result' | 'placement'
   title: string
   detail: string
   href: string

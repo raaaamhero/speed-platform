@@ -25,7 +25,10 @@ export async function GET() {
         (select count(*) from speed_fixtures where stage='semi_final')::int as sf,
         (select count(*) from speed_fixtures where stage='final')::int as finals
     `)
-    return { competitions: competitions.rows, counts: counts.rows[0] }
+    const teams = await client.query(`
+      select id, number, code, name from public.speed_teams order by number
+    `)
+    return { competitions: competitions.rows, counts: counts.rows[0], teams: teams.rows }
   })
 
   return NextResponse.json(data)

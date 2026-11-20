@@ -53,14 +53,19 @@ export async function POST(req: Request) {
         const scoreA = body.score_a != null ? Number(body.score_a) : null
         const scoreB = body.score_b != null ? Number(body.score_b) : null
 
+        const summary = `${f.sport_name.toUpperCase()} · ${winnerName} defeated ${
+          winnerId === f.team_a_uuid ? f.team_b_name : f.team_a_name
+        }${scoreA != null && scoreB != null ? ` · ${scoreA}-${scoreB}` : ''}`
+
         const inserted = await client.query(
           `
           insert into public.speed_match_results
-            (fixture_id, score_a, score_b, winner_team_id, is_draw, approval_status, approved_at, notes)
-          values ($1,$2,$3,$4,false,'approved', now(), 'ops_declared')
+            (fixture_id, competition_id, score_a, score_b, winner_team_id, is_draw,
+             approval_status, approved_at, notes, summary, entered_by_label, approved_by_label)
+          values ($1,$2,$3,$4,$5,false,'approved', now(), 'ops_declared', $6, 'ops', 'ops')
           returning *
           `,
-          [fixtureId, scoreA, scoreB, winnerId],
+          [fixtureId, f.competition_id, scoreA, scoreB, winnerId, summary],
         )
 
         await client.query(
