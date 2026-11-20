@@ -172,6 +172,12 @@ export function FixturesBoard({ fixtures }: { fixtures: FixtureRow[] }) {
                       {f.starts_at
                         ? ` · ${new Date(f.starts_at).toLocaleString('en-IN', {
                             timeZone: 'Asia/Kolkata',
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: 'numeric',
+                            hour: 'numeric',
+                            minute: '2-digit',
+                            hour12: true,
                           })}`
                         : ''}
                     </p>
