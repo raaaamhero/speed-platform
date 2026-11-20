@@ -1,43 +1,22 @@
 import { NextResponse } from 'next/server'
-import * as XLSX from 'xlsx'
 import { isOpsAuthenticated } from '@/lib/ops-auth'
 import { withDb } from '@/lib/db'
+import {
+  mergeParseReports,
+  parseStudentWorkbook,
+  type ImportRowError,
+  type ParsedStudent,
+} from '@/lib/ops/student-import'
 
-type Row = Record<string, unknown>
-
-function cell(row: Row, keys: string[]) {
-  for (const key of keys) {
-    const found = Object.keys(row).find((k) => k.toLowerCase().replace(/\s+/g, '_') === key)
-    if (found != null && row[found] != null && String(row[found]).trim() !== '') {
-      return String(row[found]).trim()
-    }
-  }
-  return ''
-}
-
-export async function POST(req: Request) {
-  if (!(await isOpsAuthenticated())) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  }
-
-  const form = await req.formData()
-  const file = form.get('file')
-  if (!(file instanceof File)) {
-    return NextResponse.json({ error: 'Upload an Excel or CSV file' }, { status: 400 })
-  }
-
-  const buf = Buffer.from(await file.arrayBuffer())
-  const workbook = XLSX.read(buf, { type: 'buffer' })
-  const sheet = workbook.Sheets[workbook.SheetNames[0]]
-  const rows = XLSX.utils.sheet_to_json<Row>(sheet, { defval: '' })
-
-  if (rows.length === 0) {
-    return NextResponse.json({ error: 'No rows found in the sheet' }, { status: 400 })
-  }
-
-  const report = await withDb(async (client) => {
-    const errors: { row: number; message: string }[] = []
+async function upsertStudents(
+  students: ParsedStudent[],
+  parseErrors: ImportRowError[],
+  fileNames: string[],
+) {
+  return withDb(async (client) => {
+    const errors: ImportRowError[] = [...parseErrors]
     let upserted = 0
+    let skippedFaculty = 0
 
     const sections = await client.query(`select id, code from public.speed_sections`)
     const sectionByCode = new Map<string, string>()
@@ -46,49 +25,52 @@ export async function POST(req: Request) {
     }
 
     const teamSections = await client.query(`
-      select ts.section_id, t.id as team_id
+      select ts.section_id, t.id as team_id, t.code as team_code
       from public.speed_team_sections ts
       join public.speed_teams t on t.id = ts.team_id
     `)
-    const teamBySection = new Map<string, string>()
-    for (const r of teamSections.rows as { section_id: string; team_id: string }[]) {
-      teamBySection.set(r.section_id, r.team_id)
+    const teamBySection = new Map<string, { teamId: string; teamCode: string }>()
+    for (const r of teamSections.rows as {
+      section_id: string
+      team_id: string
+      team_code: string
+    }[]) {
+      teamBySection.set(r.section_id, { teamId: r.team_id, teamCode: r.team_code })
     }
 
     await client.query('begin')
     try {
-      for (let i = 0; i < rows.length; i++) {
-        const row = rows[i]
-        const roll = cell(row, ['roll_number', 'roll', 'roll_no', 'rollno'])
-        const name = cell(row, ['full_name', 'name', 'student_name', 'student'])
-        const sectionCode = cell(row, ['section', 'section_code', 'section_name']).toUpperCase()
-        const genderRaw = cell(row, ['gender']).toLowerCase()
-        const batch = cell(row, ['batch', 'batch_year', 'year']) || null
-
-        if (!roll || !name || !sectionCode) {
-          errors.push({ row: i + 2, message: 'Missing roll / name / section' })
+      for (const s of students) {
+        if (s.sectionCode === 'FAC') {
+          skippedFaculty += 1
           continue
         }
 
-        let sectionId = sectionByCode.get(sectionCode)
+        const sectionId = sectionByCode.get(s.sectionCode.toUpperCase())
         if (!sectionId) {
-          // try match by name fragment
-          const match = [...sectionByCode.entries()].find(([code]) => sectionCode.includes(code) || code.includes(sectionCode))
-          sectionId = match?.[1]
-        }
-        if (!sectionId) {
-          errors.push({ row: i + 2, message: `Unknown section: ${sectionCode}` })
+          errors.push({
+            row: 0,
+            file: s.source,
+            message: `Unknown section ${s.sectionCode} for ${s.roll}`,
+          })
           continue
         }
 
-        const teamId = teamBySection.get(sectionId)
-        if (!teamId) {
-          errors.push({ row: i + 2, message: `No team mapped for section ${sectionCode}` })
+        const team = teamBySection.get(sectionId)
+        if (!team) {
+          errors.push({
+            row: 0,
+            file: s.source,
+            message: `No team mapped for section ${s.sectionCode} (${s.roll})`,
+          })
           continue
         }
 
-        const gender =
-          genderRaw.startsWith('f') ? 'female' : genderRaw.startsWith('m') ? 'male' : genderRaw ? 'unspecified' : null
+        // Faculty team never registers
+        if (team.teamCode === 'T11') {
+          skippedFaculty += 1
+          continue
+        }
 
         await client.query(
           `
@@ -103,15 +85,22 @@ export async function POST(req: Request) {
             active = true,
             updated_at = now()
           `,
-          [roll.toUpperCase(), name, sectionId, teamId, gender, batch],
+          [s.roll, s.name, sectionId, team.teamId, s.gender, s.batch],
         )
         upserted += 1
       }
 
       await client.query(
         `insert into public.speed_audit_logs (action, entity_type, after_data, reason)
-         values ('import_students', 'students', $1::jsonb, 'Excel import')`,
-        [JSON.stringify({ upserted, errors: errors.length, file: file.name })],
+         values ('import_students', 'students', $1::jsonb, 'Multi-file Excel import')`,
+        [
+          JSON.stringify({
+            upserted,
+            skippedFaculty,
+            errors: errors.length,
+            files: fileNames,
+          }),
+        ],
       )
 
       await client.query('commit')
@@ -120,8 +109,73 @@ export async function POST(req: Request) {
       throw e
     }
 
-    return { upserted, errors, totalRows: rows.length }
+    return {
+      upserted,
+      skippedFaculty,
+      errors: errors.slice(0, 200),
+      errorCount: errors.length,
+      totalStudents: students.length,
+      files: fileNames,
+    }
   })
+}
 
-  return NextResponse.json({ ok: true, ...report })
+export async function POST(req: Request) {
+  if (!(await isOpsAuthenticated())) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  const form = await req.formData()
+  const collected: File[] = []
+
+  const multi = form.getAll('files')
+  for (const item of multi) {
+    if (item instanceof File && item.size > 0) collected.push(item)
+  }
+  const single = form.get('file')
+  if (single instanceof File && single.size > 0) collected.push(single)
+
+  if (collected.length === 0) {
+    return NextResponse.json(
+      { error: 'Upload one or more Excel/CSV files (1st years, IPM, seniors when ready)' },
+      { status: 400 },
+    )
+  }
+
+  try {
+    const reports = []
+    for (const file of collected) {
+      const buf = Buffer.from(await file.arrayBuffer())
+      reports.push(parseStudentWorkbook(buf, file.name))
+    }
+    const merged = mergeParseReports(reports)
+    if (merged.students.length === 0) {
+      return NextResponse.json(
+        {
+          error: 'No importable students found. Check section sheet names and roll/name columns.',
+          errors: merged.errors.slice(0, 50),
+          skippedSheets: merged.skippedSheets,
+        },
+        { status: 400 },
+      )
+    }
+
+    const report = await upsertStudents(
+      merged.students,
+      merged.errors,
+      collected.map((f) => f.name),
+    )
+
+    return NextResponse.json({
+      ok: true,
+      ...report,
+      skippedSheets: merged.skippedSheets,
+      parseErrorCount: merged.errors.length,
+    })
+  } catch (e) {
+    return NextResponse.json(
+      { error: e instanceof Error ? e.message : 'Import failed' },
+      { status: 500 },
+    )
+  }
 }
