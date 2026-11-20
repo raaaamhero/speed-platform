@@ -3,9 +3,12 @@
 import Link from 'next/link'
 import { motion, useReducedMotion } from 'framer-motion'
 
-/** Heads first (fixed order), then the rest A–Z. */
-const SENIOR_HEADS = ['Arun', 'Ram', 'Hitesh', 'Ritika'] as const
-const SENIOR_MEMBERS = [
+/** First four are committee heads (order only — same visual style). Rest A–Z. */
+const SENIOR_SPORTSCOM = [
+  'Arun',
+  'Ram',
+  'Hitesh',
+  'Ritika',
   'Anubhav',
   'Anusha',
   'Archit',
@@ -24,7 +27,7 @@ const SENIOR_MEMBERS = [
   'Yausnika',
 ] as const
 
-const JUNIOR_MEMBERS = [
+const JUNIOR_SPORTSCOM = [
   'Aaditya Vijaykrishnan',
   'Aathish Kumar A',
   'Abel',
@@ -51,25 +54,16 @@ const JUNIOR_MEMBERS = [
   'Sidhant Karki',
 ] as const
 
-function NameGrid({ names, heads }: { names: readonly string[]; heads?: boolean }) {
+function NameGrid({ names }: { names: readonly string[] }) {
   return (
-    <ul className="mt-5 grid grid-cols-2 gap-x-4 gap-y-2 sm:grid-cols-3 md:grid-cols-4">
+    <ul className="mt-6 grid grid-cols-1 gap-3 xs:grid-cols-2 sm:grid-cols-2 lg:grid-cols-2">
       {names.map((name) => (
         <li
           key={name}
-          className={`text-sm sm:text-base ${
-            heads
-              ? 'font-semibold text-white'
-              : 'text-[var(--speed-muted)]'
-          }`}
+          className="border-b border-white/10 pb-3 text-[15px] font-medium leading-snug tracking-wide text-white/85 sm:text-base"
           style={{ fontFamily: 'var(--font-outfit), system-ui, sans-serif' }}
         >
           {name}
-          {heads ? (
-            <span className="mt-0.5 block text-[10px] font-medium tracking-[0.18em] text-[var(--speed-gold)]">
-              HEAD
-            </span>
-          ) : null}
         </li>
       ))}
     </ul>
@@ -121,20 +115,17 @@ export function ManifestoSection() {
             Senior SportsCom and Junior SportsCom — the committee that builds SPEED.
           </p>
 
-          <div className="mt-12 grid gap-14 lg:grid-cols-2">
+          <div className="mt-12 grid gap-12 lg:grid-cols-2 lg:gap-16">
             <motion.div
               initial={reduced ? false : { opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.55 }}
             >
-              <p className="font-display text-sm tracking-[0.28em] text-[var(--speed-gold)]">
+              <p className="font-display text-base tracking-[0.22em] text-[var(--speed-gold)]">
                 SENIOR SPORTSCOM
               </p>
-              <p className="mt-2 text-xs tracking-wide text-white/40">Heads</p>
-              <NameGrid names={SENIOR_HEADS} heads />
-              <p className="mt-8 text-xs tracking-wide text-white/40">Committee</p>
-              <NameGrid names={SENIOR_MEMBERS} />
+              <NameGrid names={SENIOR_SPORTSCOM} />
             </motion.div>
 
             <motion.div
@@ -143,10 +134,10 @@ export function ManifestoSection() {
               viewport={{ once: true }}
               transition={{ duration: 0.55, delay: 0.08 }}
             >
-              <p className="font-display text-sm tracking-[0.28em] text-[var(--speed-gold)]">
+              <p className="font-display text-base tracking-[0.22em] text-[var(--speed-gold)]">
                 JUNIOR SPORTSCOM
               </p>
-              <NameGrid names={JUNIOR_MEMBERS} />
+              <NameGrid names={JUNIOR_SPORTSCOM} />
             </motion.div>
           </div>
         </div>
