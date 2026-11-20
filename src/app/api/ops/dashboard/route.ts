@@ -15,19 +15,9 @@ export async function GET() {
       order by created_at desc
       limit 12
     `)
-    const unregistered = await client.query(`
-      select s.roll_number, s.full_name, t.code as team_code
-      from public.speed_students s
-      join public.speed_teams t on t.id = s.team_id
-      left join public.speed_registrations r on r.student_id = s.id
-      where s.active and (r.id is null or r.submitted_at is null)
-      order by t.number, s.full_name
-      limit 50
-    `)
     return {
       stats: stats.rows[0].s,
       recent: recent.rows,
-      unregistered: unregistered.rows,
     }
   })
 

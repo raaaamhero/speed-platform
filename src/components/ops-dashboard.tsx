@@ -13,7 +13,6 @@ type Dash = {
     by_sport: Record<string, number>
   }
   recent: { action: string; entity_type: string; created_at: string; reason: string | null }[]
-  unregistered: { roll_number: string; full_name: string; team_code: string }[]
 }
 
 export function OpsDashboard() {
@@ -102,38 +101,19 @@ export function OpsDashboard() {
         </ul>
       </section>
 
-      <div className="grid gap-8 lg:grid-cols-2">
-        <section>
-          <h3 className="font-display text-xl tracking-[0.08em]">Not registered yet</h3>
-          <ul className="mt-4 max-h-80 space-y-2 overflow-auto text-sm">
-            {data.unregistered.length === 0 && (
-              <li className="text-[var(--speed-muted)]">Everyone in the master list has registered.</li>
-            )}
-            {data.unregistered.map((s) => (
-              <li key={s.roll_number} className="flex justify-between border-b border-white/5 py-2">
-                <span>
-                  {s.full_name}{' '}
-                  <span className="text-[var(--speed-muted)]">({s.roll_number})</span>
-                </span>
-                <span className="text-[var(--speed-muted)]">{s.team_code}</span>
-              </li>
-            ))}
-          </ul>
-        </section>
-        <section>
-          <h3 className="font-display text-xl tracking-[0.08em]">Recent activity</h3>
-          <ul className="mt-4 max-h-80 space-y-2 overflow-auto text-sm">
-            {data.recent.map((a, i) => (
-              <li key={`${a.created_at}-${i}`} className="border-b border-white/5 py-2">
-                <p className="text-[var(--speed-ink)]">{a.action}</p>
-                <p className="text-xs text-[var(--speed-muted)]">
-                  {new Date(a.created_at).toLocaleString()} · {a.reason || a.entity_type}
-                </p>
-              </li>
-            ))}
-          </ul>
-        </section>
-      </div>
+      <section>
+        <h3 className="font-display text-xl tracking-[0.08em]">Recent activity</h3>
+        <ul className="mt-4 max-h-80 space-y-2 overflow-auto text-sm">
+          {data.recent.map((a, i) => (
+            <li key={`${a.created_at}-${i}`} className="border-b border-white/5 py-2">
+              <p className="text-[var(--speed-ink)]">{a.action}</p>
+              <p className="text-xs text-[var(--speed-muted)]">
+                {new Date(a.created_at).toLocaleString()} · {a.reason || a.entity_type}
+              </p>
+            </li>
+          ))}
+        </ul>
+      </section>
     </div>
   )
 }

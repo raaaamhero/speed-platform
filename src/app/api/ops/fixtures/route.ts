@@ -36,7 +36,12 @@ export async function POST(req: Request) {
   const teamB = body.team_b_number != null ? Number(body.team_b_number) : null
   const venue = body.venue ? String(body.venue) : null
   const title = body.title ? String(body.title) : null
-  const startsAt = body.starts_at ? String(body.starts_at) : null
+  let startsAt: string | null = body.starts_at ? String(body.starts_at).trim() : null
+  if (startsAt === '') startsAt = null
+  // Accept datetime-local without offset by treating as IST
+  if (startsAt && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(startsAt)) {
+    startsAt = `${startsAt}:00+05:30`
+  }
   const published = Boolean(body.published)
   const status = String(body.status || 'scheduled')
 
@@ -44,6 +49,9 @@ export async function POST(req: Request) {
     const fixture = await withDb(async (client) => {
       const sport = await client.query(`select id from public.speed_sports where slug=$1`, [sportSlug])
       if (!sport.rows[0]) throw new Error('Unknown sport')
+      if (teamA != null && teamB != null && teamA === teamB) {
+        throw new Error('Team A and Team B must be different')
+      }
       const teamAId = teamA
         ? (await client.query(`select id from public.speed_teams where number=$1`, [teamA])).rows[0]?.id
         : null
