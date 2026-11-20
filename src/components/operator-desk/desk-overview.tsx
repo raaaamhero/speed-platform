@@ -21,12 +21,16 @@ type Stats = {
 type Recent = { action: string; entity_type: string; created_at: string; reason: string | null }
 
 const MODULES = [
-  { href: '/ops/operator-desk/match-results', label: 'Match Results', hint: 'Enter & approve scores' },
-  { href: '/ops/operator-desk/fixtures', label: 'Fixtures', hint: 'Schedule & publish' },
-  { href: '/ops/operator-desk/overall-points', label: 'Overall SPEED', hint: 'Final placements only' },
-  { href: '/ops/operator-desk/competitions', label: 'Competitions', hint: 'Groups & formats' },
+  { href: '/ops/operator-desk/fixtures', label: 'Fixtures', hint: 'Groups, schedule, publish' },
+  { href: '/ops/operator-desk/match-results', label: 'Match Results', hint: 'Scores & approval' },
+  {
+    href: '/ops/operator-desk/standings-knockouts',
+    label: 'Standings & Knockouts',
+    hint: 'Tables & brackets',
+  },
+  { href: '/ops/operator-desk/overall-points', label: 'Overall SPEED Points', hint: 'Final places only' },
   { href: '/ops/operator-desk/registrations', label: 'Registrations', hint: 'Students & import' },
-  { href: '/ops/operator-desk/audit', label: 'Audit Logs', hint: 'Operator activity' },
+  { href: '/ops/operator-desk/announcements', label: 'Announcements', hint: 'Public feed' },
 ]
 
 export function DeskOverview() {
@@ -53,31 +57,31 @@ export function DeskOverview() {
 
   if (error) return <p className="text-[#c81e2c]">{error}</p>
   if (!stats) {
-    return <p className="text-white/40">Loading operational overview…</p>
+    return <p className="text-white/40">Loading dashboard…</p>
   }
 
   const cards: [string, number | string][] = [
-    ['Participants registered', stats.registered],
+    ['Registered', stats.registered],
     ['Teams', stats.teams ?? 12],
-    ['Active competitions', stats.active_competitions ?? '—'],
-    ['Fixtures scheduled', stats.fixtures_scheduled ?? stats.fixtures],
+    ['Active sports', stats.active_competitions ?? '—'],
+    ['Scheduled fixtures', stats.fixtures_scheduled ?? stats.fixtures],
     ['Awaiting results', stats.fixtures_awaiting_results ?? 0],
     ['Pending approval', stats.results_pending_approval ?? 0],
     ['Completed matches', stats.matches_completed ?? 0],
-    ['Upcoming published', stats.upcoming_matches ?? 0],
+    ['Upcoming', stats.upcoming_matches ?? 0],
     ['Qualification drafts', stats.pending_qualification ?? 0],
   ]
 
   return (
     <div className="space-y-10">
       <div>
-        <p className="font-display text-[10px] tracking-[0.35em] text-[#e2b14a]">LIVE OVERVIEW</p>
+        <p className="font-display text-[10px] tracking-[0.35em] text-[#e2b14a]">DASHBOARD</p>
         <h2 className="mt-2 font-display text-3xl tracking-[0.08em] text-[#f3ead7] sm:text-4xl">
-          Command status
+          Operations overview
         </h2>
         <p className="mt-2 max-w-xl text-sm text-white/45">
-          Match wins drive sport progress only. Final placements award overall SPEED points.
-          Registration {stats.registration_open ? 'is open' : 'is closed'}.
+          One workspace for fixtures, results and progression. Match wins ≠ overall SPEED points.
+          Registration {stats.registration_open ? 'open' : 'closed'}.
         </p>
       </div>
 
@@ -94,7 +98,7 @@ export function DeskOverview() {
       </div>
 
       <div>
-        <h3 className="font-display text-lg tracking-[0.1em] text-[#f3ead7]">Modules</h3>
+        <h3 className="font-display text-lg tracking-[0.1em] text-[#f3ead7]">Go to</h3>
         <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {MODULES.map((m) => (
             <Link

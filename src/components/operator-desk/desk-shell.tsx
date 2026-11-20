@@ -4,16 +4,13 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 
 const NAV = [
-  { href: '/ops/operator-desk', label: 'Overview', exact: true },
-  { href: '/ops/operator-desk/competitions', label: 'Competitions' },
+  { href: '/ops/operator-desk', label: 'Dashboard', exact: true },
   { href: '/ops/operator-desk/fixtures', label: 'Fixtures' },
   { href: '/ops/operator-desk/match-results', label: 'Match Results' },
-  { href: '/ops/operator-desk/standings', label: 'Group Standings' },
-  { href: '/ops/operator-desk/knockouts', label: 'Knockouts' },
-  { href: '/ops/operator-desk/overall-points', label: 'Overall SPEED' },
+  { href: '/ops/operator-desk/standings-knockouts', label: 'Standings & Knockouts' },
   { href: '/ops/operator-desk/registrations', label: 'Registrations' },
+  { href: '/ops/operator-desk/overall-points', label: 'Overall SPEED Points' },
   { href: '/ops/operator-desk/announcements', label: 'Announcements' },
-  { href: '/ops/operator-desk/audit', label: 'Audit Logs' },
   { href: '/ops/operator-desk/settings', label: 'Settings' },
 ]
 
@@ -80,7 +77,7 @@ export function DeskShell({ children }: { children: React.ReactNode }) {
                 <p className="font-display text-lg tracking-[0.1em]">OPERATOR DESK</p>
               </div>
               <p className="hidden text-xs tracking-[0.2em] text-white/35 lg:block">
-                TOURNAMENT COMMAND · LIVE DATA
+                LIVE OPERATIONS
               </p>
               <div className="flex items-center gap-2 lg:hidden">
                 <button

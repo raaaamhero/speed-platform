@@ -5,11 +5,8 @@ import { usePathname } from 'next/navigation'
 
 const links = [
   { href: '/ops/operator-desk', label: 'Operator Desk' },
-  { href: '/ops/tournament', label: 'Tournament' },
   { href: '/ops/students', label: 'Students' },
   { href: '/ops/import', label: 'Import' },
-  { href: '/ops/fixtures', label: 'Fixtures' },
-  { href: '/ops/results', label: 'Results' },
 ]
 
 export function OpsChrome({
@@ -34,12 +31,13 @@ export function OpsChrome({
             <p className="font-display text-[10px] tracking-[0.35em] text-[var(--speed-gold)]">
               SPORTSCOM
             </p>
-            <h1 className="font-display text-2xl tracking-[0.1em]">COMMAND CENTRE</h1>
+            <h1 className="font-display text-2xl tracking-[0.1em]">LEGACY TOOLS</h1>
             <p className="mt-1 text-xs text-[var(--speed-muted)]">
-              Legacy tools · prefer{' '}
+              Prefer{' '}
               <Link href="/ops/operator-desk" className="text-[var(--speed-gold)]">
                 Operator Desk
-              </Link>
+              </Link>{' '}
+              for day-to-day operations
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-1 text-sm sm:gap-2">
