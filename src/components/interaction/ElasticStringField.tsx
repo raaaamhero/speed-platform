@@ -63,10 +63,10 @@ export function ElasticStringField({
             'rgba(255,255,255,0.5)',
           ]
     const mobileColors = [
-      'rgba(255,150,60,0.95)',
-      'rgba(255,255,255,0.88)',
-      'rgba(242,116,33,0.92)',
-      'rgba(255,210,140,0.78)',
+      'rgba(255,160,70,0.95)',
+      'rgba(255,255,255,0.9)',
+      'rgba(242,116,33,0.95)',
+      'rgba(255,200,120,0.82)',
     ]
 
     let raf = 0
@@ -92,7 +92,7 @@ export function ElasticStringField({
     const layoutStrands = () => {
       const mobile = isNarrow() && variant === 'hero'
       const colors = mobile ? mobileColors : desktopColors
-      const gap = mobile ? 22 : variant === 'hero' ? 11 : 9
+      const gap = mobile ? 16 : variant === 'hero' ? 11 : 9
       strands = strandPool.slice(0, colors.length)
       strands.forEach((s, j) => {
         s.color = colors[j]
@@ -103,23 +103,24 @@ export function ElasticStringField({
     const sampleBase = () => {
       layoutStrands()
       const mobile = isNarrow() && variant === 'hero'
-      // Mobile: low, open arc on the right — not a tall congested fan through the title
-      const y0 = variant === 'hero' ? (mobile ? h * 0.78 : h * 0.72) : h * 0.55
-      const yPeak = variant === 'hero' ? (mobile ? h * 0.48 : h * 0.28) : h * 0.32
-      const yEnd = variant === 'hero' ? (mobile ? h * 0.58 : h * 0.38) : h * 0.42
-      const heroStart = mobile ? 0.52 : w < 900 ? 0.5 : 0.42
+      // Mobile: open arc in the upper-right pocket (above SPEED copy), not through the title
+      // Desktop: classic right-biased tall arch
+      const y0 = variant === 'hero' ? (mobile ? h * 0.16 : h * 0.72) : h * 0.55
+      const yPeak = variant === 'hero' ? (mobile ? h * 0.07 : h * 0.28) : h * 0.32
+      const yEnd = variant === 'hero' ? (mobile ? h * 0.26 : h * 0.38) : h * 0.42
+      const heroStart = mobile ? 0.22 : w < 900 ? 0.5 : 0.42
       const x0 = variant === 'hero' ? w * heroStart : 0
-      const x1 = w
+      const x1 = mobile ? w * 1.02 : w
 
       for (let i = 0; i < N; i++) {
         const t = i / (N - 1)
         const x = x0 + (x1 - x0) * t
-        const arch = Math.sin(Math.PI * Math.min(1, t * (mobile ? 1 : 1.05)))
+        const arch = Math.sin(Math.PI * Math.min(1, t * (mobile ? 0.98 : 1.05)))
         const settle = t * t
         const y =
           y0 +
-          (yPeak - y0) * arch * (1 - settle * (mobile ? 0.2 : 0.35)) +
-          (yEnd - y0) * settle * (mobile ? 0.35 : 0.55)
+          (yPeak - y0) * arch * (1 - settle * (mobile ? 0.15 : 0.35)) +
+          (yEnd - y0) * settle * (mobile ? 0.45 : 0.55)
         base[i].x = x
         base[i].y = y
       }

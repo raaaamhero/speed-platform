@@ -33,9 +33,9 @@ export function ArenaHero() {
         interactive
       />
 
-      {/* Stronger left scrim on phones so copy stays clear of the arc */}
-      <div className="pointer-events-none absolute inset-y-0 left-0 z-[3] w-[100%] bg-gradient-to-r from-[#07080b] via-[#07080b]/92 to-transparent sm:w-[58%] sm:from-[#07080b]/80 sm:via-[#07080b]/35" />
-      <div className="pointer-events-none absolute inset-x-0 top-0 z-[3] h-[42%] bg-gradient-to-b from-[#07080b]/75 to-transparent sm:hidden" />
+      {/* Left/bottom scrim for copy; keep upper-right clear so mobile threads show */}
+      <div className="pointer-events-none absolute inset-y-0 left-0 z-[3] w-[78%] bg-gradient-to-r from-[#07080b] via-[#07080b]/85 to-transparent sm:w-[58%] sm:from-[#07080b]/80 sm:via-[#07080b]/35" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[3] h-[55%] bg-gradient-to-t from-[#07080b]/80 via-[#07080b]/35 to-transparent sm:hidden" />
 
       <motion.div
         style={{ opacity }}
