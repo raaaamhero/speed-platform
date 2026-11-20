@@ -40,11 +40,11 @@ export function HomeExperience() {
         <main>
           <ArenaHero />
           <StatsBand />
+          <SportsComBrand />
           <ManifestoSection />
           <SportsUniverse />
           <TeamsShowcase />
           <RoadSection />
-          <SportsComBrand />
           <section className="border-t border-white/10 bg-black py-20 text-center">
             <p className="speed-kicker">REGISTER</p>
             <h2 className="mt-4 font-display text-4xl tracking-[0.06em] text-white sm:text-6xl">
