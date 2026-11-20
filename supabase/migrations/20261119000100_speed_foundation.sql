@@ -281,17 +281,17 @@ on conflict (slug) do update set
   sort_order = excluded.sort_order;
 
 insert into public.speed_teams (number, code, name, captain_slots) values
-  (1, 'T1', 'Team 1', 4),
-  (2, 'T2', 'Team 2', 4),
-  (3, 'T3', 'Team 3', 4),
-  (4, 'T4', 'Team 4', 4),
-  (5, 'T5', 'Team 5', 4),
-  (6, 'T6', 'Team 6', 4),
-  (7, 'T7', 'Team 7', 4),
-  (8, 'T8', 'Team 8', 4),
-  (9, 'T9', 'Team 9', 4),
-  (10, 'T10', 'Team 10', 4),
-  (11, 'T11', 'Faculty', 0),
+  (1, 'T1', 'Macallan 12', 4),
+  (2, 'T2', '34 Carat', 4),
+  (3, 'T3', 'Joint Bros', 4),
+  (4, 'T4', 'Kootlers International', 4),
+  (5, 'T5', 'The Dark Triads', 4),
+  (6, 'T6', 'Magnum Brewtalists', 4),
+  (7, 'T7', 'Buzzballers', 4),
+  (8, 'T8', 'Heisenberg', 4),
+  (9, 'T9', 'Jagerbomb', 4),
+  (10, 'T10', 'ROI Rebels', 4),
+  (11, 'T11', 'Maestros', 0),
   (12, 'T12', 'IPM', 2)
 on conflict (number) do update set name = excluded.name, code = excluded.code, captain_slots = excluded.captain_slots;
 

@@ -49,7 +49,9 @@ export function TeamsShowcase() {
                 </span>
                 <span className="font-display text-xs tracking-[0.25em] text-white/45">{team.code}</span>
               </div>
-              <h3 className="mt-3 font-display text-3xl tracking-[0.08em] text-white">{team.name}</h3>
+              <h3 className="mt-3 font-display text-2xl leading-tight tracking-[0.04em] text-white sm:text-[1.65rem]">
+                {team.name}
+              </h3>
               <p className="mt-3 text-sm leading-relaxed text-[var(--speed-muted)]">
                 {team.sectionCodes.map(sectionLabel).join(' · ')}
               </p>

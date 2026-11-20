@@ -45,24 +45,36 @@ export const SECTIONS: SectionDef[] = [
 ]
 
 export const TEAMS: TeamDef[] = [
-  { number: 1, code: 'T1', name: 'Team 1', sectionCodes: ['SEN-1', 'SEN-2'], captainSlots: 4 },
-  { number: 2, code: 'T2', name: 'Team 2', sectionCodes: ['SEN-3', 'SEN-4'], captainSlots: 4 },
-  { number: 3, code: 'T3', name: 'Team 3', sectionCodes: ['SEN-5', 'SEN-6'], captainSlots: 4 },
-  { number: 4, code: 'T4', name: 'Team 4', sectionCodes: ['SEN-MSM', 'SEN-IB'], captainSlots: 4 },
+  { number: 1, code: 'T1', name: 'Macallan 12', sectionCodes: ['SEN-1', 'SEN-2'], captainSlots: 4 },
+  { number: 2, code: 'T2', name: '34 Carat', sectionCodes: ['SEN-3', 'SEN-4'], captainSlots: 4 },
+  { number: 3, code: 'T3', name: 'Joint Bros', sectionCodes: ['SEN-5', 'SEN-6'], captainSlots: 4 },
+  {
+    number: 4,
+    code: 'T4',
+    name: 'Kootlers International',
+    sectionCodes: ['SEN-MSM', 'SEN-IB'],
+    captainSlots: 4,
+  },
   {
     number: 5,
     code: 'T5',
-    name: 'Team 5',
+    name: 'The Dark Triads',
     sectionCodes: ['SEN-BKFS', 'SEN-AIDS', 'SEN-HR'],
     mergedSectionGroups: [['SEN-AIDS', 'SEN-HR']],
     captainSlots: 4,
   },
-  { number: 6, code: 'T6', name: 'Team 6', sectionCodes: ['JUN-1', 'JUN-2'], captainSlots: 4 },
-  { number: 7, code: 'T7', name: 'Team 7', sectionCodes: ['JUN-3', 'JUN-4'], captainSlots: 4 },
-  { number: 8, code: 'T8', name: 'Team 8', sectionCodes: ['JUN-5', 'JUN-IB'], captainSlots: 4 },
-  { number: 9, code: 'T9', name: 'Team 9', sectionCodes: ['JUN-MSM', 'JUN-AIDS'], captainSlots: 4 },
-  { number: 10, code: 'T10', name: 'Team 10', sectionCodes: ['JUN-BKFS', 'JUN-HR'], captainSlots: 4 },
-  { number: 11, code: 'T11', name: 'Faculty', sectionCodes: ['FAC'], captainSlots: 0 },
+  {
+    number: 6,
+    code: 'T6',
+    name: 'Magnum Brewtalists',
+    sectionCodes: ['JUN-1', 'JUN-2'],
+    captainSlots: 4,
+  },
+  { number: 7, code: 'T7', name: 'Buzzballers', sectionCodes: ['JUN-3', 'JUN-4'], captainSlots: 4 },
+  { number: 8, code: 'T8', name: 'Heisenberg', sectionCodes: ['JUN-5', 'JUN-IB'], captainSlots: 4 },
+  { number: 9, code: 'T9', name: 'Jagerbomb', sectionCodes: ['JUN-MSM', 'JUN-AIDS'], captainSlots: 4 },
+  { number: 10, code: 'T10', name: 'ROI Rebels', sectionCodes: ['JUN-BKFS', 'JUN-HR'], captainSlots: 4 },
+  { number: 11, code: 'T11', name: 'Maestros', sectionCodes: ['FAC'], captainSlots: 0 },
   { number: 12, code: 'T12', name: 'IPM', sectionCodes: ['IPM-1', 'IPM-2', 'IPM-3'], captainSlots: 2 },
 ]
 
