@@ -31,7 +31,6 @@ export function SiteHeader({ variant = 'overlay' }: Props) {
     }
   }, [open])
 
-  // Close drawer on route hash / resize to desktop-ish
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') setOpen(false)
@@ -41,68 +40,82 @@ export function SiteHeader({ variant = 'overlay' }: Props) {
   }, [])
 
   return (
-    <header
-      className={`fixed inset-x-0 top-0 z-40 ${
-        solid || open
-          ? 'border-b border-white/10 bg-[#07080b]/95 backdrop-blur-md'
-          : 'border-b border-transparent bg-gradient-to-b from-[#07080b]/90 via-[#07080b]/45 to-transparent'
-      }`}
-    >
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-8 sm:py-4">
-        <Link href="/" className="group flex min-w-0 items-center gap-2.5 sm:gap-3" onClick={() => setOpen(false)}>
-          <span className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full border border-white/20 sm:h-10 sm:w-10">
-            <Image src="/brand/sportscom-logo.jpg" alt="SportsCom" fill className="object-cover" />
-          </span>
-          <span className="flex min-w-0 flex-col leading-tight">
-            <span
-              className="text-[13px] font-extrabold tracking-[0.14em] text-white transition group-hover:text-[var(--speed-gold)] sm:text-sm"
-              style={{ fontFamily: 'var(--font-outfit), system-ui, sans-serif' }}
-            >
-              SPORTSCOM
+    <>
+      <header
+        className={`fixed inset-x-0 top-0 ${open ? 'z-[80]' : 'z-40'} ${
+          solid || open
+            ? 'border-b border-white/10 bg-[#07080b]'
+            : 'border-b border-transparent bg-gradient-to-b from-[#07080b]/90 via-[#07080b]/45 to-transparent'
+        }`}
+      >
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-8 sm:py-4">
+          <Link
+            href="/"
+            className="group flex min-w-0 items-center gap-2.5 sm:gap-3"
+            onClick={() => setOpen(false)}
+          >
+            <span className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full border border-white/20 sm:h-10 sm:w-10">
+              <Image src="/brand/sportscom-logo.jpg" alt="SportsCom" fill className="object-cover" />
             </span>
-            <span
-              className="mt-0.5 block truncate text-[9px] font-medium leading-snug tracking-[0.02em] text-white/55 sm:text-[11px] sm:tracking-[0.04em]"
-              style={{ fontFamily: 'var(--font-outfit), system-ui, sans-serif' }}
-            >
-              a team above all, above all a team
+            <span className="flex min-w-0 flex-col leading-tight">
+              <span
+                className="text-[13px] font-extrabold tracking-[0.14em] text-white transition group-hover:text-[var(--speed-gold)] sm:text-sm"
+                style={{ fontFamily: 'var(--font-outfit), system-ui, sans-serif' }}
+              >
+                SPORTSCOM
+              </span>
+              <span
+                className="mt-0.5 block truncate text-[9px] font-medium leading-snug tracking-[0.02em] text-white/55 sm:text-[11px] sm:tracking-[0.04em]"
+                style={{ fontFamily: 'var(--font-outfit), system-ui, sans-serif' }}
+              >
+                a team above all, above all a team
+              </span>
             </span>
-          </span>
-        </Link>
+          </Link>
 
-        <button
-          type="button"
-          className="flex h-11 w-11 shrink-0 items-center justify-center border border-white/20 text-white transition hover:border-[var(--speed-gold)]/60 hover:text-[var(--speed-gold)]"
-          aria-label={open ? 'Close menu' : 'Open menu'}
-          aria-expanded={open}
-          onClick={() => setOpen((v) => !v)}
-        >
-          <span className="sr-only">Menu</span>
-          {open ? <CloseIcon /> : <MenuIcon />}
-        </button>
-      </div>
+          <button
+            type="button"
+            className="flex h-11 w-11 shrink-0 items-center justify-center border border-white/20 text-white transition hover:border-[var(--speed-gold)]/60 hover:text-[var(--speed-gold)]"
+            aria-label={open ? 'Close menu' : 'Open menu'}
+            aria-expanded={open}
+            onClick={() => setOpen((v) => !v)}
+          >
+            <span className="sr-only">Menu</span>
+            {open ? <CloseIcon /> : <MenuIcon />}
+          </button>
+        </div>
+      </header>
 
       {open && (
-        <div className="absolute inset-x-0 top-full z-50 max-h-[min(85svh,40rem)] overflow-y-auto border-t border-white/10 bg-[#07080b]/98 backdrop-blur-md">
-          <nav
-            className="mx-auto flex max-w-6xl flex-col gap-1 px-4 py-4 sm:px-8 sm:py-6"
-            aria-label="Site menu"
-          >
-            {links.map((l) => (
-              <Link
-                key={l.href}
-                href={l.href}
-                onClick={() => setOpen(false)}
-                className={`border-b border-white/10 py-3.5 font-display text-xl tracking-[0.12em] transition hover:text-[var(--speed-gold)] sm:py-4 sm:text-2xl ${
-                  l.href === '/register' ? 'text-[var(--speed-gold)]' : 'text-white'
-                }`}
-              >
-                {l.label.toUpperCase()}
-              </Link>
-            ))}
-          </nav>
-        </div>
+        <>
+          {/* Full-screen frost so hero / page content never shows through */}
+          <div
+            className="fixed inset-0 z-[70] bg-[#07080b]/80 backdrop-blur-2xl"
+            aria-hidden
+            onClick={() => setOpen(false)}
+          />
+          <div className="fixed inset-x-0 bottom-0 top-[3.75rem] z-[75] overflow-y-auto border-t border-white/10 bg-[#07080b] sm:top-[4.25rem]">
+            <nav
+              className="mx-auto flex max-w-6xl flex-col gap-0 px-4 py-5 sm:px-8 sm:py-8"
+              aria-label="Site menu"
+            >
+              {links.map((l) => (
+                <Link
+                  key={l.href}
+                  href={l.href}
+                  onClick={() => setOpen(false)}
+                  className={`border-b border-white/10 py-4 font-display text-2xl tracking-[0.12em] transition hover:text-[var(--speed-gold)] sm:py-5 sm:text-3xl ${
+                    l.href === '/register' ? 'text-[var(--speed-gold)]' : 'text-white'
+                  }`}
+                >
+                  {l.label.toUpperCase()}
+                </Link>
+              ))}
+            </nav>
+          </div>
+        </>
       )}
-    </header>
+    </>
   )
 }
 
