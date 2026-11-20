@@ -1,17 +1,14 @@
 /**
- * Original epic arena score (Web Audio) — Endgame-inspired energy,
- * not a copyrighted track. Autoplay is unlocked by the first user gesture
- * (required by mobile/desktop browsers).
+ * One-shot epic hit for the SPEED title flash only — no looping soundtrack.
  */
 
 let ctx: AudioContext | null = null
 let master: GainNode | null = null
 let nodes: OscillatorNode[] = []
-let gains: GainNode[] = []
-let playing = false
-let pendingStart = false
+let played = false
+let pending = false
 let armed = false
-let loopTimer: number | null = null
+let fadeTimer: number | null = null
 
 function ensure() {
   if (typeof window === 'undefined') return null
@@ -40,21 +37,21 @@ async function resume() {
   return audio
 }
 
-function addOsc(
+function tone(
   freq: number,
   type: OscillatorType,
   gain: number,
   when: number,
   duration: number,
-  attack = 0.08,
-  release = 0.6,
+  attack = 0.06,
+  release = 0.5,
 ) {
   if (!ctx || !master) return
   const osc = ctx.createOscillator()
   const g = ctx.createGain()
   const filter = ctx.createBiquadFilter()
   filter.type = 'lowpass'
-  filter.frequency.value = type === 'sawtooth' ? 900 : 520
+  filter.frequency.value = type === 'sawtooth' ? 880 : 480
   osc.type = type
   osc.frequency.setValueAtTime(freq, when)
   g.gain.setValueAtTime(0.0001, when)
@@ -66,140 +63,57 @@ function addOsc(
   osc.start(when)
   osc.stop(when + duration + 0.05)
   nodes.push(osc)
-  gains.push(g)
 }
 
-/** Deep timpani-like hit */
 function boom(when: number, strength = 1) {
   if (!ctx || !master) return
   const osc = ctx.createOscillator()
   const g = ctx.createGain()
   osc.type = 'sine'
-  osc.frequency.setValueAtTime(90 * strength, when)
-  osc.frequency.exponentialRampToValueAtTime(38, when + 0.45)
+  osc.frequency.setValueAtTime(95 * strength, when)
+  osc.frequency.exponentialRampToValueAtTime(36, when + 0.5)
   g.gain.setValueAtTime(0.0001, when)
-  g.gain.exponentialRampToValueAtTime(0.55 * strength, when + 0.02)
-  g.gain.exponentialRampToValueAtTime(0.0001, when + 1.1)
+  g.gain.exponentialRampToValueAtTime(0.5 * strength, when + 0.02)
+  g.gain.exponentialRampToValueAtTime(0.0001, when + 1.15)
   osc.connect(g)
   g.connect(master)
   osc.start(when)
-  osc.stop(when + 1.2)
+  osc.stop(when + 1.25)
   nodes.push(osc)
-  gains.push(g)
 }
 
-/** Rising string cluster — heroic lift */
-function swell(when: number) {
-  // D minor-ish stack
-  const freqs = [146.83, 220, 293.66, 349.23, 440]
-  freqs.forEach((f, i) => {
-    addOsc(f, i % 2 === 0 ? 'sawtooth' : 'triangle', 0.028 - i * 0.003, when, 3.2, 0.35, 1.2)
-  })
-}
-
-/** Sustained epic pad bed */
-function padBed(when: number) {
-  ;[55, 82.41, 110, 164.81].forEach((f, i) => {
-    addOsc(f, i < 2 ? 'sine' : 'triangle', 0.04 - i * 0.006, when, 12, 1.2, 2.5)
-  })
-  ;[220, 261.63, 329.63].forEach((f, i) => {
-    addOsc(f, 'sawtooth', 0.012 - i * 0.002, when + 0.4, 10, 1.8, 2.2)
-  })
-}
-
-function scheduleLoop() {
-  if (!ctx || !playing) return
-  const t = ctx.currentTime + 0.05
-  boom(t, 0.85)
-  boom(t + 2.4, 0.55)
-  swell(t + 0.15)
-  padBed(t)
-  // Soft brass stab
-  ;[174.61, 220, 261.63].forEach((f, i) => {
-    addOsc(f, 'sawtooth', 0.03, t + 4.8 + i * 0.04, 1.6, 0.04, 0.7)
-  })
-  boom(t + 4.85, 1)
-  loopTimer = window.setTimeout(() => {
-    if (playing) scheduleLoop()
-  }, 9800)
-}
-
-async function startEpicScoreInternal() {
+async function playSpeedFanfareOnce() {
   const audio = await resume()
-  if (!audio || !master || playing) return false
+  if (!audio || !master || played) return false
 
-  // Clear stale nodes
+  played = true
+  pending = false
   nodes = []
-  gains = []
-  playing = true
-  pendingStart = false
 
   const t = audio.currentTime
   master.gain.cancelScheduledValues(t)
   master.gain.setValueAtTime(0.0001, t)
-  master.gain.exponentialRampToValueAtTime(0.72, t + 0.9)
+  master.gain.exponentialRampToValueAtTime(0.7, t + 0.25)
 
-  // SPEED flash — Endgame-scale impact
-  boom(t, 1.15)
-  boom(t + 0.12, 0.7)
-  swell(t)
-  padBed(t + 0.2)
+  // Short heroic hit — ~4s, then silence
+  boom(t, 1.1)
+  boom(t + 0.1, 0.65)
+  ;[146.83, 220, 293.66, 349.23, 440].forEach((f, i) => {
+    tone(f, i % 2 === 0 ? 'sawtooth' : 'triangle', 0.03 - i * 0.003, t + 0.04, 2.8, 0.2, 1)
+  })
   ;[293.66, 349.23, 440, 523.25].forEach((f, i) => {
-    addOsc(f, 'sawtooth', 0.035 - i * 0.004, t + 0.05 + i * 0.03, 2.4, 0.05, 1)
+    tone(f, 'sawtooth', 0.032 - i * 0.004, t + 0.08 + i * 0.03, 2.2, 0.05, 0.9)
+  })
+  ;[55, 82.41, 110].forEach((f, i) => {
+    tone(f, 'sine', 0.045 - i * 0.008, t + 0.15, 3.5, 0.4, 1.4)
   })
 
-  scheduleLoop()
-  return true
-}
+  // Fade out after the SPEED beat
+  master.gain.setValueAtTime(0.7, t + 2.6)
+  master.gain.exponentialRampToValueAtTime(0.0001, t + 4.2)
 
-/** Call on any pointer/touch so phones unlock audio before SPEED. */
-export function armEpicAudioUnlock() {
-  if (typeof window === 'undefined' || armed) return
-  armed = true
-
-  const unlock = () => {
-    void resume().then(() => {
-      if (pendingStart && !playing) void startEpicScoreInternal()
-    })
-  }
-
-  window.addEventListener('pointerdown', unlock, { passive: true })
-  window.addEventListener('touchstart', unlock, { passive: true })
-  window.addEventListener('keydown', unlock)
-}
-
-/**
- * Cue the epic score at the SPEED title flash.
- * Starts immediately if audio is unlocked; otherwise waits for the next gesture.
- */
-export async function cueEpicAtSpeedReveal() {
-  armEpicAudioUnlock()
-  pendingStart = true
-  const ok = await startEpicScoreInternal()
-  if (!ok) pendingStart = true
-}
-
-/** If intro was skipped, start epic on the first tap/click (no mute toggle). */
-export function enableAutoEpicOnNextGesture() {
-  armEpicAudioUnlock()
-  if (!playing) pendingStart = true
-}
-
-export function isEpicPlaying() {
-  return playing
-}
-
-export function stopEpicScore() {
-  if (!ctx || !master) return
-  const now = ctx.currentTime
-  master.gain.cancelScheduledValues(now)
-  master.gain.setValueAtTime(master.gain.value || 0.001, now)
-  master.gain.linearRampToValueAtTime(0.0001, now + 0.9)
-  if (loopTimer) {
-    window.clearTimeout(loopTimer)
-    loopTimer = null
-  }
-  window.setTimeout(() => {
+  if (fadeTimer) window.clearTimeout(fadeTimer)
+  fadeTimer = window.setTimeout(() => {
     for (const n of nodes) {
       try {
         n.stop()
@@ -208,16 +122,52 @@ export function stopEpicScore() {
         /* ignore */
       }
     }
-    for (const g of gains) {
-      try {
-        g.disconnect()
-      } catch {
-        /* ignore */
-      }
-    }
     nodes = []
-    gains = []
-    playing = false
-    pendingStart = false
-  }, 950)
+  }, 4500)
+
+  return true
+}
+
+export function armEpicAudioUnlock() {
+  if (typeof window === 'undefined' || armed) return
+  armed = true
+  const unlock = () => {
+    void resume().then(() => {
+      if (pending && !played) void playSpeedFanfareOnce()
+    })
+  }
+  window.addEventListener('pointerdown', unlock, { passive: true })
+  window.addEventListener('touchstart', unlock, { passive: true })
+  window.addEventListener('keydown', unlock)
+}
+
+/** Play once when SPEED flashes — never loops. */
+export async function cueEpicAtSpeedReveal() {
+  armEpicAudioUnlock()
+  if (played) return
+  pending = true
+  const ok = await playSpeedFanfareOnce()
+  if (!ok) pending = true
+}
+
+export function enableAutoEpicOnNextGesture() {
+  // Returning visitors: no looping bed — only unlock context; fanfare is intro-only
+  armEpicAudioUnlock()
+}
+
+export function isEpicPlaying() {
+  return played && nodes.length > 0
+}
+
+export function stopEpicScore() {
+  if (!ctx || !master) return
+  const now = ctx.currentTime
+  master.gain.cancelScheduledValues(now)
+  master.gain.setValueAtTime(master.gain.value || 0.001, now)
+  master.gain.linearRampToValueAtTime(0.0001, now + 0.4)
+  if (fadeTimer) {
+    window.clearTimeout(fadeTimer)
+    fadeTimer = null
+  }
+  pending = false
 }

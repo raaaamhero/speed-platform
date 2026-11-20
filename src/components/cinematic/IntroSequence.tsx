@@ -4,14 +4,9 @@ import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import { ElasticStringField } from '@/components/interaction/ElasticStringField'
-import { InteractiveTitle } from '@/components/interaction/InteractiveTitle'
 import { LiveParticleField } from '@/components/interaction/LiveParticleField'
 import { useReducedMotion } from '@/hooks/use-reduced-motion'
-import {
-  armEpicAudioUnlock,
-  cueEpicAtSpeedReveal,
-  enableAutoEpicOnNextGesture,
-} from './audio-engine'
+import { armEpicAudioUnlock, cueEpicAtSpeedReveal } from './audio-engine'
 import { LetterReveal } from './LetterReveal'
 
 const SKIP_KEY = 'speed-intro-skipped'
@@ -46,9 +41,9 @@ function HeroicCrest() {
         my.set(0)
       }}
       className="relative mb-8 cursor-crosshair"
-      initial={{ opacity: 0, scale: 0.55, filter: 'blur(16px)' }}
-      animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-      transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+      initial={{ opacity: 0, scale: 0.82 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
     >
       {/* Expanding gold shockwaves */}
       {[0, 1, 2].map((i) => (
@@ -93,6 +88,7 @@ export function IntroSequence({ onComplete }: Props) {
   const [visible, setVisible] = useState(true)
   const [loadPct, setLoadPct] = useState(0)
   const done = useRef(onComplete)
+  const audioCued = useRef(false)
   done.current = onComplete
 
   useEffect(() => {
@@ -100,8 +96,6 @@ export function IntroSequence({ onComplete }: Props) {
     const forceReplay = new URLSearchParams(window.location.search).has('intro')
     if (forceReplay) sessionStorage.removeItem(SKIP_KEY)
     if ((!forceReplay && sessionStorage.getItem(SKIP_KEY) === '1') || reduced) {
-      // Returning visitors: epic score starts on first tap (browsers block silent autoplay)
-      if (!reduced) enableAutoEpicOnNextGesture()
       setVisible(false)
       done.current()
       return
@@ -134,18 +128,20 @@ export function IntroSequence({ onComplete }: Props) {
     }
   }, [reduced])
 
-  // SPEED title flash → heroic epic score
+  // SPEED title flash → one-shot fanfare only
   useEffect(() => {
-    if (phase >= 4 && visible && !reduced) {
+    if (phase >= 4 && visible && !reduced && !audioCued.current) {
+      audioCued.current = true
       void cueEpicAtSpeedReveal()
     }
   }, [phase, visible, reduced])
 
   function skip() {
     sessionStorage.setItem(SKIP_KEY, '1')
-    // If they skip after/during SPEED, keep trying to start epic on this gesture
-    if (phase >= 4) void cueEpicAtSpeedReveal()
-    else enableAutoEpicOnNextGesture()
+    if (phase >= 4 && !audioCued.current) {
+      audioCued.current = true
+      void cueEpicAtSpeedReveal()
+    }
     setVisible(false)
     done.current()
   }
@@ -177,12 +173,17 @@ export function IntroSequence({ onComplete }: Props) {
             }}
             transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
           />
-          <LiveParticleField className="absolute inset-0 z-0 h-full w-full opacity-30" density={phase >= 2 ? 42 : 28} />
-          <ElasticStringField
-            className="absolute inset-0 z-[1] h-full w-full"
-            variant="intro"
-            interactive
+          <LiveParticleField
+            className="absolute inset-0 z-0 h-full w-full opacity-25"
+            density={phase >= 4 ? 16 : phase >= 2 ? 28 : 22}
           />
+          {phase < 4 && (
+            <ElasticStringField
+              className="absolute inset-0 z-[1] h-full w-full"
+              variant="intro"
+              interactive
+            />
+          )}
 
           <div className="absolute right-4 top-4 z-20 flex gap-2 sm:right-5 sm:top-5">
             <a
@@ -272,26 +273,38 @@ export function IntroSequence({ onComplete }: Props) {
             {phase >= 4 && (
               <motion.div
                 key="speed"
-                initial={{ opacity: 0, y: 20, scale: 0.96 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.35 }}
                 className="flex w-full max-w-4xl flex-col items-center text-center"
               >
-                <InteractiveTitle className="mx-auto block text-[clamp(4rem,16vw,8rem)]" />
+                <motion.h1
+                  initial={reduced ? false : { opacity: 0, y: 36, scale: 0.94 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ duration: 1.05, ease: [0.16, 1, 0.3, 1] }}
+                  className="font-speed-title text-[clamp(4.2rem,18vw,9rem)] leading-[0.88] text-white will-change-transform"
+                  style={{ transform: 'translateZ(0)' }}
+                >
+                  SPEED
+                  <br />
+                  <span className="text-[0.72em] text-[var(--speed-gold)]">2026–27</span>
+                </motion.h1>
 
-                <p className="mt-3 font-display text-xl tracking-[0.32em] text-white/75 sm:text-2xl">
-                  2026–27
-                </p>
-
-                <p className="mt-5 max-w-[95vw] font-display text-[clamp(0.95rem,3vw,1.65rem)] tracking-[0.12em] text-[var(--speed-ink)]">
+                <motion.p
+                  initial={reduced ? false : { opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.35, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+                  className="mt-6 font-display text-[clamp(0.95rem,3vw,1.5rem)] tracking-[0.14em] text-white/75"
+                >
                   REGISTER FOR SPEED.
-                </p>
+                </motion.p>
 
                 {phase >= 5 && (
                   <motion.button
                     type="button"
-                    initial={{ opacity: 0, y: 14 }}
+                    initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.97 }}
                     onClick={skip}
