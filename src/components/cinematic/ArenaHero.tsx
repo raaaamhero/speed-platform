@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useRef } from 'react'
 import { ElasticStringField } from '@/components/interaction/ElasticStringField'
@@ -7,8 +8,8 @@ import { LiveParticleField } from '@/components/interaction/LiveParticleField'
 import { useReducedMotion } from '@/hooks/use-reduced-motion'
 
 /**
- * Hero art direction — Sarvam restraint:
- * left copy, right three pluckable arches, soft floor glow, almost no dust.
+ * Hero — brand first, SPEED Centre copy, Register directly under it.
+ * Mobile: readable left column; arches stay decorative on the right.
  */
 export function ArenaHero() {
   const ref = useRef<HTMLElement>(null)
@@ -24,32 +25,40 @@ export function ArenaHero() {
         <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_55%,rgba(0,0,0,0.7)_100%)]" />
       </motion.div>
 
-      <LiveParticleField className="absolute inset-0 z-[1] h-full w-full opacity-30" density={36} />
+      <LiveParticleField className="absolute inset-0 z-[1] h-full w-full opacity-20 sm:opacity-30" density={28} />
 
-      {/* Three arches — the one interactive idea */}
-      <ElasticStringField className="absolute inset-0 z-[2] h-full w-full" variant="hero" interactive />
+      <ElasticStringField
+        className="absolute inset-0 z-[2] h-full w-full opacity-45 sm:opacity-100"
+        variant="hero"
+        interactive
+      />
+
+      {/* Readable scrim behind copy on narrow screens */}
+      <div className="pointer-events-none absolute inset-y-0 left-0 z-[3] w-[92%] bg-gradient-to-r from-[#07080b] via-[#07080b]/88 to-transparent sm:w-[58%] sm:from-[#07080b]/80 sm:via-[#07080b]/35" />
 
       <motion.div
         style={{ opacity }}
-        className="pointer-events-none relative z-10 mx-auto flex min-h-[100svh] max-w-6xl flex-col justify-center px-5 pb-28 pt-28 sm:px-8"
+        className="pointer-events-none relative z-10 mx-auto flex min-h-[100svh] max-w-6xl flex-col justify-center px-4 pb-24 pt-24 sm:px-8 sm:pb-28 sm:pt-28"
       >
-        <div className="pointer-events-auto max-w-2xl lg:max-w-3xl">
+        <div className="pointer-events-auto w-full max-w-xl lg:max-w-2xl">
           <motion.p
             initial={reduced ? false : { opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.08, duration: 0.65 }}
-            className="text-[11px] font-bold tracking-[0.22em] text-white sm:text-xs"
+            className="text-[10px] font-bold tracking-[0.2em] text-white sm:text-xs sm:tracking-[0.22em]"
             style={{ fontFamily: 'var(--font-outfit), system-ui, sans-serif' }}
           >
             <span className="text-white/90">SPORTSCOM</span>{' '}
-            <span className="tracking-[0.28em] text-[var(--speed-gold)]">PRESENTS</span>
+            <span className="tracking-[0.24em] text-[var(--speed-gold)] sm:tracking-[0.28em]">
+              PRESENTS
+            </span>
           </motion.p>
 
           <motion.h1
             initial={reduced ? false : { opacity: 0, y: 28, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ delay: 0.16, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-            className="font-speed-title mt-4 text-[clamp(3.4rem,14vw,7.5rem)] leading-[0.9] text-white drop-shadow-[0_0_40px_rgba(242,116,33,0.25)]"
+            className="font-speed-title mt-3 text-[clamp(2.75rem,12vw,7.5rem)] leading-[0.92] text-white drop-shadow-[0_0_40px_rgba(242,116,33,0.25)] sm:mt-4"
           >
             SPEED
             <br />
@@ -60,15 +69,22 @@ export function ArenaHero() {
             initial={reduced ? false : { opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.6 }}
-            className="mt-7 max-w-lg"
+            className="mt-6 max-w-md sm:mt-7 sm:max-w-lg"
           >
-            <p className="font-display text-sm tracking-[0.28em] text-[var(--speed-gold)] sm:text-base">
+            <p className="font-display text-sm tracking-[0.22em] text-[var(--speed-gold)] sm:text-base sm:tracking-[0.28em]">
               SPEED CENTRE
             </p>
-            <p className="mt-2 text-base leading-relaxed text-[var(--speed-muted)] sm:text-lg">
+            <p className="mt-2 text-[15px] leading-relaxed text-[var(--speed-muted)] sm:text-lg">
               Your one-stop for everything related to SPEED — fixtures, results, standings, teams and
               sports.
             </p>
+
+            <Link
+              href="/register"
+              className="speed-cta speed-cta-sweep mt-6 inline-flex w-full justify-center sm:mt-7 sm:w-auto"
+            >
+              REGISTER FOR SPEED
+            </Link>
           </motion.div>
         </div>
       </motion.div>

@@ -117,7 +117,7 @@ export function AnnouncementCentre() {
   }
 
   return (
-    <div className="pointer-events-none fixed bottom-5 right-5 z-[60] flex flex-col items-end gap-3 sm:bottom-7 sm:right-7">
+    <div className="pointer-events-none fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-4 z-[60] flex flex-col items-end gap-3 sm:bottom-7 sm:right-7">
       <AnimatePresence>
         {toast && !open ? (
           <motion.div
@@ -220,7 +220,7 @@ export function AnnouncementCentre() {
       <button
         type="button"
         onClick={toggle}
-        className="pointer-events-auto relative flex h-14 w-14 items-center justify-center border border-[var(--speed-gold)]/50 bg-[#0c0e14] text-white shadow-[0_8px_30px_rgba(0,0,0,0.45)] transition hover:border-[var(--speed-gold)] hover:bg-[#12151e]"
+        className="pointer-events-auto relative flex h-12 w-12 items-center justify-center border border-[var(--speed-gold)]/50 bg-[#0c0e14] text-white shadow-[0_8px_30px_rgba(0,0,0,0.45)] transition hover:border-[var(--speed-gold)] hover:bg-[#12151e] sm:h-14 sm:w-14"
         aria-label="Open announcement centre"
         aria-expanded={open}
       >

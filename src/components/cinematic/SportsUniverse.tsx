@@ -60,10 +60,10 @@ export function SportsUniverse() {
   const [open, setOpen] = useState<string | null>(null)
 
   return (
-    <section id="sports" className="relative scroll-mt-20 border-t border-white/10 bg-black py-20 sm:py-28">
-      <div className="mx-auto max-w-6xl px-5 sm:px-8">
-        <p className="speed-kicker">THE NINE SPORTS AT SPEED</p>
-        <h2 className="mt-3 font-display text-4xl tracking-[0.06em] text-white sm:text-6xl">
+    <section id="sports" className="relative scroll-mt-24 border-t border-white/10 bg-black py-14 sm:py-28">
+      <div className="mx-auto max-w-6xl px-4 sm:px-8">
+        <p className="speed-kicker">THE NINE SPORTS OF SPEED</p>
+        <h2 className="mt-3 font-display text-[2rem] leading-[1.05] tracking-[0.06em] text-white sm:text-6xl">
           Nine sports.
           <br />
           12 teams.
@@ -72,7 +72,7 @@ export function SportsUniverse() {
         </h2>
       </div>
 
-      <div className="mt-12 space-y-3 px-3 sm:px-6 lg:px-10">
+      <div className="mt-8 space-y-3 px-3 sm:mt-12 sm:px-6 lg:px-10">
         {SPORT_VISUALS.map((sport, i) => {
           const reverse = i % 2 === 1
           const expanded = open === sport.slug
@@ -128,10 +128,12 @@ export function SportsUniverse() {
                 >
                   {String(i + 1).padStart(2, '0')} · {sport.venue.toUpperCase()}
                 </p>
-                <h3 className="mt-2 font-display text-5xl tracking-[0.05em] text-white sm:text-7xl">
+                <h3 className="mt-2 font-display text-[2.4rem] leading-none tracking-[0.05em] text-white sm:text-7xl">
                   {sport.name}
                 </h3>
-                <p className="mt-3 max-w-md text-base text-white/70 sm:text-lg">{sport.tagline}</p>
+                <p className="mt-3 max-w-md text-sm leading-relaxed text-white/70 sm:text-lg">
+                  {sport.tagline}
+                </p>
                 <AnimatePresence>
                   {expanded && (
                     <motion.p

@@ -22,14 +22,14 @@ export function TeamsShowcase() {
   const reduced = useReducedMotion()
 
   return (
-    <section id="teams" className="relative scroll-mt-20 border-t border-white/10 bg-[#07080b] py-16 sm:py-28">
-      <div className="mx-auto max-w-6xl px-5 sm:px-8">
+    <section id="teams" className="relative scroll-mt-24 border-t border-white/10 bg-[#07080b] py-14 sm:py-28">
+      <div className="mx-auto max-w-6xl px-4 sm:px-8">
         <p className="speed-kicker">TEAMS</p>
-        <h2 className="mt-3 font-display text-4xl tracking-[0.06em] text-white sm:text-6xl">
+        <h2 className="mt-3 font-display text-[2rem] tracking-[0.06em] text-white sm:text-6xl">
           12 teams.
         </h2>
 
-        <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-8 grid gap-3 sm:mt-10 sm:grid-cols-2 lg:grid-cols-3">
           {TEAMS.map((team, i) => (
             <motion.article
               key={team.code}
@@ -37,7 +37,7 @@ export function TeamsShowcase() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-6%' }}
               transition={{ duration: 0.4, delay: Math.min(i * 0.03, 0.28) }}
-              className="group relative overflow-hidden border border-white/10 bg-gradient-to-br from-white/[0.05] to-transparent p-5"
+              className="group relative overflow-hidden border border-white/10 bg-gradient-to-br from-white/[0.05] to-transparent p-4 sm:p-5"
             >
               <div
                 className="pointer-events-none absolute -right-8 -top-8 h-28 w-28 rounded-full blur-2xl"

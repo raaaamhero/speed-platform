@@ -81,15 +81,26 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 2.75rem;
+  min-height: 2.85rem;
   background: var(--speed-gold);
   color: #120e06;
   font-family: var(--font-bebas), sans-serif;
-  letter-spacing: 0.14em;
-  padding: 0.9rem 1.5rem;
-  font-size: 1.08rem;
+  letter-spacing: 0.12em;
+  padding: 0.85rem 1.35rem;
+  font-size: 1.02rem;
   transition: transform var(--speed-duration) var(--speed-ease), filter 0.25s ease;
   position: relative;
+  text-align: center;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (min-width: 640px) {
+  .speed-cta {
+    min-height: 2.75rem;
+    letter-spacing: 0.14em;
+    padding: 0.9rem 1.5rem;
+    font-size: 1.08rem;
+  }
 }
 
 .speed-cta:hover {
@@ -115,6 +126,15 @@ body {
 
 .speed-cta-sweep:hover::after {
   transform: translateX(120%);
+}
+
+@media (hover: none) {
+  .speed-cta-sweep::after {
+    display: none;
+  }
+  .speed-cta:hover {
+    transform: none;
+  }
 }
 
 .speed-ghost {

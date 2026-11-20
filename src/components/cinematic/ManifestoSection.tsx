@@ -55,11 +55,11 @@ const JUNIOR_SPORTSCOM = [
 
 function NameGrid({ names }: { names: readonly string[] }) {
   return (
-    <ul className="mt-6 grid grid-cols-1 gap-3 xs:grid-cols-2 sm:grid-cols-2 lg:grid-cols-2">
+    <ul className="mt-5 grid grid-cols-1 gap-x-6 gap-y-0 sm:mt-6 sm:grid-cols-2">
       {names.map((name) => (
         <li
           key={name}
-          className="border-b border-white/10 pb-3 text-[15px] font-medium leading-snug tracking-wide text-white/85 sm:text-base"
+          className="border-b border-white/10 py-3 text-[15px] font-medium leading-snug tracking-wide text-white/85 sm:text-base"
           style={{ fontFamily: 'var(--font-outfit), system-ui, sans-serif' }}
         >
           {name}
@@ -73,10 +73,10 @@ export function ManifestoSection() {
   const reduced = useReducedMotion()
 
   return (
-    <section id="about" className="relative scroll-mt-20 border-t border-white/10 bg-[#050608] py-20 sm:py-28">
+    <section id="about" className="relative scroll-mt-24 border-t border-white/10 bg-[#050608] py-14 sm:py-28">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_20%_0%,rgba(226,177,74,0.1),transparent_45%)]" />
-      <div className="relative mx-auto max-w-6xl px-5 sm:px-8">
-        <div className="max-w-3xl space-y-5 text-base leading-relaxed text-[var(--speed-muted)] sm:text-lg">
+      <div className="relative mx-auto max-w-6xl px-4 sm:px-8">
+        <div className="max-w-3xl space-y-4 text-[15px] leading-relaxed text-[var(--speed-muted)] sm:space-y-5 sm:text-lg">
           <p>
             SPEED is TAPMI&apos;s flagship sporting festival, organised by the Sports Committee. What
             began as a sectional rivalry has evolved into a bigger competition, bringing together
@@ -101,16 +101,16 @@ export function ManifestoSection() {
         </div>
 
         {/* The Team behind SPEED */}
-        <div className="mt-20 border-t border-white/10 pt-16">
+        <div className="mt-14 border-t border-white/10 pt-12 sm:mt-20 sm:pt-16">
           <p className="speed-kicker">SPORTSCOM</p>
-          <h3 className="mt-3 font-display text-3xl tracking-[0.06em] text-white sm:text-5xl">
+          <h3 className="mt-3 font-display text-[1.85rem] leading-tight tracking-[0.06em] text-white sm:text-5xl">
             The Team behind SPEED
           </h3>
-          <p className="mt-3 max-w-xl text-[var(--speed-muted)]">
+          <p className="mt-3 max-w-xl text-sm text-[var(--speed-muted)] sm:text-base">
             Senior SportsCom and Junior SportsCom — the committee that builds SPEED.
           </p>
 
-          <div className="mt-12 grid gap-12 lg:grid-cols-2 lg:gap-16">
+          <div className="mt-10 grid gap-10 lg:mt-12 lg:grid-cols-2 lg:gap-16">
             <motion.div
               initial={reduced ? false : { opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}

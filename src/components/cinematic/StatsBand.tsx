@@ -41,9 +41,9 @@ export function StatsBand() {
   ]
 
   return (
-    <section ref={ref} className="relative border-y border-white/10 bg-black py-16 sm:py-20">
+    <section ref={ref} className="relative border-y border-white/10 bg-black py-12 sm:py-20">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(226,177,74,0.08),transparent_65%)]" />
-      <div className="relative mx-auto grid max-w-5xl grid-cols-3 gap-4 px-5 text-center sm:px-8">
+      <div className="relative mx-auto grid max-w-5xl grid-cols-3 gap-2 px-4 text-center sm:gap-4 sm:px-8">
         {items.map((item, i) => (
           <motion.div
             key={item.label}
@@ -52,10 +52,10 @@ export function StatsBand() {
             viewport={{ once: true }}
             transition={{ delay: i * 0.1, duration: 0.55 }}
           >
-            <p className="font-display text-[clamp(2.8rem,8vw,5.5rem)] leading-none tracking-[0.04em] text-white">
+            <p className="font-display text-[clamp(2.2rem,10vw,5.5rem)] leading-none tracking-[0.04em] text-white">
               <CountUp to={item.value} active={inView} />
             </p>
-            <p className="mt-3 font-display text-xs tracking-[0.35em] text-[var(--speed-gold)]">
+            <p className="mt-2 font-display text-[10px] tracking-[0.18em] text-[var(--speed-gold)] sm:mt-3 sm:text-xs sm:tracking-[0.35em]">
               {item.label}
             </p>
           </motion.div>

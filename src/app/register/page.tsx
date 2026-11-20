@@ -11,14 +11,14 @@ export default function RegisterPage() {
   return (
     <>
       <SiteHeader variant="solid" />
-      <main className="speed-arena min-h-[100svh] pt-28 pb-20">
-        <div className="relative mx-auto max-w-3xl px-5 sm:px-8">
+      <main className="speed-arena min-h-[100svh] pt-24 pb-16 sm:pt-28 sm:pb-20">
+        <div className="relative mx-auto max-w-3xl px-4 sm:px-8">
           <p className="speed-kicker">REGISTER</p>
-          <h1 className="mt-3 font-display text-5xl tracking-[0.06em] text-[var(--speed-ink)] sm:text-6xl">
+          <h1 className="mt-3 font-display text-[2.2rem] leading-tight tracking-[0.06em] text-[var(--speed-ink)] sm:text-6xl">
             Register for SPEED.
           </h1>
-          <p className="mt-4 max-w-xl text-[var(--speed-muted)]">
-            Your SPEED journey begins with registration. Register for SPEED now.
+          <p className="mt-3 max-w-xl text-sm text-[var(--speed-muted)] sm:mt-4 sm:text-base">
+            Your SPEED journey begins with registration.
           </p>
           <div className="mt-10">
             <RegisterForm />

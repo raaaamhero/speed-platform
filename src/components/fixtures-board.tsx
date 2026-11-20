@@ -50,25 +50,25 @@ export function FixturesBoard({ fixtures }: { fixtures: FixtureRow[] }) {
   return (
     <div>
       <p className="speed-kicker">FIXTURES</p>
-      <h1 className="mt-3 font-display text-5xl tracking-[0.06em] text-[var(--speed-ink)] sm:text-6xl">
+      <h1 className="mt-3 font-display text-[2.4rem] tracking-[0.06em] text-[var(--speed-ink)] sm:text-6xl">
         Fixtures
       </h1>
 
       {fixtures.length === 0 ? (
-        <div className="mt-12 border border-dashed border-white/15 px-6 py-16 text-center">
-          <p className="font-display text-2xl tracking-[0.08em] text-[var(--speed-muted)]">
+        <div className="mt-10 border border-dashed border-white/15 px-5 py-14 text-center sm:mt-12 sm:px-6 sm:py-16">
+          <p className="font-display text-xl tracking-[0.08em] text-[var(--speed-muted)] sm:text-2xl">
             No fixtures yet
           </p>
         </div>
       ) : (
         <>
-          <div className="mt-8 flex flex-wrap gap-3">
+          <div className="mt-6 grid grid-cols-1 gap-3 sm:mt-8 sm:grid-cols-3">
             <label className="text-xs text-[var(--speed-muted)]">
               Sport
               <select
                 value={sport}
                 onChange={(e) => setSport(e.target.value)}
-                className="speed-input mt-1 min-w-[9rem] py-2 text-sm"
+                className="speed-input mt-1 w-full py-2.5 text-sm"
               >
                 <option value="all">All sports</option>
                 {sports.map((s) => (
@@ -83,7 +83,7 @@ export function FixturesBoard({ fixtures }: { fixtures: FixtureRow[] }) {
               <select
                 value={team}
                 onChange={(e) => setTeam(e.target.value)}
-                className="speed-input mt-1 min-w-[9rem] py-2 text-sm"
+                className="speed-input mt-1 w-full py-2.5 text-sm"
               >
                 <option value="all">All teams</option>
                 {teams.map((t) => (
@@ -98,7 +98,7 @@ export function FixturesBoard({ fixtures }: { fixtures: FixtureRow[] }) {
               <select
                 value={status}
                 onChange={(e) => setStatus(e.target.value)}
-                className="speed-input mt-1 min-w-[9rem] py-2 text-sm"
+                className="speed-input mt-1 w-full py-2.5 text-sm"
               >
                 <option value="all">All statuses</option>
                 {statuses.map((s) => (
@@ -110,24 +110,24 @@ export function FixturesBoard({ fixtures }: { fixtures: FixtureRow[] }) {
             </label>
           </div>
 
-          <ul className="mt-8 space-y-3">
+          <ul className="mt-6 space-y-3 sm:mt-8">
             {filtered.map((f) => (
               <li
                 key={f.id}
-                className="group border border-white/10 bg-gradient-to-r from-white/[0.03] to-transparent px-5 py-5 transition hover:border-white/25"
+                className="group border border-white/10 bg-gradient-to-r from-white/[0.03] to-transparent px-4 py-4 transition hover:border-white/25 sm:px-5 sm:py-5"
               >
-                <div className="flex flex-wrap items-start justify-between gap-3">
-                  <div>
-                    <p className="font-display text-xs tracking-[0.25em] text-[var(--speed-gold)]">
+                <div className="flex flex-wrap items-start justify-between gap-2 sm:gap-3">
+                  <div className="min-w-0 flex-1">
+                    <p className="font-display text-[10px] tracking-[0.22em] text-[var(--speed-gold)] sm:text-xs sm:tracking-[0.25em]">
                       {f.sportName.toUpperCase()}
                     </p>
-                    <p className="mt-2 font-display text-3xl tracking-[0.05em] text-[var(--speed-ink)] sm:text-4xl">
+                    <p className="mt-2 font-display text-[1.35rem] leading-tight tracking-[0.04em] text-[var(--speed-ink)] sm:text-4xl sm:tracking-[0.05em]">
                       {f.teamA} <span className="text-white/35">VS</span> {f.teamB}
                     </p>
                   </div>
                   <span className={statusClass(f.status)}>{f.status.toUpperCase()}</span>
                 </div>
-                <p className="mt-3 text-sm text-[var(--speed-muted)]">
+                <p className="mt-3 text-sm leading-snug text-[var(--speed-muted)]">
                   {f.venue || 'Venue TBA'}
                   {f.starts_at ? ` · ${new Date(f.starts_at).toLocaleString()}` : ''}
                 </p>

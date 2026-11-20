@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>SPEED Platform — Full Context</title>
+  <style>
+    @page { margin: 18mm 16mm; size: A4; }
+    * { box-sizing: border-box; }
+    body {
+      font-family: "Segoe UI", Calibri, Arial, sans-serif;
+      font-size: 10.5pt;
+      line-height: 1.45;
+      color: #1a1a1a;
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 24px 12px 48px;
+    }
+    h1 {
+      font-size: 22pt;
+      margin: 0 0 6px;
+      letter-spacing: 0.02em;
+      color: #0b0c10;
+    }
+    h2 {
+      font-size: 13pt;
+      margin: 22px 0 8px;
+      padding-bottom: 4px;
+      border-bottom: 1.5px solid #e2b14a;
+      color: #0b0c10;
+      page-break-after: avoid;
+    }
+    h3 {
+      font-size: 11pt;
+      margin: 14px 0 6px;
+      color: #333;
+      page-break-after: avoid;
+    }
+    p { margin: 0 0 8px; }
+    .meta {
+      color: #555;
+      font-size: 9.5pt;
+      margin-bottom: 14px;
+    }
+    .meta a { color: #8a6a20; }
+    .lead {
+      background: #f7f4ee;
+      border-left: 3px solid #e2b14a;
+      padding: 10px 12px;
+      margin: 0 0 16px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 8px 0 14px;
+      font-size: 9.5pt;
+      page-break-inside: auto;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 5px 7px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: #111318;
+      color: #f4f1ea;
+      font-weight: 600;
+    }
+    tr:nth-child(even) td { background: #fafafa; }
+    ul, ol { margin: 4px 0 10px; padding-left: 18px; }
+    li { margin: 2px 0; }
+    code, .mono {
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 9pt;
+      background: #f0f0f0;
+      padding: 0 3px;
+    }
+    pre.flow {
+      background: #0f1116;
+      color: #e8e4dc;
+      padding: 12px 14px;
+      font-size: 9pt;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      margin: 8px 0 14px;
+    }
+    .footer-note {
+      margin-top: 28px;
+      padding-top: 10px;
+      border-top: 1px solid #ccc;
+      font-size: 9pt;
+      color: #666;
+    }
+    .tag {
+      display: inline-block;
+      background: #e2b14a;
+      color: #111;
+      font-size: 8pt;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      padding: 2px 6px;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body>
+  <p><span class="tag">SPORTSCOM · TAPMI</span></p>
+  <h1>SPEED Platform — Full Context</h1>
+  <p class="meta">
+    SPEED 2026–27 · Generated 20 Nov 2026<br />
+    Live: <a href="https://speed-platform.vercel.app">speed-platform.vercel.app</a> ·
+    Repo: <a href="https://github.com/raaaamhero/speed-platform">github.com/raaaamhero/speed-platform</a> ·
+    Database: Supabase project <span class="mono">xiotbqcaiiefrrsyquxu</span>
+  </p>
+
+  <div class="lead">
+    SPEED is TAPMI’s flagship sporting festival, organised by SportsCom. This platform is the public face of the festival plus student registration and SportsCom ops tools for fixtures, results, and standings. Live match-day squads and scoring stay outside this system (e.g. CricHeroes).
+  </div>
+
+  <h2>1. What has been built (journey)</h2>
+  <table>
+    <thead><tr><th>Phase</th><th>What happened</th></tr></thead>
+    <tbody>
+      <tr><td>Foundation</td><td>Next.js app, Supabase schema, registration RPCs, ops password gate, standings/fixtures pages, Excel student import.</td></tr>
+      <tr><td>Cinematic redesign</td><td>Home rebuilt as a premium sports site: intro sequence, hero, About, sports, teams — not a generic dashboard.</td></tr>
+      <tr><td>Restraint pass</td><td>Dropped busy FX; kept sparse pluckable orange/white arches (SportsCom crest colours), soft glow, and space.</td></tr>
+      <tr><td>Content</td><td>Exact nine-sport venue copy, local sport images, Athletics/Swimming (not “Relays”), throwball image = girls on court.</td></tr>
+      <tr><td>Brand</td><td>Header: SportsCom + tagline “a team above all, above all a team”; SPEED title in Black Ops One; SPEED Centre copy in the hero.</td></tr>
+      <tr><td>Audio</td><td>One-shot epic fanfare at the SPEED flash only — no mute toggle, no loop.</td></tr>
+      <tr><td>About</td><td>Full SPEED story + Senior/Junior SportsCom lists; removed “WHAT IS SPEED?” / “THIS IS SPEED.”; no HEAD labels — same visual style, heads listed first by order only.</td></tr>
+      <tr><td>CTAs cleaned</td><td>Hero/About register &amp; explore buttons removed; SPEED Centre hub chips (Fixtures / Results / …) removed. Hero = brand + SPEED Centre line only.</td></tr>
+      <tr><td>Announcements</td><td>Floating bell that notifies when a new fixture is published or a result is approved.</td></tr>
+      <tr><td>Team names</td><td>Official names from the SportsCom sheet written into app code and the live database.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>2. Stack &amp; hosting</h2>
+  <table>
+    <thead><tr><th>Layer</th><th>Choice</th></tr></thead>
+    <tbody>
+      <tr><td>App</td><td>Next.js 15 (App Router), React 19, TypeScript</td></tr>
+      <tr><td>UI</td><td>Tailwind CSS 3, Framer Motion, Lenis smooth scroll, canvas interactions</td></tr>
+      <tr><td>Data</td><td>Supabase (Postgres + RLS + RPCs); ops mutations also via direct Postgres (<span class="mono">pg</span>)</td></tr>
+      <tr><td>Host</td><td>Vercel project <span class="mono">speed-platform</span></td></tr>
+      <tr><td>Git</td><td><span class="mono">master</span> → GitHub → Vercel production</td></tr>
+      <tr><td>Fonts</td><td>Outfit (body), Bebas Neue (display), Black Ops One (SPEED title)</td></tr>
+      <tr><td>Palette</td><td>Near-black <span class="mono">#07080b</span>, cream ink, gold <span class="mono">#e2b14a</span>, crimson <span class="mono">#c81e2c</span></td></tr>
+    </tbody>
+  </table>
+
+  <h2>3. Public site — how it works</h2>
+  <p>Home is orchestrated by <span class="mono">HomeExperience.tsx</span>:</p>
+  <pre class="flow">IntroSequence (skippable ~13s; session skip; ?intro to replay)
+  → SiteHeader (nav + Register + floating Announcement Centre)
+  → ArenaHero          SPEED 2026–27 + “SPEED CENTRE” copy only
+  → StatsBand          12 teams · 9 sports · 1 champion
+  → SportsComBrand
+  → ManifestoSection   #about — story + SportsCom team grids
+  → SportsUniverse     #sports — nine sports, images, venues
+  → TeamsShowcase      #teams — twelve named teams
+  → RoadSection        Standings / Fixtures links (below the fold)
+  → Footer</pre>
+
+  <h3>Other public pages</h3>
+  <table>
+    <thead><tr><th>URL</th><th>Role</th></tr></thead>
+    <tbody>
+      <tr><td><span class="mono">/register</span></td><td>Roll number → choose sports (≤3 counted; Athletics &amp; Swimming free of the cap) → Player ID <span class="mono">SPEED-####</span></td></tr>
+      <tr><td><span class="mono">/standings</span></td><td>Live points from <span class="mono">speed_team_standings</span></td></tr>
+      <tr><td><span class="mono">/fixtures</span></td><td>Published fixtures board</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Announcement centre</h3>
+  <p>Floating bell (bottom-right) on pages that use the site header. Polls <span class="mono">/api/public/announcements</span> about every 45 seconds. Shows a badge and toast when a new fixture is published or a result is approved. Unread state is stored in the browser (<span class="mono">localStorage</span>).</p>
+
+  <h3>Hero — intentional design</h3>
+  <ul>
+    <li><strong>Has:</strong> SportsCom presents, SPEED 2026–27, SPEED Centre sentence, interactive arches / particles.</li>
+    <li><strong>Does not have:</strong> Register / Explore CTAs, or Fixtures–Sports chip buttons.</li>
+  </ul>
+
+  <h2>4. The twelve teams (UI + database)</h2>
+  <table>
+    <thead><tr><th>Code</th><th>Team name</th><th>Formation (approx.)</th></tr></thead>
+    <tbody>
+      <tr><td>T1</td><td>Macallan 12</td><td>MBA2 Sec 1 + 2</td></tr>
+      <tr><td>T2</td><td>34 Carat</td><td>MBA2 Sec 3 + 4</td></tr>
+      <tr><td>T3</td><td>Joint Bros</td><td>MBA2 Sec 5 + 6</td></tr>
+      <tr><td>T4</td><td>Kootlers International</td><td>MBA2 IB + MSM</td></tr>
+      <tr><td>T5</td><td>The Dark Triads</td><td>MBA2 BKFS + HR &amp; AI/DS</td></tr>
+      <tr><td>T6</td><td>Magnum Brewtalists</td><td>MBA1 Sec 1 + 2</td></tr>
+      <tr><td>T7</td><td>Buzzballers</td><td>MBA1 Sec 3 + 4</td></tr>
+      <tr><td>T8</td><td>Heisenberg</td><td>MBA1 Sec 5 + IB</td></tr>
+      <tr><td>T9</td><td>Jagerbomb</td><td>MBA1 MSM + AI/DS</td></tr>
+      <tr><td>T10</td><td>ROI Rebels</td><td>MBA1 HRM + BKFS</td></tr>
+      <tr><td>T11</td><td>Maestros</td><td>Faculty</td></tr>
+      <tr><td>T12</td><td>IPM</td><td>IPM</td></tr>
+    </tbody>
+  </table>
+  <p>App source of truth: <span class="mono">src/lib/rules/teams.ts</span> (also seeded / migrated in Supabase).</p>
+
+  <h3>Nine sports</h3>
+  <p>Cricket, Football, Volleyball, Basketball, Table Tennis, Throwball, Badminton, Athletics, Swimming. Visuals and venue copy live in <span class="mono">src/lib/sports-visuals.ts</span>; caps and rules in <span class="mono">src/lib/rules/sports.ts</span>.</p>
+
+  <h2>5. Registration (student path)</h2>
+  <ol>
+    <li>Student opens <span class="mono">/register</span> and enters roll number.</li>
+    <li>RPC <span class="mono">speed_lookup_student</span> — student must exist in the master list (imported by ops).</li>
+    <li>If already registered → show Player ID; if registration is closed → stop.</li>
+    <li>Otherwise choose sports (client + server enforce ≤3 <strong>counted</strong> sports; Athletics &amp; Swimming do not count against the cap).</li>
+    <li>RPC <span class="mono">speed_submit_registration</span> writes the registration, assigns <span class="mono">SPEED-####</span>, and audits.</li>
+    <li>Done screen shows name, team, and Player ID.</li>
+  </ol>
+  <p>Registration means intended participation — not final match-day squads.</p>
+
+  <h2>6. Ops / SportsCom Command Centre</h2>
+  <p>Gate: <span class="mono">/ops/login</span> (shared password cookie via <span class="mono">SPEED_OPS_PASSWORD</span>).</p>
+  <table>
+    <thead><tr><th>Area</th><th>What ops can do</th></tr></thead>
+    <tbody>
+      <tr><td>Overview</td><td>Counts, unregistered list, recent audit activity</td></tr>
+      <tr><td>Import</td><td>Excel/CSV master students (roll, name, section, …)</td></tr>
+      <tr><td>Students</td><td>Search; edit sports with an audit reason</td></tr>
+      <tr><td>Fixtures</td><td>Create match (sport, teams, venue, time, publish flag)</td></tr>
+      <tr><td>Results</td><td>Enter / approve places; place jackpot</td></tr>
+    </tbody>
+  </table>
+  <p>Publishing a fixture or approving a result feeds the public announcement centre.</p>
+
+  <h2>7. Database (core)</h2>
+  <p>Main tables: sections, teams, sports, students, player IDs, registrations, fixtures, results, jackpots, points ledger, audit logs, settings (<span class="mono">registration_open</span>, etc.).</p>
+  <p>Views: <span class="mono">speed_team_standings</span>, participation matrix. Scoring RPCs cover base points, jackpot apply, and result approval. The public can read published fixtures and approved results; tournament writes go through authenticated ops APIs.</p>
+  <p>Migrations live under <span class="mono">supabase/migrations/</span>, including the team-names update <span class="mono">20261120000100_speed_team_names.sql</span>.</p>
+
+  <h2>8. API map (summary)</h2>
+  <table>
+    <thead><tr><th>Route</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><span class="mono">GET /api/public/standings</span></td><td>JSON standings</td></tr>
+      <tr><td><span class="mono">GET /api/public/fixtures</span></td><td>JSON fixtures</td></tr>
+      <tr><td><span class="mono">GET /api/public/announcements</span></td><td>Recent fixtures + results for the floating centre</td></tr>
+      <tr><td><span class="mono">POST/DELETE /api/ops/login</span></td><td>Ops session cookie</td></tr>
+      <tr><td><span class="mono">GET /api/ops/dashboard</span></td><td>Ops overview stats</td></tr>
+      <tr><td><span class="mono">GET/PATCH</span> students &amp; registration</td><td>Search / edit student sports</td></tr>
+      <tr><td><span class="mono">POST /api/ops/import</span></td><td>Upsert students from spreadsheet</td></tr>
+      <tr><td><span class="mono">GET/POST /api/ops/fixtures</span></td><td>List / create fixtures</td></tr>
+      <tr><td><span class="mono">POST /api/ops/results</span></td><td>Enter + approve results</td></tr>
+      <tr><td><span class="mono">POST /api/ops/jackpot</span></td><td>Place team jackpot</td></tr>
+    </tbody>
+  </table>
+
+  <h2>9. Key code locations</h2>
+  <table>
+    <thead><tr><th>Concern</th><th>Path</th></tr></thead>
+    <tbody>
+      <tr><td>Home shell</td><td><span class="mono">src/components/cinematic/HomeExperience.tsx</span></td></tr>
+      <tr><td>Intro / hero / about / sports / teams</td><td><span class="mono">src/components/cinematic/*</span></td></tr>
+      <tr><td>Arches / particles</td><td><span class="mono">src/components/interaction/*</span></td></tr>
+      <tr><td>Announcements UI</td><td><span class="mono">src/components/announcement-centre.tsx</span></td></tr>
+      <tr><td>Teams &amp; sports rules</td><td><span class="mono">src/lib/rules/teams.ts</span>, <span class="mono">sports.ts</span></td></tr>
+      <tr><td>Sport images / copy</td><td><span class="mono">src/lib/sports-visuals.ts</span>, <span class="mono">public/sports/*</span></td></tr>
+      <tr><td>Public APIs</td><td><span class="mono">src/app/api/public/*</span></td></tr>
+      <tr><td>Ops APIs</td><td><span class="mono">src/app/api/ops/*</span></td></tr>
+      <tr><td>Schema</td><td><span class="mono">supabase/migrations/*</span></td></tr>
+    </tbody>
+  </table>
+
+  <h2>10. Current product shape</h2>
+  <ul>
+    <li>Public cinematic site with registration, standings, fixtures, and live-ish announcements.</li>
+    <li>Ops tools for importing the student master, managing registrations, publishing fixtures, and approving results.</li>
+    <li>Hero kept minimal: SPEED brand + SPEED Centre description only.</li>
+    <li>Official twelve team names live everywhere (Teams section, standings, fixtures, registration).</li>
+  </ul>
+
+  <p class="footer-note">
+    Document prepared for SportsCom · SPEED 2026–27 · speed-platform<br />
+    This PDF summarises build history and system behaviour as of 20 November 2026.
+  </p>
+</body>
+</html>

@@ -21,10 +21,12 @@ export function StandingsBoard({ rows, loadedAt }: { rows: StandingRow[]; loaded
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="speed-kicker">STANDINGS</p>
-          <h1 className="mt-3 font-display text-5xl tracking-[0.06em] text-[var(--speed-ink)] sm:text-6xl">
+          <h1 className="mt-3 font-display text-[2.4rem] tracking-[0.06em] text-[var(--speed-ink)] sm:text-6xl">
             Standings
           </h1>
-          <p className="mt-4 text-[var(--speed-muted)]">Updated {loadedAt}.</p>
+          <p className="mt-3 text-sm text-[var(--speed-muted)] sm:mt-4 sm:text-base">
+            Updated {loadedAt}.
+          </p>
         </div>
       </div>
 
@@ -37,12 +39,16 @@ export function StandingsBoard({ rows, loadedAt }: { rows: StandingRow[]; loaded
       ) : (
         <>
           {podium.length > 0 && (
-            <div className="mt-12 grid gap-3 sm:grid-cols-3 sm:items-end">
+            <div className="mt-8 grid gap-3 sm:mt-12 sm:grid-cols-3 sm:items-end">
               {(podium.length === 3 ? order : podium.map((_, i) => i)).map((idx, visual) => {
                 const team = podium[idx]
                 if (!team) return null
                 const rank = idx + 1
-                const heights = ['min-h-[200px]', 'min-h-[240px]', 'min-h-[180px]']
+                const heights = [
+                  'min-h-[140px] sm:min-h-[200px]',
+                  'min-h-[140px] sm:min-h-[240px]',
+                  'min-h-[140px] sm:min-h-[180px]',
+                ]
                 const medals = ['#c0c0c0', '#e2b14a', '#cd7f32']
                 return (
                   <motion.article
@@ -50,8 +56,8 @@ export function StandingsBoard({ rows, loadedAt }: { rows: StandingRow[]; loaded
                     initial={reduced ? false : { opacity: 0, y: 24 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: visual * 0.08, duration: 0.55 }}
-                    className={`relative flex flex-col justify-end overflow-hidden border border-white/10 bg-gradient-to-b from-white/[0.06] to-transparent p-6 ${
-                      podium.length === 3 ? heights[visual] : 'min-h-[180px]'
+                    className={`relative flex flex-col justify-end overflow-hidden border border-white/10 bg-gradient-to-b from-white/[0.06] to-transparent p-5 sm:p-6 ${
+                      podium.length === 3 ? heights[visual] : 'min-h-[140px]'
                     } ${rank === 1 ? 'sm:order-2' : rank === 2 ? 'sm:order-1' : 'sm:order-3'}`}
                   >
                     <div
@@ -59,14 +65,16 @@ export function StandingsBoard({ rows, loadedAt }: { rows: StandingRow[]; loaded
                       style={{ background: medals[rank - 1], opacity: 0.35 }}
                     />
                     <p
-                      className="font-display text-5xl tracking-[0.08em]"
+                      className="font-display text-4xl tracking-[0.08em] sm:text-5xl"
                       style={{ color: medals[rank - 1] }}
                     >
                       {String(rank).padStart(2, '0')}
                     </p>
-                    <h2 className="mt-3 font-display text-3xl tracking-[0.08em] text-white">{team.name}</h2>
+                    <h2 className="mt-2 font-display text-2xl leading-tight tracking-[0.04em] text-white sm:mt-3 sm:text-3xl sm:tracking-[0.08em]">
+                      {team.name}
+                    </h2>
                     <p className="mt-1 text-xs tracking-[0.2em] text-white/45">{team.code}</p>
-                    <p className="mt-6 font-display text-4xl tracking-[0.06em] text-white">
+                    <p className="mt-4 font-display text-3xl tracking-[0.06em] text-white sm:mt-6 sm:text-4xl">
                       {Number(team.points)}
                       <span className="ml-2 text-sm tracking-[0.2em] text-[var(--speed-muted)]">PTS</span>
                     </p>
@@ -94,19 +102,21 @@ export function StandingsBoard({ rows, loadedAt }: { rows: StandingRow[]; loaded
                       i < 3 ? 'bg-[var(--speed-gold)]/[0.03]' : ''
                     }`}
                   >
-                    <td className="px-4 py-4 font-display text-lg text-[var(--speed-muted)]">
+                    <td className="px-3 py-3.5 font-display text-base text-[var(--speed-muted)] sm:px-4 sm:py-4 sm:text-lg">
                       {String(i + 1).padStart(2, '0')}
                     </td>
-                    <td className="px-4 py-4">
-                      <span className="font-display text-xl tracking-[0.06em] text-[var(--speed-ink)]">
+                    <td className="px-3 py-3.5 sm:px-4 sm:py-4">
+                      <span className="block font-display text-base leading-snug tracking-[0.04em] text-[var(--speed-ink)] sm:inline sm:text-xl sm:tracking-[0.06em]">
                         {team.name}
                       </span>
-                      <span className="ml-3 text-xs text-[var(--speed-muted)]">{team.code}</span>
+                      <span className="mt-0.5 block text-[10px] text-[var(--speed-muted)] sm:ml-3 sm:mt-0 sm:inline sm:text-xs">
+                        {team.code}
+                      </span>
                     </td>
                     <td className="hidden px-4 py-4 text-[var(--speed-muted)] sm:table-cell">
                       {team.scoring_events ?? '—'}
                     </td>
-                    <td className="px-4 py-4 text-right font-mono text-[var(--speed-ink)]">
+                    <td className="px-3 py-3.5 text-right font-mono text-[var(--speed-ink)] sm:px-4 sm:py-4">
                       {Number(team.points)}
                     </td>
                   </tr>

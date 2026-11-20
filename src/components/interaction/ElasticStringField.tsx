@@ -87,7 +87,9 @@ export function ElasticStringField({
       const yPeak = variant === 'hero' ? h * 0.28 : h * 0.32
       const yEnd = variant === 'hero' ? h * 0.38 : h * 0.42
       // Bias hero arches toward the open right so copy stays clear
-      const x0 = variant === 'hero' ? w * 0.42 : 0
+      // On phones, start even further right so text never fights the strands
+      const heroStart = w < 640 ? 0.62 : w < 900 ? 0.5 : 0.42
+      const x0 = variant === 'hero' ? w * heroStart : 0
       const x1 = w
 
       for (let i = 0; i < N; i++) {

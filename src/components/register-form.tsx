@@ -174,7 +174,7 @@ export function RegisterForm() {
         </ol>
       </div>
 
-      <div className="p-6 sm:p-8">
+      <div className="p-4 sm:p-8">
         {error && (
           <p
             role="alert"
@@ -194,7 +194,7 @@ export function RegisterForm() {
               className="space-y-6"
             >
               <div>
-                <h2 className="font-display text-3xl tracking-[0.06em] text-[var(--speed-ink)]">
+                <h2 className="font-display text-2xl tracking-[0.06em] text-[var(--speed-ink)] sm:text-3xl">
                   Enter your roll number
                 </h2>
                 <p className="mt-2 text-sm text-[var(--speed-muted)]">
@@ -220,7 +220,7 @@ export function RegisterForm() {
                 type="button"
                 disabled={roll.trim().length < 3 || busy}
                 onClick={() => void lookupStudent()}
-                className="speed-cta speed-cta-sweep"
+                className="speed-cta speed-cta-sweep w-full sm:w-auto"
               >
                 {busy ? 'Checking…' : 'Continue'}
               </button>
@@ -313,15 +313,19 @@ export function RegisterForm() {
                 })}
               </ul>
 
-              <div className="flex flex-wrap gap-3">
-                <button type="button" onClick={() => setStep('identify')} className="speed-ghost">
+              <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                <button
+                  type="button"
+                  onClick={() => setStep('identify')}
+                  className="speed-ghost w-full sm:w-auto"
+                >
                   Back
                 </button>
                 <button
                   type="button"
                   onClick={() => setStep('review')}
                   disabled={selected.length === 0 || !cap.ok}
-                  className="speed-cta"
+                  className="speed-cta w-full sm:w-auto"
                 >
                   Review
                 </button>
@@ -356,11 +360,11 @@ export function RegisterForm() {
                   )
                 })}
               </ul>
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 <button
                   type="button"
                   onClick={() => setStep('select')}
-                  className="speed-ghost"
+                  className="speed-ghost w-full sm:w-auto"
                   disabled={busy}
                 >
                   Back
@@ -369,7 +373,7 @@ export function RegisterForm() {
                   type="button"
                   onClick={() => void submit()}
                   disabled={busy}
-                  className="speed-cta speed-cta-sweep"
+                  className="speed-cta speed-cta-sweep w-full sm:w-auto"
                 >
                   {busy ? 'Submitting…' : 'Submit registration'}
                 </button>

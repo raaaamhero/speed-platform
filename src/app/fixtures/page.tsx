@@ -42,8 +42,8 @@ export default async function FixturesPage() {
   return (
     <>
       <SiteHeader variant="solid" />
-      <main className="speed-arena min-h-[100svh] pt-28 pb-20">
-        <div className="mx-auto max-w-5xl px-5 sm:px-8">
+      <main className="speed-arena min-h-[100svh] pt-24 pb-16 sm:pt-28 sm:pb-20">
+        <div className="mx-auto max-w-5xl px-4 sm:px-8">
           <FixturesBoard fixtures={rows} />
         </div>
       </main>
