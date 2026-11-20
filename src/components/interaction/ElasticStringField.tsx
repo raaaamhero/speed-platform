@@ -42,10 +42,9 @@ export function ElasticStringField({
     if (!ctx) return
 
     const N = 96
-    const gap = variant === 'hero' ? 11 : 9
     const isNarrow = () => w > 0 && w < 640
-    // SportsCom crest: neon orange + white strands (brighter on mobile)
-    const colors =
+    // Desktop: full 6-strand crest. Mobile: 4 strands, more air between them.
+    const desktopColors =
       variant === 'hero'
         ? [
             'rgba(255,140,50,1)',
@@ -63,6 +62,12 @@ export function ElasticStringField({
             'rgba(242,116,33,0.65)',
             'rgba(255,255,255,0.5)',
           ]
+    const mobileColors = [
+      'rgba(255,150,60,0.95)',
+      'rgba(255,255,255,0.88)',
+      'rgba(242,116,33,0.92)',
+      'rgba(255,210,140,0.78)',
+    ]
 
     let raf = 0
     let running = true
@@ -71,35 +76,50 @@ export function ElasticStringField({
     let dpr = 1
     let scrollKick = 0
     const base: { x: number; y: number }[] = Array.from({ length: N }, () => ({ x: 0, y: 0 }))
-    const strands: Strand[] = colors.map((color, j) => ({
+    // Allocate max strands; active count updates on resize
+    const strandPool: Strand[] = desktopColors.map((color, j) => ({
       color,
-      off: (j - (colors.length - 1) / 2) * gap,
+      off: 0,
       phase: j * 0.9,
       tension: 0.24 + j * 0.03,
       d: new Float32Array(N),
       v: new Float32Array(N),
       glow: 0,
     }))
+    let strands: Strand[] = strandPool
     const pointer = { x: 0, y: 0, inside: false, down: false }
 
+    const layoutStrands = () => {
+      const mobile = isNarrow() && variant === 'hero'
+      const colors = mobile ? mobileColors : desktopColors
+      const gap = mobile ? 22 : variant === 'hero' ? 11 : 9
+      strands = strandPool.slice(0, colors.length)
+      strands.forEach((s, j) => {
+        s.color = colors[j]
+        s.off = (j - (colors.length - 1) / 2) * gap
+      })
+    }
+
     const sampleBase = () => {
-      // Cubic-ish arch in canvas space — open breathing curve, not a straight line
-      const y0 = variant === 'hero' ? h * 0.72 : h * 0.55
-      const yPeak = variant === 'hero' ? h * 0.28 : h * 0.32
-      const yEnd = variant === 'hero' ? h * 0.38 : h * 0.42
-      // Bias hero arches toward the open right so copy stays clear
-      // On phones, start even further right so text never fights the strands
-      const heroStart = w < 640 ? 0.62 : w < 900 ? 0.5 : 0.42
+      layoutStrands()
+      const mobile = isNarrow() && variant === 'hero'
+      // Mobile: low, open arc on the right — not a tall congested fan through the title
+      const y0 = variant === 'hero' ? (mobile ? h * 0.78 : h * 0.72) : h * 0.55
+      const yPeak = variant === 'hero' ? (mobile ? h * 0.48 : h * 0.28) : h * 0.32
+      const yEnd = variant === 'hero' ? (mobile ? h * 0.58 : h * 0.38) : h * 0.42
+      const heroStart = mobile ? 0.52 : w < 900 ? 0.5 : 0.42
       const x0 = variant === 'hero' ? w * heroStart : 0
       const x1 = w
 
       for (let i = 0; i < N; i++) {
         const t = i / (N - 1)
         const x = x0 + (x1 - x0) * t
-        // Smooth arch: rise then settle (ease via cosine envelope + cubic blend)
-        const arch = Math.sin(Math.PI * Math.min(1, t * 1.05))
+        const arch = Math.sin(Math.PI * Math.min(1, t * (mobile ? 1 : 1.05)))
         const settle = t * t
-        const y = y0 + (yPeak - y0) * arch * (1 - settle * 0.35) + (yEnd - y0) * settle * 0.55
+        const y =
+          y0 +
+          (yPeak - y0) * arch * (1 - settle * (mobile ? 0.2 : 0.35)) +
+          (yEnd - y0) * settle * (mobile ? 0.35 : 0.55)
         base[i].x = x
         base[i].y = y
       }
@@ -121,8 +141,9 @@ export function ElasticStringField({
         grab: variant === 'hero' ? m * 0.06 : m * 0.05,
         reach: variant === 'hero' ? m * 0.14 : m * 0.12,
         maxPull: variant === 'hero' ? m * 0.1 : m * 0.08,
-        ambient: variant === 'hero' ? (isNarrow() ? 7 : 5) : 3.5,
-        strokeW: variant === 'hero' ? (isNarrow() ? 2.4 : 1.8) : 1.5,
+        // Calmer sway + thinner lines on phones so strands read as clean arcs
+        ambient: variant === 'hero' ? (isNarrow() ? 2.5 : 5) : 3.5,
+        strokeW: variant === 'hero' ? (isNarrow() ? 1.65 : 1.8) : 1.5,
       }
     }
 
@@ -212,11 +233,12 @@ export function ElasticStringField({
       ctx.clearRect(0, 0, w, h)
 
       const midX = (base[0].x + base[N - 1].x) * 0.5
-      const floorY = Math.max(...base.map((b) => b.y)) + gap * 2
+      const floorY =
+        Math.max(...base.map((b) => b.y)) + (isNarrow() && variant === 'hero' ? 36 : 22)
       const mobile = isNarrow()
-      const glow = ctx.createRadialGradient(midX, floorY, 0, midX, floorY, w * (mobile ? 0.55 : 0.35))
-      glow.addColorStop(0, mobile ? 'rgba(242,116,33,0.32)' : 'rgba(242,116,33,0.16)')
-      glow.addColorStop(0.4, mobile ? 'rgba(242,116,33,0.14)' : 'rgba(242,116,33,0.06)')
+      const glow = ctx.createRadialGradient(midX, floorY, 0, midX, floorY, w * (mobile ? 0.4 : 0.35))
+      glow.addColorStop(0, mobile ? 'rgba(242,116,33,0.18)' : 'rgba(242,116,33,0.16)')
+      glow.addColorStop(0.45, mobile ? 'rgba(242,116,33,0.06)' : 'rgba(242,116,33,0.06)')
       glow.addColorStop(1, 'rgba(0,0,0,0)')
       ctx.fillStyle = glow
       ctx.fillRect(0, 0, w, h)
@@ -249,21 +271,20 @@ export function ElasticStringField({
           py = y
         }
         ctx.lineTo(px, py)
-        // Soft neon bloom under the strand
         if (variant === 'hero') {
           ctx.save()
-          ctx.shadowColor = 'rgba(242,116,33,0.85)'
-          ctx.shadowBlur = mobile ? 18 : 12
+          ctx.shadowColor = mobile ? 'rgba(242,116,33,0.55)' : 'rgba(242,116,33,0.85)'
+          ctx.shadowBlur = mobile ? 8 : 12
           ctx.strokeStyle = s.color
-          ctx.lineWidth = strokeW + (s.glow > 0 ? 0.6 : 0) + (mobile ? 0.4 : 0)
+          ctx.lineWidth = strokeW + (s.glow > 0 ? 0.45 : 0)
           ctx.lineCap = 'round'
           ctx.lineJoin = 'round'
-          ctx.globalAlpha = s.glow > 0 ? 1 : mobile ? 0.98 : 0.92
+          ctx.globalAlpha = s.glow > 0 ? 1 : mobile ? 0.9 : 0.92
           ctx.stroke()
           ctx.restore()
         }
         ctx.strokeStyle = s.color
-        ctx.lineWidth = strokeW + (s.glow > 0 ? 0.4 : 0)
+        ctx.lineWidth = strokeW + (s.glow > 0 ? 0.35 : 0)
         ctx.lineCap = 'round'
         ctx.lineJoin = 'round'
         ctx.globalAlpha = s.glow > 0 ? 1 : 0.95

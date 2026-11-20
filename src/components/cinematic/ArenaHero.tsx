@@ -28,13 +28,14 @@ export function ArenaHero() {
       <LiveParticleField className="absolute inset-0 z-[1] h-full w-full opacity-20 sm:opacity-30" density={28} />
 
       <ElasticStringField
-        className="absolute inset-0 z-[2] h-full w-full opacity-80 sm:opacity-100"
+        className="absolute inset-0 z-[2] h-full w-full opacity-70 sm:opacity-100"
         variant="hero"
         interactive
       />
 
-      {/* Readable scrim behind copy on narrow screens */}
-      <div className="pointer-events-none absolute inset-y-0 left-0 z-[3] w-[92%] bg-gradient-to-r from-[#07080b] via-[#07080b]/88 to-transparent sm:w-[58%] sm:from-[#07080b]/80 sm:via-[#07080b]/35" />
+      {/* Stronger left scrim on phones so copy stays clear of the arc */}
+      <div className="pointer-events-none absolute inset-y-0 left-0 z-[3] w-[100%] bg-gradient-to-r from-[#07080b] via-[#07080b]/92 to-transparent sm:w-[58%] sm:from-[#07080b]/80 sm:via-[#07080b]/35" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-[3] h-[42%] bg-gradient-to-b from-[#07080b]/75 to-transparent sm:hidden" />
 
       <motion.div
         style={{ opacity }}
