@@ -35,7 +35,7 @@ export function checkSportCap(selected: readonly string[]): CapCheck {
       counted: counted.length,
       slotsLeft: 0,
       exempt: exempt.length,
-      reason: `You can choose at most ${MAX_COUNTED_SPORTS} counted sports. Athletics Relays and Swimming Relays do not count toward this limit.`,
+      reason: `You can choose at most ${MAX_COUNTED_SPORTS} counted sports. Athletics and Swimming do not count toward this limit.`,
     }
   }
 

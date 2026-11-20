@@ -101,7 +101,7 @@ export const SPORTS: SportDef[] = [
   },
   {
     slug: 'athletics-relays',
-    name: 'Athletics Relays',
+    name: 'Athletics',
     countsTowardCap: false,
     maxSquad: 4,
     playing: 4,
@@ -111,7 +111,7 @@ export const SPORTS: SportDef[] = [
   },
   {
     slug: 'swimming-relays',
-    name: 'Swimming Relays',
+    name: 'Swimming',
     countsTowardCap: false,
     maxSquad: 4,
     playing: 4,

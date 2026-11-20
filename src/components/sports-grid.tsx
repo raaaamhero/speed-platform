@@ -14,7 +14,7 @@ export function SportsGrid() {
           Nine sports. One table.
         </h2>
         <p className="mt-4 max-w-xl text-[var(--speed-muted)]">
-          Pick up to three counted sports. Athletics Relays and Swimming Relays are free extras — they
+          Pick up to three counted sports. Athletics and Swimming are free extras — they
           do not count toward your cap.
         </p>
 

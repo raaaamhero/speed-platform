@@ -255,7 +255,7 @@ export function RegisterForm() {
                     Choose your sports
                   </h2>
                   <p className="mt-2 max-w-md text-sm text-[var(--speed-muted)]">
-                    Up to 3 counted sports. Athletics and swimming relays are exempt.
+                    Up to 3 counted sports. Athletics and Swimming are exempt.
                   </p>
                 </div>
                 <p

@@ -116,7 +116,7 @@ export const SPORT_VISUALS: SportVisual[] = [
   },
   {
     slug: 'athletics-relays',
-    name: 'Athletics Relays',
+    name: 'Athletics',
     tagline: 'Speed, coordination, teamwork.',
     accent: '#facc15',
     secondary: '#121000',
@@ -126,11 +126,11 @@ export const SPORT_VISUALS: SportVisual[] = [
     motif: 'track',
     venue: 'MIT Sports Park',
     detail:
-      'The action moves to the tracks at MIT Sports Park, where participants will compete in the athletics relays. It’s all about speed, coordination and teamwork as teams race towards the finish line.',
+      'The action moves to the tracks at MIT Sports Park, where participants will compete in athletics. It’s all about speed, coordination and teamwork as teams race towards the finish line.',
   },
   {
     slug: 'swimming-relays',
-    name: 'Swimming Relays',
+    name: 'Swimming',
     tagline: 'Speed, stamina, teamwork.',
     accent: '#22d3ee',
     secondary: '#021018',
@@ -140,7 +140,7 @@ export const SPORT_VISUALS: SportVisual[] = [
     motif: 'pool',
     venue: 'Marena',
     detail:
-      'Marena is back as the venue for swimming events. Participants will take to the pool to compete in the swimming relays, putting their speed, stamina and teamwork to the test.',
+      'Marena is back as the venue for swimming events. Participants will take to the pool to compete, putting their speed, stamina and teamwork to the test.',
   },
 ]
 
