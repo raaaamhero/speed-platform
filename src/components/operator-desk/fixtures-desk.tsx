@@ -294,7 +294,7 @@ export function FixturesDesk() {
       {editId && (
         <form onSubmit={saveSchedule} className="grid gap-3 border border-[#e2b14a]/30 p-5 sm:grid-cols-2">
           <h3 className="font-display text-lg tracking-[0.08em] sm:col-span-2">
-            Schedule fixture
+            Edit fixture
           </h3>
           <label className="text-xs text-white/45">
             Venue
@@ -384,7 +384,7 @@ export function FixturesDesk() {
                 onClick={() => startEdit(f)}
                 className="border border-white/15 px-3 py-1.5 text-xs text-white/60 hover:border-[#e2b14a] hover:text-[#e2b14a]"
               >
-                Schedule
+                {f.starts_at || f.venue ? 'Edit' : 'Schedule'}
               </button>
             </li>
           ))}
