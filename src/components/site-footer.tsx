@@ -25,9 +25,14 @@ export function SiteFooter() {
           <Link href="/fixtures" className="py-1 hover:text-[var(--speed-ink)]">
             Fixtures
           </Link>
-          <Link href="/ops" className="py-1 hover:text-[var(--speed-ink)]">
+          <a
+            href="/ops/login"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="py-1 hover:text-[var(--speed-ink)]"
+          >
             SportsCom
-          </Link>
+          </a>
         </div>
       </div>
     </footer>

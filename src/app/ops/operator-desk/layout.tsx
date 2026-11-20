@@ -3,7 +3,7 @@ import { isOpsAuthenticated } from '@/lib/ops-auth'
 import { DeskShell } from '@/components/operator-desk/desk-shell'
 
 export const metadata = {
-  title: 'Operator Desk | SportsCom · SPEED 2026–27',
+  title: 'Command Centre | SportsCom · SPEED 2026–27',
 }
 
 export default async function OperatorDeskLayout({

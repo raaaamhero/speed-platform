@@ -31,7 +31,7 @@ export function DeskShell({ children }: { children: React.ReactNode }) {
           <div className="border-b border-white/10 px-5 py-6">
             <p className="font-display text-[10px] tracking-[0.4em] text-[#e2b14a]">SPORTSCOM</p>
             <h1 className="mt-1 font-display text-xl tracking-[0.12em] text-[#f3ead7]">
-              OPERATOR DESK
+              COMMAND CENTRE
             </h1>
             <p className="mt-1 text-[10px] tracking-[0.18em] text-white/40">SPEED 2026–27</p>
           </div>
@@ -74,7 +74,7 @@ export function DeskShell({ children }: { children: React.ReactNode }) {
             <div className="flex items-center justify-between gap-4 px-4 py-3 sm:px-6">
               <div className="lg:hidden">
                 <p className="font-display text-[10px] tracking-[0.35em] text-[#e2b14a]">SPORTSCOM</p>
-                <p className="font-display text-lg tracking-[0.1em]">OPERATOR DESK</p>
+                <p className="font-display text-lg tracking-[0.1em]">COMMAND CENTRE</p>
               </div>
               <p className="hidden text-xs tracking-[0.2em] text-white/35 lg:block">
                 LIVE OPERATIONS

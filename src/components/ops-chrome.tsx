@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 const links = [
-  { href: '/ops/operator-desk', label: 'Operator Desk' },
+  { href: '/ops/operator-desk', label: 'Command Centre' },
   { href: '/ops/students', label: 'Students' },
   { href: '/ops/import', label: 'Import' },
 ]
@@ -35,7 +35,7 @@ export function OpsChrome({
             <p className="mt-1 text-xs text-[var(--speed-muted)]">
               Prefer{' '}
               <Link href="/ops/operator-desk" className="text-[var(--speed-gold)]">
-                Operator Desk
+                Command Centre
               </Link>{' '}
               for day-to-day operations
             </p>
