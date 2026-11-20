@@ -39,15 +39,16 @@ export function StandingsBoard({ rows, loadedAt }: { rows: StandingRow[]; loaded
       ) : (
         <>
           {podium.length > 0 && (
-            <div className="mt-8 grid gap-3 sm:mt-12 sm:grid-cols-3 sm:items-end">
+            <div className="mt-8 grid grid-cols-3 items-end gap-2 sm:mt-12 sm:gap-3">
               {(podium.length === 3 ? order : podium.map((_, i) => i)).map((idx, visual) => {
                 const team = podium[idx]
                 if (!team) return null
                 const rank = idx + 1
+                // visual order is already 2nd · 1st · 3rd — taller centre = champion
                 const heights = [
-                  'min-h-[140px] sm:min-h-[200px]',
-                  'min-h-[140px] sm:min-h-[240px]',
-                  'min-h-[140px] sm:min-h-[180px]',
+                  'min-h-[118px] sm:min-h-[200px]',
+                  'min-h-[148px] sm:min-h-[240px]',
+                  'min-h-[108px] sm:min-h-[180px]',
                 ]
                 const medals = ['#c0c0c0', '#e2b14a', '#cd7f32']
                 return (
@@ -56,27 +57,31 @@ export function StandingsBoard({ rows, loadedAt }: { rows: StandingRow[]; loaded
                     initial={reduced ? false : { opacity: 0, y: 24 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: visual * 0.08, duration: 0.55 }}
-                    className={`relative flex flex-col justify-end overflow-hidden border border-white/10 bg-gradient-to-b from-white/[0.06] to-transparent p-5 sm:p-6 ${
+                    className={`relative flex flex-col justify-end overflow-hidden border border-white/10 bg-gradient-to-b from-white/[0.06] to-transparent p-2.5 sm:p-6 ${
                       podium.length === 3 ? heights[visual] : 'min-h-[140px]'
-                    } ${rank === 1 ? 'sm:order-2' : rank === 2 ? 'sm:order-1' : 'sm:order-3'}`}
+                    }`}
                   >
                     <div
-                      className="pointer-events-none absolute -right-6 -top-6 h-24 w-24 rounded-full blur-2xl"
+                      className="pointer-events-none absolute -right-4 -top-4 h-16 w-16 rounded-full blur-2xl sm:-right-6 sm:-top-6 sm:h-24 sm:w-24"
                       style={{ background: medals[rank - 1], opacity: 0.35 }}
                     />
                     <p
-                      className="font-display text-4xl tracking-[0.08em] sm:text-5xl"
+                      className="font-display text-2xl tracking-[0.06em] sm:text-5xl sm:tracking-[0.08em]"
                       style={{ color: medals[rank - 1] }}
                     >
                       {String(rank).padStart(2, '0')}
                     </p>
-                    <h2 className="mt-2 font-display text-2xl leading-tight tracking-[0.04em] text-white sm:mt-3 sm:text-3xl sm:tracking-[0.08em]">
+                    <h2 className="mt-1 font-display text-[0.95rem] leading-tight tracking-[0.03em] text-white sm:mt-3 sm:text-3xl sm:tracking-[0.08em]">
                       {team.name}
                     </h2>
-                    <p className="mt-1 text-xs tracking-[0.2em] text-white/45">{team.code}</p>
-                    <p className="mt-4 font-display text-3xl tracking-[0.06em] text-white sm:mt-6 sm:text-4xl">
+                    <p className="mt-0.5 text-[9px] tracking-[0.16em] text-white/45 sm:mt-1 sm:text-xs sm:tracking-[0.2em]">
+                      {team.code}
+                    </p>
+                    <p className="mt-2 font-display text-xl tracking-[0.04em] text-white sm:mt-6 sm:text-4xl sm:tracking-[0.06em]">
                       {Number(team.points)}
-                      <span className="ml-2 text-sm tracking-[0.2em] text-[var(--speed-muted)]">PTS</span>
+                      <span className="ml-1 text-[9px] tracking-[0.16em] text-[var(--speed-muted)] sm:ml-2 sm:text-sm sm:tracking-[0.2em]">
+                        PTS
+                      </span>
                     </p>
                   </motion.article>
                 )
