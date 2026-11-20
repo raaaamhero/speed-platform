@@ -28,7 +28,7 @@ export default async function StandingsPage() {
   return (
     <>
       <SiteHeader variant="solid" />
-      <main className="speed-arena min-h-[100svh] pt-24 pb-16 sm:pt-28 sm:pb-20">
+      <main className="speed-arena min-h-[100svh] pt-28 pb-16 sm:pt-28 sm:pb-20">
         <div className="mx-auto max-w-5xl px-4 sm:px-8">
           <StandingsBoard rows={rows} loadedAt={new Date().toLocaleString()} />
           <p className="mt-10 text-xs text-[var(--speed-muted)]">

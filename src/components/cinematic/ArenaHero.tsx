@@ -28,7 +28,7 @@ export function ArenaHero() {
       <LiveParticleField className="absolute inset-0 z-[1] h-full w-full opacity-20 sm:opacity-30" density={28} />
 
       <ElasticStringField
-        className="absolute inset-0 z-[2] h-full w-full opacity-45 sm:opacity-100"
+        className="absolute inset-0 z-[2] h-full w-full opacity-80 sm:opacity-100"
         variant="hero"
         interactive
       />
@@ -79,12 +79,24 @@ export function ArenaHero() {
               sports.
             </p>
 
-            <Link
-              href="/register"
-              className="speed-cta speed-cta-sweep mt-6 inline-flex w-full justify-center sm:mt-7 sm:w-auto"
-            >
-              REGISTER FOR SPEED
-            </Link>
+            <div className="mt-6 flex w-full flex-col gap-3 sm:mt-7 sm:flex-row sm:flex-wrap">
+              <Link
+                href="/register"
+                className="speed-cta speed-cta-sweep inline-flex w-full justify-center sm:w-auto"
+              >
+                REGISTER FOR SPEED
+              </Link>
+              <Link
+                href="/#sports"
+                className="speed-arena-btn inline-flex w-full justify-center sm:w-auto"
+              >
+                <span className="speed-arena-btn__pulse" aria-hidden />
+                EXPLORE THE ARENA
+                <span className="speed-arena-btn__arrow" aria-hidden>
+                  →
+                </span>
+              </Link>
+            </div>
           </motion.div>
         </div>
       </motion.div>

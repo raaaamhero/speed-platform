@@ -11,7 +11,7 @@ export default function RegisterPage() {
   return (
     <>
       <SiteHeader variant="solid" />
-      <main className="speed-arena min-h-[100svh] pt-24 pb-16 sm:pt-28 sm:pb-20">
+      <main className="speed-arena min-h-[100svh] pt-28 pb-16 sm:pt-28 sm:pb-20">
         <div className="relative mx-auto max-w-3xl px-4 sm:px-8">
           <p className="speed-kicker">REGISTER</p>
           <h1 className="mt-3 font-display text-[2.2rem] leading-tight tracking-[0.06em] text-[var(--speed-ink)] sm:text-6xl">

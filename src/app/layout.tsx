@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Bebas_Neue, Black_Ops_One, Outfit } from 'next/font/google'
+import { AnnouncementCentre } from '@/components/announcement-centre'
 import './globals.css'
 
 const outfit = Outfit({
@@ -31,6 +32,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="en">
       <body className={`${outfit.variable} ${bebas.variable} ${speedTitle.variable} antialiased`}>
         {children}
+        <AnnouncementCentre />
       </body>
     </html>
   )

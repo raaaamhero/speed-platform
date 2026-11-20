@@ -3,7 +3,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { AnnouncementCentre } from '@/components/announcement-centre'
 
 const links = [
   { href: '/#about', label: 'About' },
@@ -32,16 +31,25 @@ export function SiteHeader({ variant = 'overlay' }: Props) {
     }
   }, [open])
 
+  // Close drawer on route hash / resize to desktop-ish
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(false)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
+
   return (
     <header
-      className={`${
-        solid
-          ? 'fixed inset-x-0 top-0 z-40 border-b border-white/10 bg-[#07080b]/95 backdrop-blur-md'
-          : 'absolute inset-x-0 top-0 z-40'
+      className={`fixed inset-x-0 top-0 z-40 ${
+        solid || open
+          ? 'border-b border-white/10 bg-[#07080b]/95 backdrop-blur-md'
+          : 'border-b border-transparent bg-gradient-to-b from-[#07080b]/90 via-[#07080b]/45 to-transparent'
       }`}
     >
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-8 sm:py-5">
-        <Link href="/" className="group flex min-w-0 items-center gap-2.5 sm:gap-3">
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-8 sm:py-4">
+        <Link href="/" className="group flex min-w-0 items-center gap-2.5 sm:gap-3" onClick={() => setOpen(false)}>
           <span className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full border border-white/20 sm:h-10 sm:w-10">
             <Image src="/brand/sportscom-logo.jpg" alt="SportsCom" fill className="object-cover" />
           </span>
@@ -53,7 +61,7 @@ export function SiteHeader({ variant = 'overlay' }: Props) {
               SPORTSCOM
             </span>
             <span
-              className="mt-0.5 hidden text-[11px] font-medium leading-snug tracking-[0.04em] text-white/55 sm:block"
+              className="mt-0.5 block truncate text-[9px] font-medium leading-snug tracking-[0.02em] text-white/55 sm:text-[11px] sm:tracking-[0.04em]"
               style={{ fontFamily: 'var(--font-outfit), system-ui, sans-serif' }}
             >
               a team above all, above all a team
@@ -74,7 +82,7 @@ export function SiteHeader({ variant = 'overlay' }: Props) {
       </div>
 
       {open && (
-        <div className="absolute inset-x-0 top-full z-50 max-h-[min(80vh,36rem)] overflow-y-auto border-t border-white/10 bg-[#07080b]/98 backdrop-blur-md">
+        <div className="absolute inset-x-0 top-full z-50 max-h-[min(85svh,40rem)] overflow-y-auto border-t border-white/10 bg-[#07080b]/98 backdrop-blur-md">
           <nav
             className="mx-auto flex max-w-6xl flex-col gap-1 px-4 py-4 sm:px-8 sm:py-6"
             aria-label="Site menu"
@@ -94,8 +102,6 @@ export function SiteHeader({ variant = 'overlay' }: Props) {
           </nav>
         </div>
       )}
-
-      <AnnouncementCentre />
     </header>
   )
 }

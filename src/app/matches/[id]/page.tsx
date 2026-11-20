@@ -74,7 +74,7 @@ export default async function MatchDetailPage({
   return (
     <>
       <SiteHeader variant="solid" />
-      <main className="speed-arena min-h-[100svh] pt-24 pb-16 sm:pt-28 sm:pb-20">
+      <main className="speed-arena min-h-[100svh] pt-28 pb-16 sm:pt-28 sm:pb-20">
         <div className="mx-auto max-w-3xl px-4 sm:px-8">
           <Link href="/fixtures" className="text-xs text-[var(--speed-muted)] hover:text-[var(--speed-gold)]">
             ← Fixtures

@@ -43,16 +43,17 @@ export function ElasticStringField({
 
     const N = 96
     const gap = variant === 'hero' ? 11 : 9
-    // SportsCom crest: 6 orange + white strands
+    const isNarrow = () => w > 0 && w < 640
+    // SportsCom crest: neon orange + white strands (brighter on mobile)
     const colors =
       variant === 'hero'
         ? [
-            'rgba(242,116,33,0.95)',
-            'rgba(255,255,255,0.88)',
-            'rgba(242,116,33,0.82)',
-            'rgba(255,255,255,0.72)',
-            'rgba(242,116,33,0.7)',
-            'rgba(255,255,255,0.58)',
+            'rgba(255,140,50,1)',
+            'rgba(255,255,255,0.95)',
+            'rgba(242,116,33,0.98)',
+            'rgba(255,200,120,0.9)',
+            'rgba(242,116,33,0.88)',
+            'rgba(255,255,255,0.78)',
           ]
         : [
             'rgba(242,116,33,0.92)',
@@ -120,8 +121,8 @@ export function ElasticStringField({
         grab: variant === 'hero' ? m * 0.06 : m * 0.05,
         reach: variant === 'hero' ? m * 0.14 : m * 0.12,
         maxPull: variant === 'hero' ? m * 0.1 : m * 0.08,
-        ambient: variant === 'hero' ? 5 : 3.5,
-        strokeW: variant === 'hero' ? 1.8 : 1.5,
+        ambient: variant === 'hero' ? (isNarrow() ? 7 : 5) : 3.5,
+        strokeW: variant === 'hero' ? (isNarrow() ? 2.4 : 1.8) : 1.5,
       }
     }
 
@@ -212,9 +213,10 @@ export function ElasticStringField({
 
       const midX = (base[0].x + base[N - 1].x) * 0.5
       const floorY = Math.max(...base.map((b) => b.y)) + gap * 2
-      const glow = ctx.createRadialGradient(midX, floorY, 0, midX, floorY, w * 0.35)
-      glow.addColorStop(0, 'rgba(242,116,33,0.16)')
-      glow.addColorStop(0.45, 'rgba(242,116,33,0.06)')
+      const mobile = isNarrow()
+      const glow = ctx.createRadialGradient(midX, floorY, 0, midX, floorY, w * (mobile ? 0.55 : 0.35))
+      glow.addColorStop(0, mobile ? 'rgba(242,116,33,0.32)' : 'rgba(242,116,33,0.16)')
+      glow.addColorStop(0.4, mobile ? 'rgba(242,116,33,0.14)' : 'rgba(242,116,33,0.06)')
       glow.addColorStop(1, 'rgba(0,0,0,0)')
       ctx.fillStyle = glow
       ctx.fillRect(0, 0, w, h)
@@ -247,13 +249,27 @@ export function ElasticStringField({
           py = y
         }
         ctx.lineTo(px, py)
+        // Soft neon bloom under the strand
+        if (variant === 'hero') {
+          ctx.save()
+          ctx.shadowColor = 'rgba(242,116,33,0.85)'
+          ctx.shadowBlur = mobile ? 18 : 12
+          ctx.strokeStyle = s.color
+          ctx.lineWidth = strokeW + (s.glow > 0 ? 0.6 : 0) + (mobile ? 0.4 : 0)
+          ctx.lineCap = 'round'
+          ctx.lineJoin = 'round'
+          ctx.globalAlpha = s.glow > 0 ? 1 : mobile ? 0.98 : 0.92
+          ctx.stroke()
+          ctx.restore()
+        }
         ctx.strokeStyle = s.color
         ctx.lineWidth = strokeW + (s.glow > 0 ? 0.4 : 0)
         ctx.lineCap = 'round'
         ctx.lineJoin = 'round'
-        ctx.globalAlpha = s.glow > 0 ? 1 : 0.92
+        ctx.globalAlpha = s.glow > 0 ? 1 : 0.95
         ctx.stroke()
         ctx.globalAlpha = 1
+        ctx.shadowBlur = 0
       }
     }
 

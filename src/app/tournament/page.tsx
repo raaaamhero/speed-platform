@@ -13,7 +13,7 @@ export default function TournamentPage() {
   return (
     <>
       <SiteHeader variant="solid" />
-      <main className="speed-arena min-h-[100svh] pt-24 pb-16 sm:pt-28 sm:pb-20">
+      <main className="speed-arena min-h-[100svh] pt-28 pb-16 sm:pt-28 sm:pb-20">
         <div className="mx-auto max-w-6xl px-4 sm:px-8">
           <p className="speed-kicker">TOURNAMENT CENTRE</p>
           <h1 className="mt-3 font-display text-[2.2rem] tracking-[0.06em] text-white sm:text-5xl">
