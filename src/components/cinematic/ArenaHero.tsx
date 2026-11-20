@@ -57,14 +57,41 @@ export function ArenaHero() {
             <span className="text-[0.72em] text-[var(--speed-gold)]">2026–27</span>
           </motion.h1>
 
-          <motion.p
-            initial={reduced ? false : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.45, duration: 0.6 }}
-            className="mt-6 max-w-md text-base leading-relaxed text-[var(--speed-muted)]"
+          <motion.div
+            initial={reduced ? false : { opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.6 }}
+            className="mt-7 max-w-lg"
           >
-            Your SPEED journey begins with registration.
-          </motion.p>
+            <p className="font-display text-sm tracking-[0.28em] text-[var(--speed-gold)] sm:text-base">
+              SPEED CENTRE
+            </p>
+            <p className="mt-2 text-base leading-relaxed text-[var(--speed-muted)] sm:text-lg">
+              Your one-stop for everything related to SPEED — fixtures, results, standings, teams and
+              sports.
+            </p>
+            <nav
+              aria-label="SPEED Centre"
+              className="mt-5 flex flex-wrap gap-2"
+            >
+              {[
+                { href: '/fixtures', label: 'Fixtures' },
+                { href: '/standings', label: 'Results' },
+                { href: '/standings', label: 'Standings' },
+                { href: '/#teams', label: 'Teams' },
+                { href: '/#sports', label: 'Sports' },
+              ].map((item) => (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  className="border border-white/20 bg-white/[0.03] px-3 py-2 text-xs font-semibold tracking-[0.12em] text-white/80 transition hover:border-[var(--speed-gold)]/60 hover:text-[var(--speed-gold)] sm:text-[13px]"
+                  style={{ fontFamily: 'var(--font-outfit), system-ui, sans-serif' }}
+                >
+                  {item.label.toUpperCase()}
+                </Link>
+              ))}
+            </nav>
+          </motion.div>
 
           <motion.div
             initial={reduced ? false : { opacity: 0, y: 14 }}
