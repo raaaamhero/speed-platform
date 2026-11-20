@@ -70,14 +70,23 @@ export function ArenaHero() {
             initial={reduced ? false : { opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.55 }}
-            className="mt-10 flex flex-wrap gap-3"
+            className="mt-10 flex flex-wrap items-center gap-3"
           >
             <Link href="/register" className="speed-cta speed-cta-sweep relative overflow-hidden">
               REGISTER FOR SPEED
             </Link>
-            <a href="#sports" className="speed-ghost">
-              VIEW SPORTS
-            </a>
+            <motion.a
+              href="#sports"
+              className="speed-arena-btn group"
+              whileHover={reduced ? undefined : { scale: 1.04, y: -2 }}
+              whileTap={reduced ? undefined : { scale: 0.97 }}
+            >
+              <span className="speed-arena-btn__pulse" aria-hidden />
+              <span className="relative z-[1]">EXPLORE THE ARENA</span>
+              <span className="speed-arena-btn__arrow relative z-[1]" aria-hidden>
+                →
+              </span>
+            </motion.a>
           </motion.div>
         </div>
       </motion.div>
