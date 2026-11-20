@@ -5,7 +5,6 @@ import { useCallback, useState } from 'react'
 import { SiteFooter } from '@/components/site-footer'
 import { SiteHeader } from '@/components/site-header'
 import { ArenaHero } from './ArenaHero'
-import { AudioToggle } from './AudioToggle'
 import { IntroSequence } from './IntroSequence'
 import { ManifestoSection } from './ManifestoSection'
 import { RoadSection } from './RoadSection'
@@ -34,7 +33,6 @@ export function HomeExperience() {
     <>
       <SmoothScroll />
       <IntroSequence onComplete={complete} />
-      <AudioToggle />
       <div aria-hidden={!introDone}>
         <SiteHeader />
         <main>

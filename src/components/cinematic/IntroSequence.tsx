@@ -7,6 +7,11 @@ import { ElasticStringField } from '@/components/interaction/ElasticStringField'
 import { InteractiveTitle } from '@/components/interaction/InteractiveTitle'
 import { LiveParticleField } from '@/components/interaction/LiveParticleField'
 import { useReducedMotion } from '@/hooks/use-reduced-motion'
+import {
+  armEpicAudioUnlock,
+  cueEpicAtSpeedReveal,
+  enableAutoEpicOnNextGesture,
+} from './audio-engine'
 import { LetterReveal } from './LetterReveal'
 
 const SKIP_KEY = 'speed-intro-skipped'
@@ -95,10 +100,15 @@ export function IntroSequence({ onComplete }: Props) {
     const forceReplay = new URLSearchParams(window.location.search).has('intro')
     if (forceReplay) sessionStorage.removeItem(SKIP_KEY)
     if ((!forceReplay && sessionStorage.getItem(SKIP_KEY) === '1') || reduced) {
+      // Returning visitors: epic score starts on first tap (browsers block silent autoplay)
+      if (!reduced) enableAutoEpicOnNextGesture()
       setVisible(false)
       done.current()
       return
     }
+
+    // Unlock audio as soon as they touch/pluck during the intro
+    armEpicAudioUnlock()
 
     // Longer brand beat — crest → SPORTSCOM → PRESENTS → SPEED
     const timers = [
@@ -124,8 +134,18 @@ export function IntroSequence({ onComplete }: Props) {
     }
   }, [reduced])
 
+  // SPEED title flash → heroic epic score
+  useEffect(() => {
+    if (phase >= 4 && visible && !reduced) {
+      void cueEpicAtSpeedReveal()
+    }
+  }, [phase, visible, reduced])
+
   function skip() {
     sessionStorage.setItem(SKIP_KEY, '1')
+    // If they skip after/during SPEED, keep trying to start epic on this gesture
+    if (phase >= 4) void cueEpicAtSpeedReveal()
+    else enableAutoEpicOnNextGesture()
     setVisible(false)
     done.current()
   }
