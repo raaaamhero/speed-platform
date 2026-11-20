@@ -64,12 +64,10 @@ export function DeskOverview() {
     ['Registered', stats.registered],
     ['Teams', stats.teams ?? 12],
     ['Active sports', stats.active_competitions ?? '—'],
-    ['Scheduled fixtures', stats.fixtures_scheduled ?? stats.fixtures],
+    ['Fixtures', stats.fixtures],
     ['Awaiting results', stats.fixtures_awaiting_results ?? 0],
-    ['Pending approval', stats.results_pending_approval ?? 0],
     ['Completed matches', stats.matches_completed ?? 0],
     ['Upcoming', stats.upcoming_matches ?? 0],
-    ['Qualification drafts', stats.pending_qualification ?? 0],
   ]
 
   return (
