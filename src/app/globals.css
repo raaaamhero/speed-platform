@@ -41,6 +41,12 @@ body {
   font-family: var(--font-bebas), Impact, Haettenschweiler, sans-serif;
 }
 
+.font-speed-title {
+  font-family: var(--font-speed-title), Impact, Haettenschweiler, sans-serif;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
 .speed-arena {
   background:
     radial-gradient(ellipse 80% 55% at 70% 20%, rgba(200, 30, 44, 0.28), transparent 55%),

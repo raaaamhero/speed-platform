@@ -34,36 +34,27 @@ export function ArenaHero() {
         style={{ opacity }}
         className="pointer-events-none relative z-10 mx-auto flex min-h-[100svh] max-w-6xl flex-col justify-center px-5 pb-28 pt-28 sm:px-8"
       >
-        <div className="pointer-events-auto max-w-xl lg:max-w-2xl">
+        <div className="pointer-events-auto max-w-2xl lg:max-w-3xl">
           <motion.p
             initial={reduced ? false : { opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.08, duration: 0.65 }}
-            className="text-sm font-extrabold tracking-[0.2em] text-white sm:text-base"
+            className="text-[11px] font-bold tracking-[0.22em] text-white sm:text-xs"
             style={{ fontFamily: 'var(--font-outfit), system-ui, sans-serif' }}
           >
-            <span className="text-white">SPORTSCOM</span>{' '}
-            <span className="font-semibold tracking-[0.28em] text-[var(--speed-gold)]">PRESENTS</span>
-          </motion.p>
-
-          <motion.p
-            initial={reduced ? false : { opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.16, duration: 0.65 }}
-            className="mt-4 font-display text-sm tracking-[0.35em] text-white/55 sm:text-base"
-          >
-            SPEED 2026–27
+            <span className="text-white/90">SPORTSCOM</span>{' '}
+            <span className="tracking-[0.28em] text-[var(--speed-gold)]">PRESENTS</span>
           </motion.p>
 
           <motion.h1
-            initial={reduced ? false : { opacity: 0, y: 28 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.24, duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
-            className="mt-5 font-display text-[clamp(2.8rem,9vw,5.8rem)] leading-[0.92] tracking-[0.04em] text-[var(--speed-ink)]"
+            initial={reduced ? false : { opacity: 0, y: 28, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ delay: 0.16, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+            className="font-speed-title mt-4 text-[clamp(3.4rem,14vw,7.5rem)] leading-[0.9] text-white drop-shadow-[0_0_40px_rgba(242,116,33,0.25)]"
           >
-            REGISTER
+            SPEED
             <br />
-            FOR SPEED.
+            <span className="text-[0.72em] text-[var(--speed-gold)]">2026–27</span>
           </motion.h1>
 
           <motion.p

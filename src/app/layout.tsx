@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Bebas_Neue, Outfit } from 'next/font/google'
+import { Bebas_Neue, Black_Ops_One, Outfit } from 'next/font/google'
 import './globals.css'
 
 const outfit = Outfit({
@@ -14,6 +14,12 @@ const bebas = Bebas_Neue({
   weight: '400',
 })
 
+const speedTitle = Black_Ops_One({
+  variable: '--font-speed-title',
+  subsets: ['latin'],
+  weight: '400',
+})
+
 export const metadata: Metadata = {
   title: 'SPEED 2026–27 | SportsCom · TAPMI',
   description:
@@ -23,7 +29,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className={`${outfit.variable} ${bebas.variable} antialiased`}>{children}</body>
+      <body className={`${outfit.variable} ${bebas.variable} ${speedTitle.variable} antialiased`}>
+        {children}
+      </body>
     </html>
   )
 }
