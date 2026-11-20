@@ -3,6 +3,7 @@ import { isOpsAuthenticated } from '@/lib/ops-auth'
 
 const links = [
   { href: '/ops', label: 'Overview' },
+  { href: '/ops/tournament', label: 'Tournament' },
   { href: '/ops/students', label: 'Students' },
   { href: '/ops/import', label: 'Import' },
   { href: '/ops/fixtures', label: 'Fixtures' },

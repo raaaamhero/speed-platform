@@ -26,12 +26,23 @@ export function RoadSection() {
           Standings and fixtures.
         </motion.h2>
 
-        <div className="mt-8 grid gap-3 sm:mt-10 sm:grid-cols-2 sm:gap-4">
+        <div className="mt-8 grid gap-3 sm:mt-10 sm:grid-cols-3 sm:gap-4">
+          <Link
+            href="/tournament"
+            className="group relative min-h-[7.5rem] overflow-hidden border border-white/10 bg-gradient-to-br from-[var(--speed-gold)]/20 to-transparent p-6 transition hover:border-[var(--speed-gold)]/40 sm:p-8"
+          >
+            <h3 className="font-display text-2xl tracking-[0.08em] text-white sm:text-3xl">
+              TOURNAMENT
+            </h3>
+            <span className="mt-6 inline-block font-display tracking-[0.2em] text-white/80 transition group-hover:text-[var(--speed-gold)] sm:mt-8">
+              OPEN →
+            </span>
+          </Link>
           <Link
             href="/standings"
             className="group relative min-h-[7.5rem] overflow-hidden border border-white/10 bg-gradient-to-br from-[var(--speed-crimson)]/20 to-transparent p-6 transition hover:border-[var(--speed-gold)]/40 sm:p-8"
           >
-            <h3 className="font-display text-3xl tracking-[0.08em] text-white sm:text-4xl">
+            <h3 className="font-display text-2xl tracking-[0.08em] text-white sm:text-3xl">
               STANDINGS
             </h3>
             <span className="mt-6 inline-block font-display tracking-[0.2em] text-white/80 transition group-hover:text-[var(--speed-gold)] sm:mt-8">
@@ -40,9 +51,9 @@ export function RoadSection() {
           </Link>
           <Link
             href="/fixtures"
-            className="group relative min-h-[7.5rem] overflow-hidden border border-white/10 bg-gradient-to-br from-[var(--speed-gold)]/15 to-transparent p-6 transition hover:border-[var(--speed-gold)]/40 sm:p-8"
+            className="group relative min-h-[7.5rem] overflow-hidden border border-white/10 bg-gradient-to-br from-white/10 to-transparent p-6 transition hover:border-[var(--speed-gold)]/40 sm:p-8"
           >
-            <h3 className="font-display text-3xl tracking-[0.08em] text-white sm:text-4xl">
+            <h3 className="font-display text-2xl tracking-[0.08em] text-white sm:text-3xl">
               FIXTURES
             </h3>
             <span className="mt-6 inline-block font-display tracking-[0.2em] text-white/80 transition group-hover:text-[var(--speed-gold)] sm:mt-8">

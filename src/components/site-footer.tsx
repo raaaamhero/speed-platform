@@ -16,6 +16,9 @@ export function SiteFooter() {
           <Link href="/register" className="py-1 hover:text-[var(--speed-ink)]">
             Register
           </Link>
+          <Link href="/tournament" className="py-1 hover:text-[var(--speed-ink)]">
+            Tournament
+          </Link>
           <Link href="/standings" className="py-1 hover:text-[var(--speed-ink)]">
             Standings
           </Link>

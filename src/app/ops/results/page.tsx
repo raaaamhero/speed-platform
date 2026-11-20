@@ -16,6 +16,10 @@ type Fixture = {
   team_b_name: string | null
   team_a_code: string | null
   team_b_code: string | null
+  competition_name: string | null
+  group_code: string | null
+  stage: string | null
+  has_result: boolean
 }
 
 export default function OpsResultsPage() {
@@ -53,7 +57,16 @@ export default function OpsResultsPage() {
   )
 
   const openFixtures = useMemo(
-    () => fixtures.filter((f) => f.status !== 'completed' && f.team_a_name && f.team_b_name),
+    () =>
+      fixtures.filter(
+        (f) =>
+          f.team_a_name &&
+          f.team_b_name &&
+          !f.has_result &&
+          f.status !== 'completed' &&
+          f.stage !== 'semi_final' &&
+          f.stage !== 'final',
+      ),
     [fixtures],
   )
 
@@ -123,16 +136,12 @@ export default function OpsResultsPage() {
                 className="mt-1 w-full border border-white/15 bg-black/40 px-3 py-2.5"
               >
                 {fixtures
-                  .filter((f) => f.team_a_name && f.team_b_name)
+                  .filter((f) => f.team_a_name && f.team_b_name && f.stage === 'group_stage')
                   .map((f) => (
                     <option key={f.id} value={f.id}>
-                      {f.status === 'completed' ? '✓ ' : ''}
-                      {f.sport_name}: {f.team_a_name} vs {f.team_b_name}
-                      {f.starts_at
-                        ? ` · ${new Date(f.starts_at).toLocaleString('en-IN', {
-                            timeZone: 'Asia/Kolkata',
-                          })}`
-                        : ''}
+                      {f.has_result || f.status === 'completed' ? '✓ ' : ''}
+                      {f.competition_name || f.sport_name}
+                      {f.group_code ? ` · G${f.group_code}` : ''}: {f.team_a_name} vs {f.team_b_name}
                     </option>
                   ))}
               </select>
