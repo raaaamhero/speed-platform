@@ -1,6 +1,5 @@
 'use client'
 
-import Link from 'next/link'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useRef } from 'react'
 import { ElasticStringField } from '@/components/interaction/ElasticStringField'
@@ -70,27 +69,6 @@ export function ArenaHero() {
               Your one-stop for everything related to SPEED — fixtures, results, standings, teams and
               sports.
             </p>
-            <nav
-              aria-label="SPEED Centre"
-              className="mt-5 flex flex-wrap gap-2"
-            >
-              {[
-                { href: '/fixtures', label: 'Fixtures' },
-                { href: '/standings', label: 'Results' },
-                { href: '/standings', label: 'Standings' },
-                { href: '/#teams', label: 'Teams' },
-                { href: '/#sports', label: 'Sports' },
-              ].map((item) => (
-                <Link
-                  key={item.label}
-                  href={item.href}
-                  className="border border-white/20 bg-white/[0.03] px-3 py-2 text-xs font-semibold tracking-[0.12em] text-white/80 transition hover:border-[var(--speed-gold)]/60 hover:text-[var(--speed-gold)] sm:text-[13px]"
-                  style={{ fontFamily: 'var(--font-outfit), system-ui, sans-serif' }}
-                >
-                  {item.label.toUpperCase()}
-                </Link>
-              ))}
-            </nav>
           </motion.div>
         </div>
       </motion.div>
