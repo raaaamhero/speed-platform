@@ -1,6 +1,5 @@
 'use client'
 
-import Link from 'next/link'
 import { motion, useReducedMotion } from 'framer-motion'
 
 /** First four are committee heads (order only — same visual style). Rest A–Z. */
@@ -100,10 +99,6 @@ export function ManifestoSection() {
             competition.
           </p>
         </div>
-
-        <Link href="/register" className="speed-cta speed-cta-sweep mt-10 inline-flex">
-          REGISTER FOR SPEED
-        </Link>
 
         {/* The Team behind SPEED */}
         <div className="mt-20 border-t border-white/10 pt-16">

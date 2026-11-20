@@ -43,18 +43,6 @@ export function HomeExperience() {
           <SportsUniverse />
           <TeamsShowcase />
           <RoadSection />
-          <section className="border-t border-white/10 bg-black py-20 text-center">
-            <p className="speed-kicker">REGISTER</p>
-            <h2 className="mt-4 font-display text-4xl tracking-[0.06em] text-white sm:text-6xl">
-              Register for SPEED now.
-            </h2>
-            <p className="mx-auto mt-4 max-w-md text-[var(--speed-muted)]">
-              Your SPEED journey begins with registration.
-            </p>
-            <a href="/register" className="speed-cta speed-cta-sweep mt-8 inline-flex">
-              REGISTER FOR SPEED
-            </a>
-          </section>
         </main>
         <SiteFooter />
       </div>

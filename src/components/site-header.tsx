@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
+import { AnnouncementCentre } from '@/components/announcement-centre'
 
 const links = [
   { href: '/#about', label: 'About' },
@@ -93,6 +94,8 @@ export function SiteHeader({ variant = 'overlay' }: Props) {
           </nav>
         </div>
       )}
+
+      <AnnouncementCentre />
     </header>
   )
 }
