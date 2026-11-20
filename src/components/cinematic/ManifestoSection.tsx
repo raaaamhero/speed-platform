@@ -83,25 +83,7 @@ export function ManifestoSection() {
     <section id="about" className="relative scroll-mt-20 border-t border-white/10 bg-[#050608] py-20 sm:py-28">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_20%_0%,rgba(226,177,74,0.1),transparent_45%)]" />
       <div className="relative mx-auto max-w-6xl px-5 sm:px-8">
-        <motion.p
-          initial={reduced ? false : { opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="speed-kicker"
-        >
-          WHAT IS SPEED?
-        </motion.p>
-        <motion.h2
-          initial={reduced ? false : { opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-4 max-w-3xl font-display text-4xl tracking-[0.06em] text-white sm:text-6xl"
-        >
-          This is SPEED.
-        </motion.h2>
-
-        <div className="mt-8 max-w-3xl space-y-5 text-base leading-relaxed text-[var(--speed-muted)] sm:text-lg">
+        <div className="max-w-3xl space-y-5 text-base leading-relaxed text-[var(--speed-muted)] sm:text-lg">
           <p>
             SPEED is TAPMI&apos;s flagship sporting festival, organised by the Sports Committee. What
             began as a sectional rivalry has evolved into a bigger competition, bringing together
@@ -123,7 +105,6 @@ export function ManifestoSection() {
             Come be a part of this grand celebration of teamwork, hard work, skill and the spirit of
             competition.
           </p>
-          <p className="font-display text-2xl tracking-[0.08em] text-white sm:text-3xl">This is SPEED.</p>
         </div>
 
         <Link href="/register" className="speed-cta speed-cta-sweep mt-10 inline-flex">
